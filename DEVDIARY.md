@@ -36,7 +36,7 @@ Please, report your key activities in each week this assignment is running.
       - Convert the binary number 1101001010111111 to hexadecimal: d2bf
       - Convert the decimal number 39 to binary: 100111
       - Convert the decimal number 63 to hexadecimal: 3f
-      - [Stairway](Myeonghoon Sun's PAs/stairway.py)    
+      - [Stairway](https://github.com/rmit-computing-technologies/cosc2804-2150-assignment-1-team-26-ps2-cosc2804/blob/main/Myeonghoon%20Sun's%20PAs/staircase.py)    
 
 **Week 2**
 
