@@ -29,6 +29,13 @@ Please, report your key activities in each week this assignment is running.
     - [x] Setup VS Code, and Minecraft on my Mac 🆚
     - [x] Implemented Hello Minecraft! 🎮
     - [ ] <!-- Built a foundation generator -->
+    
+    * PA
+      - Convert the binary number 10101 to decimal: 21
+      - Convert the hexadecimal number 3E to decimal: 62
+      - Convert the binary number 1101001010111111 to hexadecimal: d2bf
+      - Convert the decimal number 39 to binary: 100111
+      - Convert the decimal number 63 to hexadecimal: 3f
 
 **Week 2**
 
