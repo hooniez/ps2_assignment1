@@ -25,9 +25,10 @@ Please, report your key activities in each week this assignment is running.
     - [ ] Setup VS Code, and Minecraft on my Linux distro
     - [ ] Implemented Hello Minecraft!
 * Myeonghoon Sun
-    - [x] Read chapter 1 & 2 on textbook
-    - [x] Setup VS Code, and Minecraft on my Mac
-    - [x] Implemented Hello Minecraft!
+    - [x] Read chapter 1 & 2 on textbook 📖
+    - [x] Setup VS Code, and Minecraft on my Mac 🆚
+    - [x] Implemented Hello Minecraft! 🎮
+    - [ ] <!-- Built a foundation generator -->
 
 **Week 2**
 
