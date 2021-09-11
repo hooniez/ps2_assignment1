@@ -30,7 +30,7 @@ Please, report your key activities in each week this assignment is running.
     - [x] Implemented Hello Minecraft! 🎮
     - [ ] <!-- Built a foundation generator -->
     
-    * PA
+    * PAs
       - Convert the binary number 10101 to decimal: 21
       - Convert the hexadecimal number 3E to decimal: 62
       - Convert the binary number 1101001010111111 to hexadecimal: d2bf
