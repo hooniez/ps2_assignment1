@@ -72,10 +72,11 @@ class room2:
         self.createBox(mc)
         self.emptyBox(mc)
         self.full = True
-    def createBox(self,mc):
+    def createBox(self,mc): #Creates a box of blocks used in createRoom Func
         mc.setBlocks(self.xstart,self.ystart,self.zstart,self.xend,self.yend,self.zend,7)
         print('in createBox: ',self.xstart,self.ystart,self.zstart,self.xend,self.yend,self.zend)
-    def emptyBox(self,mc):
+    def emptyBox(self,mc):  #Emptys the box of blocks used in createRoom
+
         mc.setBlocks(self.xstart+1,self.ystart+1,self.zstart+1,self.xend-1,self.yend-0,self.zend-1,0)
         print('in emptyBox: ',self.xstart+1,self.ystart+1,self.zstart+1,self.xend-1,self.yend-0,self.zend-1)
 
