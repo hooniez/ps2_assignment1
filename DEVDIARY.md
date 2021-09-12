@@ -13,9 +13,9 @@ Please, report your key activities in each week this assignment is running.
 
 **Week 1**
 * Muhammad Zain Nauman
-    - [ ] Read chapter 1 & 2 on textbook
-    - [ ] Setup VS Code, and Minecraft on my Linux distro
-    - [ ] Implemented Hello Minecraft!
+    - [x] Read chapter 1 & 2 on textbook
+    - [x] Setup VS Code, and Minecraft on my Linux distro
+    - [x] Implemented Hello Minecraft!
 * Max Foord
     - [ ] Read chapter 1 & 2 on textbook
     - [ ] Setup VS Code, and Minecraft on my Linux distro
