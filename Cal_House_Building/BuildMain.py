@@ -26,7 +26,7 @@ roomheight = 2
 myHouse = buildHouse.house2(prop)
 myHouse.createEmptyHouse(roomheight,roomsize) # specify the room size, currently only squares
 myHouse.addRoom(mc)
-
-for i,room in enumerate(myHouse.rooms):
-    if random.randint(0, 3)<2:
-        room.createRoom(mc)
+myHouse.addRoom(mc)
+myHouse.addRoom(mc)
+myHouse.addRoom(mc)
+myHouse.addRoom(mc)

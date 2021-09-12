@@ -3,15 +3,15 @@ import random
 class house_property:
     def __init__(self,location,width,depth):
         self.xstart = location.x+1 #starts 1x square away from player, can be changed later
-        print('xstart is',self.xstart)
+        # print('xstart is',self.xstart)
         self.base = location.y-1 #starts -1y square away from player
-        print('base is',self.base)
+        # print('base is',self.base)
         self.zstart = location.z+1 #starts 1z square away from player
-        print('zstart is',self.zstart)
+        # print('zstart is',self.zstart)
         self.xend = location.x+width+1 #extends width +1 from player in x direction
-        print('xend is',self.xend)
+        # print('xend is',self.xend)
         self.zend = location.z+depth+1 #extends width +1 from player in z direction
-        print('zend is',self.zend)
+        # print('zend is',self.zend)
         self.width = width #to simplify future calculations
         self.depth = depth
 
@@ -28,8 +28,8 @@ class house2:
         self.roomheight = roomheight
         self.roomsperx = (self.prop.width - propertyEdge*2)//roomsize #calculates the number of rooms that will be created along the X direction
         self.roomsperz = (self.prop.depth - propertyEdge*2)//roomsize #calculates the number of rooms that will be created along the Z direction
-        print('roomsperx',self.roomsperx) #for testing
-        print('roomsperz',self.roomsperz) #for testing
+        # print('roomsperx',self.roomsperx) #for testing
+        # print('roomsperz',self.roomsperz) #for testing
         roomsizewidth = roomsize 
         roomsizedepth = roomsize
         for z in range(0,self.roomsperz): #following initalised empty rooms in an array. The rooms can later be filled with different types by calling functions in room2 class (may rename this class in future)
@@ -40,48 +40,74 @@ class house2:
                                         self.prop.xstart+(roomsizewidth*(x+1))+propertyEdge,\
                                         self.prop.base+self.roomheight,\
                                         self.prop.zstart+(roomsizewidth*(z+1))+propertyEdge,\
-                                        x+(z*roomsperz),\
-                                        x,z)) #Position in the rooms array
-                                            
-
-        print('rooms length is:',len(self.rooms)) #for testing
+                                        x+(z*self.roomsperz),\
+                                        x,z)) #Coordinates of location in grid
+        # print('rooms length is:',len(self.rooms)) #for testing
                 
     def addRoom(self,mc,type='basic'): #currently not in use
         pass
         empty = True
-        builtrooms = []
+        builtRooms = []
         for room in self.rooms: #search through all rooms
             if room.full == True: #if a room exists (anything that isn't air. Pool is a room Room is a room etc)
                 empty = False
-                builtrooms.append(room) #add the room to the builtrooms working array
+                builtRooms.append(room) #add the room to the builtrooms working array
         if empty:
             currentRoom = self.rooms[random.randint(0,len(self.rooms)-1)] #If there are not yet any rooms select a random room as the starting room.
+            print('build a room at x = ',currentRoom.gridCoord[0], 'z = ',currentRoom.gridCoord[1])
             currentRoom.createRoom(mc)
-            self.setAvaliable(currentRoom,rooms)
         else:
-            fromRoom = builtrooms[random.randint(0,len(builtrooms)-1)] #Select a room at random from the built rooms
-            #Select an empty space next to the fromRoom
-            self.checkAvaliable
-            arrayLocation = fromRoom.roomPos
-            #Check locations around the room
-
-
-            x+z*roomsperz
-            random.randint(0, 3) #4 possible room locations 0,1,2,3
+            roomIndex = random.randint(0,len(builtRooms)-1)
+            print(f'{roomIndex = }')
+            fromRoom = builtRooms[roomIndex] #Select a room at random from the built rooms
+            builtRooms.pop(roomIndex) #Remove this room from the builtRooms array
+            print('fromRoom tuple x = ',fromRoom.gridCoord[0], 'z = ',fromRoom.gridCoord[1])
+            # print('in addRoom, length of builtRooms is:',len(builtRooms))
+            availableRooms = self.checkAvailableRooms(fromRoom,self.rooms) #List of avaliable rooms
+            while len(availableRooms)==0: #while there are no avaliable room spaces select a new room to start search from
+                if(len(builtRooms)==0): #No more rooms to build From
+                    print('No more room space avaliable')
+                    return None
+                else:
+                    roomIndex = random.randint(0,len(builtRooms)-1) #select another room at random
+                    fromRoom = builtRooms[roomIndex]
+                    builtRooms.pop(roomIndex)
+                    availableRooms = self.checkAvailableRooms(self,fromRoom,self.rooms) #List of avaliable rooms
+            currentRoom = availableRooms[random.randint(0,len(availableRooms)-1)] #Select a room from avaliable Rooms at random
+            print('build a room at x = ',currentRoom.gridCoord[0], 'z = ',currentRoom.gridCoord[1])
+            currentRoom.createRoom(mc)
             
-    def setAvaliable(self,currentRoom,rooms):
-        if(arrayLocation-1 < 0): #outside the array
-                pass
-    def checkAvaliable(self,currentRoom,rooms):
-        arrayLocation = current.roomPos
-        left = arrayLocation-1
-        right = arrayLocation+1
-        top = arrayLocation
-        bot = arrayLocation
-        if(arrayLocation-1 >= 0): #this is in the array
-            rooms[arrayLocation]
-
-        return #list of avaliable indexs
+    def checkAvailableRooms(self,currentRoom,rooms):
+        arrayLocationX = currentRoom.gridCoord[0]
+        arrayLocationZ = currentRoom.gridCoord[1]
+        availableRooms = []
+        left = True
+        right = True
+        back = True
+        front = True
+        if(arrayLocationX == 0): #On left edge
+            left = False
+        if(arrayLocationX == self.roomsperx-1): #On right edge
+            right = False
+        if(arrayLocationZ == 0): #On the front edge
+            front = False
+        if(arrayLocationZ == self.roomsperz-1): #On back edge
+            back = False
+        
+        #Checking if rooms exist in other locations in array
+        if(left): #Location is not on the left edge so can -1 from location
+            if(self.rooms[currentRoom.roomPos - 1].full == False): #This room is empty can build a room here
+                availableRooms.append(rooms[currentRoom.roomPos - 1])
+        if(right):
+            if(self.rooms[currentRoom.roomPos + 1].full == False): #This room is empty can build a room here
+                availableRooms.append(rooms[currentRoom.roomPos + 1])
+        if(front):
+            if(self.rooms[currentRoom.roomPos - self.roomsperx].full == False): #This room is empty can build a room here
+                availableRooms.append(self.rooms[currentRoom.roomPos - self.roomsperx])
+        if(back):
+            if(self.rooms[currentRoom.roomPos + self.roomsperx].full == False): #This room is empty can build a room here
+                availableRooms.append(self.rooms[currentRoom.roomPos + self.roomsperx])
+        return availableRooms #list of avaliable indexs
 
 class room2:
     def __init__(self,xstart,ystart,zstart,xend,yend,zend,roomPos,gridX,gridZ,type=0):
@@ -91,7 +117,7 @@ class room2:
         self.xend = xend
         self.yend = yend #will normally hold room height
         self.zend = zend
-        self.roomPos = roomPos
+        self.roomPos = roomPos #position in the rooms Array
         self.gridCoord = (gridX,gridZ)
         self.full = False
     def createRoom(self,mc):
