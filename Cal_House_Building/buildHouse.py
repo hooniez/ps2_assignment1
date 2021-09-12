@@ -2,37 +2,37 @@ import numpy as np
 import random
 class house_property:
     def __init__(self,location,width,depth):
-        self.xstart = location.x+1
+        self.xstart = location.x+1 #starts 1x square away from player, can be changed later
         print('xstart is',self.xstart)
-        self.base = location.y-1
+        self.base = location.y-1 #starts -1y square away from player
         print('base is',self.base)
-        self.zstart = location.z+1
+        self.zstart = location.z+1 #starts 1z square away from player
         print('zstart is',self.zstart)
-        self.xend = location.x+width+1
+        self.xend = location.x+width+1 #extends width +1 from player in x direction
         print('xend is',self.xend)
-        self.zend = location.z+depth+1
+        self.zend = location.z+depth+1 #extends width +1 from player in z direction
         print('zend is',self.zend)
-        self.width = width
+        self.width = width #to simplify future calculations
         self.depth = depth
 
     def drawProperty(self,mc): #creates a property of green grass can be removed later depending on if needed.
         mc.setBlocks(self.xstart,self.base,self.zstart,self.xend,self.base,self.zend,2)
 
 class house2:
-    def __init__(self,prop):
-        self.prop = prop
-        self.rooms = []
+    def __init__(self,prop): 
+        self.prop = prop #the property that the house exists on
+        self.rooms = [] #list of all the room locations in the house
 
     def createEmptyHouse(self,roomheight,roomsize):
         propertyEdge = 1 #amount of space around the property before the rooms start
         self.roomheight = roomheight
-        self.roomsperx = (self.prop.width - propertyEdge*2)//roomsize
-        self.roomsperz = (self.prop.depth - propertyEdge*2)//roomsize
-        print('roomsperx',self.roomsperx)
-        print('roomsperz',self.roomsperz)
-        roomsizewidth = roomsize
+        self.roomsperx = (self.prop.width - propertyEdge*2)//roomsize #calculates the number of rooms that will be created along the X direction
+        self.roomsperz = (self.prop.depth - propertyEdge*2)//roomsize #calculates the number of rooms that will be created along the Z direction
+        print('roomsperx',self.roomsperx) #for testing
+        print('roomsperz',self.roomsperz) #for testing
+        roomsizewidth = roomsize 
         roomsizedepth = roomsize
-        for z in range(0,self.roomsperz):
+        for z in range(0,self.roomsperz): #following initalised empty rooms in an array. The rooms can later be filled with different types by calling functions in room2 class (may rename this class in future)
             for x in range(0,self.roomsperx):
                 self.rooms.append(room2(self.prop.xstart+(roomsizewidth*x)+propertyEdge,\
                                         self.prop.base,\
@@ -41,9 +41,9 @@ class house2:
                                         self.prop.base+self.roomheight,\
                                         self.prop.zstart+(roomsizewidth*(z+1)+propertyEdge)))
 
-        print('rooms length is:',len(self.rooms))
+        print('rooms length is:',len(self.rooms)) #for testing
                 
-    def addRoom(self,mc,type='basic'):
+    def addRoom(self,mc,type='basic'): #currently not in use
         pass
         # empty = True
         # builtrooms = []
