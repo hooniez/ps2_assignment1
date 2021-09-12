@@ -39,34 +39,60 @@ class house2:
                                         self.prop.zstart+(roomsizedepth*z)+propertyEdge,\
                                         self.prop.xstart+(roomsizewidth*(x+1))+propertyEdge,\
                                         self.prop.base+self.roomheight,\
-                                        self.prop.zstart+(roomsizewidth*(z+1)+propertyEdge)))
+                                        self.prop.zstart+(roomsizewidth*(z+1))+propertyEdge,\
+                                        x+(z*roomsperz),\
+                                        x,z)) #Position in the rooms array
+                                            
 
         print('rooms length is:',len(self.rooms)) #for testing
                 
     def addRoom(self,mc,type='basic'): #currently not in use
         pass
-        # empty = True
-        # builtrooms = []
-        # for room in self.rooms:
-        #     if room.full == True:
-        #         empty = False
-        #         builtrooms.append(room) #add the room to the builtrooms working array
-        # if empty:
-        #     currentRoom = self.rooms[random.randint(0,len(self.rooms)-1)] #If there are not yet any rooms select a random room as the starting room.
-        #     currentRoom.createRoom(mc)
-        # else:
-        #     fromRoom = builtrooms[random.randint(0,len(builtrooms)-1)] #Select a room at random from the built rooms
-            
+        empty = True
+        builtrooms = []
+        for room in self.rooms: #search through all rooms
+            if room.full == True: #if a room exists (anything that isn't air. Pool is a room Room is a room etc)
+                empty = False
+                builtrooms.append(room) #add the room to the builtrooms working array
+        if empty:
+            currentRoom = self.rooms[random.randint(0,len(self.rooms)-1)] #If there are not yet any rooms select a random room as the starting room.
+            currentRoom.createRoom(mc)
+            self.setAvaliable(currentRoom,rooms)
+        else:
+            fromRoom = builtrooms[random.randint(0,len(builtrooms)-1)] #Select a room at random from the built rooms
+            #Select an empty space next to the fromRoom
+            self.checkAvaliable
+            arrayLocation = fromRoom.roomPos
+            #Check locations around the room
 
+
+            x+z*roomsperz
+            random.randint(0, 3) #4 possible room locations 0,1,2,3
+            
+    def setAvaliable(self,currentRoom,rooms):
+        if(arrayLocation-1 < 0): #outside the array
+                pass
+    def checkAvaliable(self,currentRoom,rooms):
+        arrayLocation = current.roomPos
+        left = arrayLocation-1
+        right = arrayLocation+1
+        top = arrayLocation
+        bot = arrayLocation
+        if(arrayLocation-1 >= 0): #this is in the array
+            rooms[arrayLocation]
+
+        return #list of avaliable indexs
 
 class room2:
-    def __init__(self,xstart,ystart,zstart,xend,yend,zend,type=0):
+    def __init__(self,xstart,ystart,zstart,xend,yend,zend,roomPos,gridX,gridZ,type=0):
         self.xstart = xstart
         self.ystart = ystart
         self.zstart = zstart
         self.xend = xend
         self.yend = yend #will normally hold room height
         self.zend = zend
+        self.roomPos = roomPos
+        self.gridCoord = (gridX,gridZ)
         self.full = False
     def createRoom(self,mc):
         self.createBox(mc)
@@ -74,11 +100,10 @@ class room2:
         self.full = True
     def createBox(self,mc): #Creates a box of blocks used in createRoom Func
         mc.setBlocks(self.xstart,self.ystart,self.zstart,self.xend,self.yend,self.zend,7)
-        print('in createBox: ',self.xstart,self.ystart,self.zstart,self.xend,self.yend,self.zend)
+        #print('in createBox: ',self.xstart,self.ystart,self.zstart,self.xend,self.yend,self.zend)
     def emptyBox(self,mc):  #Emptys the box of blocks used in createRoom
-
         mc.setBlocks(self.xstart+1,self.ystart+1,self.zstart+1,self.xend-1,self.yend-0,self.zend-1,0)
-        print('in emptyBox: ',self.xstart+1,self.ystart+1,self.zstart+1,self.xend-1,self.yend-0,self.zend-1)
+        #print('in emptyBox: ',self.xstart+1,self.ystart+1,self.zstart+1,self.xend-1,self.yend-0,self.zend-1)
 
     def createPool(self,mc):
         pooldepth = 4

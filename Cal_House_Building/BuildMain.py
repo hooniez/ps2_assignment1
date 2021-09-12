@@ -19,13 +19,14 @@ gap = 3
 # myHouse.createRoomSimple()
 # for room in myHouse.rooms:
 #     room.drawRoom(mc)
-prop = buildHouse.house_property(p,12,12)
+prop = buildHouse.house_property(p,30,30)
 prop.drawProperty(mc)
-roomsize = 5
+roomsize = 8
 roomheight = 2
 myHouse = buildHouse.house2(prop)
-myHouse.createEmptyHouse(roomheight,roomsize) 
+myHouse.createEmptyHouse(roomheight,roomsize) # specify the room size, currently only squares
 myHouse.addRoom(mc)
 
 for i,room in enumerate(myHouse.rooms):
-    room.createRoom(mc)
+    if random.randint(0, 3)<2:
+        room.createRoom(mc)
