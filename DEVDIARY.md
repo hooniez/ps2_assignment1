@@ -21,9 +21,11 @@ Please, report your key activities in each week this assignment is running.
     - [ ] Setup VS Code, and Minecraft on my Linux distro
     - [ ] Implemented Hello Minecraft!
 * Cal Lamshed
-    - [ ] Read chapter 1 & 2 on textbook
-    - [ ] Setup VS Code, and Minecraft on my Linux distro
-    - [ ] Implemented Hello Minecraft!
+    - [X] Read chapter 1 & 2 on textbook
+    - [X] Setup VS Code, and Minecraft on my Windows
+    - [X] Implemented Hello Minecraft!
+    - My personal DevDiary can be found in the document DEVDIARY_CAL_LAMSHED.md
+
 * Myeonghoon Sun
     - [x] Read chapter 1 & 2 on textbook 📖
     - [x] Setup VS Code, and Minecraft on my Mac 🆚
