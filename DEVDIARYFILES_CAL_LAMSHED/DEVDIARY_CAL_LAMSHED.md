@@ -10,6 +10,9 @@ Answer: 100111
 Convert the decimal number 63 to hexadecimal (see here (Links to an external site.) for explanation of one algorithm).
 Answer:3F
 
+[Staircase class activity](CL_Staircase.py)
+
+
 Week 1 Project:
 - Working on developing my own implementation of build House.
 - Orignally I was trying to develop a house with random and different room sizes but found it difficult to find a way to simple determine if a new room was next to a previous, this made implemenation of doors or windows impossible.

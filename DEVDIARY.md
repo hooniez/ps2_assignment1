@@ -24,7 +24,7 @@ Please, report your key activities in each week this assignment is running.
     - [X] Read chapter 1 & 2 on textbook
     - [X] Setup VS Code, and Minecraft on my Windows
     - [X] Implemented Hello Minecraft!
-    - My personal DevDiary can be found in the document DEVDIARY_CAL_LAMSHED.md
+    - My personal DevDiary can be found in the Folder DEVDIARYFILES_CAL_LAMSHED in the file [DEVDIARY_CAL_LAMSHED.md](DEVDIARYFILES_CAL_LAMSHED/DEVDIARY_CAL_LAMSHED.md)
 
 * Myeonghoon Sun
     - [x] Read chapter 1 & 2 on textbook 📖
