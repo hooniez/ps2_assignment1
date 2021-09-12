@@ -88,7 +88,7 @@ class house2:
                     for connected in room.connectedRooms:
                         if connected: #if its not None
                             if connected.full: #if the connected Room is full
-                                room.doorLocs.append[]
+                                pass
     # CONTINUE WORK ON ADD DOORS FUNCTION
 
 
