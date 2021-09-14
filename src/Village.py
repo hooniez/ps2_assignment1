@@ -1,6 +1,8 @@
 import random
 import math
 import datetime
+import path
+from direction import Direction
 import mcpi.block as block
 from mcpi.minecraft import Minecraft
 from mcpi.vec3 import Vec3
@@ -23,11 +25,12 @@ def get_height_actual_block(x, z):
 class Village():
     def __init__(self, playerPos, playerDirection, foundationSize=10, villageAreaSize=100, numHouses=8):
         self.foundations = []
+        self.paths = []
         self.villageAreaSize = villageAreaSize
         self.foundationSize = foundationSize
         self.numHouses = numHouses
         #set the bounding box based on the direction the player is facing
-        if abs(playerDirection.x) > abs(playerDirection.z) and playerDirection.x < 0: #facing west
+        if Direction.getCardinalDirection(playerDirection) == Direction.WEST:
             print("the player is facing west")
             self.boundingBox = {
                 "northEast": Vec3(playerPos.x - SPAWN_DISTANCE_FROM_PLAYER, playerPos.y, playerPos.z - (villageAreaSize // 2)),
@@ -35,7 +38,7 @@ class Village():
                 "southWest": Vec3(playerPos.x - (villageAreaSize + SPAWN_DISTANCE_FROM_PLAYER), playerPos.y, playerPos.z + (villageAreaSize // 2)),
                 "northWest": Vec3(playerPos.x - (villageAreaSize + SPAWN_DISTANCE_FROM_PLAYER), playerPos.y, playerPos.z - (villageAreaSize // 2))
             }
-        elif abs(playerDirection.x) > abs(playerDirection.z) and playerDirection.x > 0: #facing east
+        elif Direction.getCardinalDirection(playerDirection) == Direction.EAST:
             print("the player is facing east")
             self.boundingBox = {
                 "northEast": Vec3(playerPos.x + SPAWN_DISTANCE_FROM_PLAYER, playerPos.y, playerPos.z - (villageAreaSize // 2)),
@@ -43,7 +46,7 @@ class Village():
                 "southWest": Vec3(playerPos.x + (villageAreaSize + SPAWN_DISTANCE_FROM_PLAYER), playerPos.y, playerPos.z + (villageAreaSize // 2)),
                 "northWest": Vec3(playerPos.x + (villageAreaSize + SPAWN_DISTANCE_FROM_PLAYER), playerPos.y, playerPos.z - (villageAreaSize // 2))
             }
-        elif abs(playerDirection.x) < abs(playerDirection.z) and playerDirection.z < 0: #facing north
+        elif Direction.getCardinalDirection(playerDirection) == Direction.NORTH:
             print("the player is facing north")
             self.boundingBox = {
                 "northEast": Vec3(playerPos.x - (villageAreaSize // 2), playerPos.y, playerPos.z - (villageAreaSize + SPAWN_DISTANCE_FROM_PLAYER)),
@@ -51,7 +54,7 @@ class Village():
                 "southWest": Vec3(playerPos.x + (villageAreaSize // 2), playerPos.y, playerPos.z - SPAWN_DISTANCE_FROM_PLAYER),
                 "northWest": Vec3(playerPos.x + (villageAreaSize // 2), playerPos.y, playerPos.z - (villageAreaSize + SPAWN_DISTANCE_FROM_PLAYER))
             }
-        elif abs(playerDirection.x) < abs(playerDirection.z) and playerDirection.z > 0: #facing south
+        elif Direction.getCardinalDirection(playerDirection) == Direction.SOUTH:
             print("the player is facing south")
             self.boundingBox = {
                 "northEast": Vec3(playerPos.x - (villageAreaSize // 2), playerPos.y, playerPos.z + (villageAreaSize + SPAWN_DISTANCE_FROM_PLAYER)),
@@ -74,7 +77,7 @@ class Village():
             block.BOOKSHELF.id
         )
 
-    #find the center of the group of foundations (not currently used, but will later for instersections)
+    #find the center of the group of foundations (not currently used, but will later for path instersections)
     def findCentroid(self, centerPoints):
         length = len(centerPoints)
 
@@ -83,26 +86,32 @@ class Village():
         elif length == 1:
             return centerPoints[0]
 
-        centroid = Vec3(sum([p.x for p in centerPoints]) / length, sum([p.y for p in centerPoints]) / length, sum([p.z for p in centerPoints]) / length)
+        centroid = Vec3(
+            sum([p.x for p in centerPoints]) / length,
+            sum([p.y for p in centerPoints]) / length,
+            sum([p.z for p in centerPoints]) / length
+        )
         return centroid
-    
-    def _getDistance(self, p1, p2):
-        return math.sqrt(((p2.x - p1.x)**2) + ((p2.y - p1.y)**2) + ((p2.z - p1.z)**2))
+
 
     # connects each foundation to it's closest neighbour that remains in the unconnected list
     # currently only connects one other foundation, but will expand to more + intersections
-    def groupProximalFoundations(self, foundations):
-        remaining = [f for f in foundations]
+    def groupProximalFoundations(self):
+        remaining = [f for f in self.foundations]
 
-        for point in foundations:
+        for point in self.foundations:
             if len(remaining) <= 1:
                 break
 
-            minDist = min([self._getDistance(r.center_vector, point.center_vector) for r in remaining if r != point])
-            closestFoundation = [r for r in remaining if self._getDistance(r.center_vector, point.center_vector) == minDist][0]
-            print(f"closest to {point.center_vector}: {closestFoundation.center_vector}")
-            point.neighbour = closestFoundation
-            closestFoundation.neighbour = point
+            minDist = min([point.getDistance(r) for r in remaining if r != point])
+            closestFoundation = [r for r in remaining if point.getDistance(r) == minDist][0]
+            print(f'closest to {point.boundingBox["centerPoint"]}: {closestFoundation.boundingBox["centerPoint"]}')
+            point.neighbours.append(closestFoundation)
+            if point not in closestFoundation.neighbours:
+                closestFoundation.neighbours.append(point)
+
+            remaining.remove(point)
+
 
     def layFoundations(self):
         count = 1
@@ -121,7 +130,7 @@ class Village():
         xVals = None
         zVals = None
         ZRange = None
-        minDist = self.foundationSize + 2
+        minDist = self.foundationSize + 22
         print(self.foundationSize)
         print(minDist)
         
@@ -145,11 +154,8 @@ class Village():
             if xDiff < minDist:
                 xVals[i] += minDist - xDiff
 
-
-        print(xVals)
-        print(zVals)
-        
         previousVals = None
+        count = 1
         for x, z in zip(xVals, zVals):
             # if the foundations are too close together, pick a new z val that isn't already taken
             if previousVals is not None and (x - previousVals[0]) < minDist and (z - previousVals[1]) < minDist:
@@ -159,8 +165,8 @@ class Village():
                 z = random.choice(possibleZVals)
                 print(f"new z: {z}")
 
-            self.foundations.append(Foundation(Vec3(x, 0, z), self.foundationSize))
-
+            self.foundations.append(Foundation(Vec3(x, 0, z), self.foundationSize, count))
+            count += 1
             previousVals = (x, z)
 
 
@@ -168,11 +174,31 @@ if __name__ == '__main__':
     startTime = datetime.datetime.now()
     mc = Minecraft.create()
     print(mc.player.getDirection())
+    path = path.Path()
     village = Village(mc.player.getTilePos(), mc.player.getDirection(), 25, 200, 9)
     # village.displayBoundingBox()
     village.generateFoundations()
     village.layFoundations()
+    village.groupProximalFoundations()
+    for foundation in village.foundations:
+        print(village.paths)
+        for neighbour in foundation.neighbours:
+            print(f"path for {foundation.id} to {neighbour.id} should start: {foundation.getDirection(neighbour)}")
+            if (foundation.id, neighbour.id) not in village.paths:
+                print(f"path point start at {foundation.getPathPoint(foundation.getDirection(neighbour))}")
+                path.generatePath(
+                    foundation.getPathPoint(foundation.getDirection(neighbour)),
+                    neighbour.getPathPoint(neighbour.getDirection(foundation)),
+                    foundation.getDirection(neighbour),
+                    mc
+                )
+                village.paths.append((foundation.id, neighbour.id))
+                village.paths.append((neighbour.id, foundation.id))
+
     endTime = datetime.datetime.now()
+
+    for foundation in village.foundations:
+        print(f"foundation {foundation.id} - closest: {[f.id for f in foundation.neighbours]}")
 
     time_diff = (endTime - startTime)
     execution_time = time_diff.total_seconds()
