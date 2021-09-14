@@ -90,7 +90,7 @@ class house2:
         for index in range(len(self.roomOrder)): #the position of the first room in rooms list
             print('this rooms location is:',self.roomOrder[index][0]) #first element in the roomOrder tuple
             print('this rooms creator is:',self.roomOrder[index][1]) #first element in the roomOrder tuple
-            if(self.roomOrder[index][1]): #if its not the first room
+            if(self.roomOrder[index][1]!=None): #if its not the first room
                 self.rooms[self.roomOrder[index][0]].createDoor(mc,self.rooms[self.roomOrder[index][1]]) #create a door between this room
             else: #its the first room, send in None
                 self.rooms[self.roomOrder[index][0]].createDoor(mc,None)
