@@ -16,6 +16,7 @@ Please, report your key activities in each week this assignment is running.
     - [x] Read chapter 1 & 2 on textbook
     - [x] Setup VS Code, and Minecraft on my Linux distro
     - [x] Implemented Hello Minecraft!
+    - house building methods [link](house_randomisation_testing.py)
 * Max Foord
     - [ ] Read chapter 1 & 2 on textbook
     - [ ] Setup VS Code, and Minecraft on my Linux distro
