@@ -22,6 +22,7 @@ class house2:
     def __init__(self,prop): 
         self.prop = prop #the property that the house exists on
         self.rooms = [] #list of all the room locations in the house
+        self.roomOrder = []
 
     def createEmptyHouse(self,roomheight,roomsize):
         propertyEdge = 1 #amount of space around the property before the rooms start
@@ -39,7 +40,7 @@ class house2:
                                         self.prop.zstart+(roomsizedepth*z)+propertyEdge,\
                                         self.prop.xstart+(roomsizewidth*(x+1))+propertyEdge,\
                                         self.prop.base+self.roomheight,\
-                                        self.prop.zstart+(roomsizewidth*(z+1))+propertyEdge,\
+                                        self.prop.zstart+(roomsizedepth*(z+1))+propertyEdge,\
                                         x+(z*self.roomsperz),\
                                         x,z)
                 self.setConnectedRooms(newSpace)
@@ -58,6 +59,8 @@ class house2:
             currentRoom = self.rooms[random.randint(0,len(self.rooms)-1)] #If there are not yet any rooms select a random room as the starting room.
             # print('build a room at x = ',currentRoom.gridCoord[0], 'z = ',currentRoom.gridCoord[1])
             currentRoom.createRoom(mc,roomtype)
+            self.roomOrder.append((currentRoom.roomPos,None))
+            # print('first room selected was:',currentRoom.roomPos)
         else:
             roomIndex = random.randint(0,len(builtRooms)-1)
             # print(f'{roomIndex = }')
@@ -75,20 +78,21 @@ class house2:
                     fromRoom = builtRooms[roomIndex]
                     builtRooms.pop(roomIndex)
                     availableRooms = self.checkAvailableRooms(fromRoom) #List of avaliable rooms
-            currentRoom = availableRooms[random.randint(0,len(availableRooms)-1)] #Select a room from avaliable Rooms at random
+            # print('fromroom is:',fromRoom.roomPos)
+            randNum = random.randint(0,len(availableRooms)-1) #room select to create that connects to the current Room
+            currentRoom = availableRooms[randNum] #Select a room from avaliable Rooms at random
             # print('build a room at x = ',currentRoom.gridCoord[0], 'z = ',currentRoom.gridCoord[1])
             currentRoom.createRoom(mc,roomtype)
+            self.roomOrder.append((currentRoom.roomPos,fromRoom.roomPos))
+            
+    def addDoors(self, mc):
+        print('room order is',self.roomOrder)
+        for index in range(len(self.roomOrder)): #the position of the first room in rooms list
+            print('this rooms location is:',self.roomOrder[index][0]) #first element in the roomOrder tuple
+            print('this rooms creator is:',self.roomOrder[index][1]) #first element in the roomOrder tuple
+            self.rooms[self.roomOrder[index][0]].createDoor(mc,self.roomOrder[index][1]) #create a door between this room 
 
 
-    def addDoors(self):
-        for room in self.rooms: #search through all rooms
-            if room.full: #if the full flag is true
-                #check if the room has a door
-                if(len(room.doorLocs)==0): #if no door
-                    for connected in room.connectedRooms:
-                        if connected: #if its not None
-                            if connected.full: #if the connected Room is full
-                                pass
     # CONTINUE WORK ON ADD DOORS FUNCTION
 
 
@@ -99,13 +103,13 @@ class house2:
         right = True
         back = True
         front = True
-        if(arrayLocationX == 0): #On left edge
+        if(arrayLocationX == 0): #On bot edge
             left = False
-        if(arrayLocationX == self.roomsperx-1): #On right edge
+        if(arrayLocationX == self.roomsperx-1): #On top edge
             right = False
-        if(arrayLocationZ == 0): #On the front edge
+        if(arrayLocationZ == 0): #On the left edge
             front = False
-        if(arrayLocationZ == self.roomsperz-1): #On back edge
+        if(arrayLocationZ == self.roomsperz-1): #On right edge
             back = False
         if(left):
             emptyRoom.connectedRooms[0] = emptyRoom.roomPos - 1
@@ -125,13 +129,13 @@ class house2:
         right = True
         back = True
         front = True
-        if(arrayLocationX == 0): #On left edge
+        if(arrayLocationX == 0): #On bot edge
             left = False
-        if(arrayLocationX == self.roomsperx-1): #On right edge
+        if(arrayLocationX == self.roomsperx-1): #On top edge
             right = False
-        if(arrayLocationZ == 0): #On the front edge
+        if(arrayLocationZ == 0): #On the left edge
             front = False
-        if(arrayLocationZ == self.roomsperz-1): #On back edge
+        if(arrayLocationZ == self.roomsperz-1): #On right edge
             back = False
         #Checking if rooms exist in other locations in array
         if(left): #Location is not on the left edge so can -1 from location
@@ -161,7 +165,7 @@ class room2:
         self.connectedRooms = [None,None,None,None]
         self.gridCoord = (gridX,gridZ)
         self.full = False
-        self.doorLocs = []
+        self.doors = [None,None,None,None]
     def createRoom(self,mc,roomtype):
         if(roomtype=='basic'):
             self.createBox(mc)
@@ -170,16 +174,36 @@ class room2:
         if(roomtype=='pool'):
             self.createPool(mc)
     def createBox(self,mc): #Creates a box of blocks used in createRoom Func
-        mc.setBlocks(self.xstart,self.ystart,self.zstart,self.xend,self.yend,self.zend,7)
+        print('room walls is',self.roomPos+15)
+        mc.setBlocks(self.xstart,self.ystart,self.zstart,self.xend,self.yend,self.zend,self.roomPos+15)
         #print('in createBox: ',self.xstart,self.ystart,self.zstart,self.xend,self.yend,self.zend)
     def emptyBox(self,mc):  #Emptys the box of blocks used in createRoom
         mc.setBlocks(self.xstart+1,self.ystart+1,self.zstart+1,self.xend-1,self.yend-0,self.zend-1,0)
         #print('in emptyBox: ',self.xstart+1,self.ystart+1,self.zstart+1,self.xend-1,self.yend-0,self.zend-1)
 
-    def createDoor(self,mc,doortype='single'):
-        pass
-        self.doorLocs.append((doorX,doorY,doorZ,doorWidth,doorHeight,doorDepth))
-        mc.setBlocks(self.xstart+width//2,self.ystart,self.zstart,self.xstart+width//2+1,self.yend+3,self.zstart,2)
+
+    def createDoor(self,mc,prevRoomPos,doortype='single'):
+        if(prevRoomPos is None): #Do nothing
+            return
+        else:
+            doorLocation = self.connectedRooms.index(prevRoomPos)
+            print('doorlocaiton',doorLocation)
+        self.drawDoor(mc,doorLocation, doortype)
+
+    def drawDoor(self,mc,doordirection,doortype):
+        doorWidth = 1
+        doorDepth = 1
+        doorHeight = 3
+        roomWidth = abs(self.xstart-self.xend)
+        roomDepth = abs(self.zstart-self.zend)
+        if(doordirection == 0): #door is on bot
+            mc.setBlocks(self.xstart-doorDepth,self.ystart+1,self.zstart+roomDepth//2,self.xstart+doorDepth,self.ystart+doorHeight,self.zstart+roomDepth//2+doorWidth,0) #Acacia Wood Plank
+        if(doordirection == 1): #door is on top #wrong
+            mc.setBlocks(self.xend+doorWidth,self.ystart+1,self.zstart+roomDepth//2,self.xend-doorWidth,self.ystart+doorHeight,self.zstart+roomDepth//2+doorWidth,0) #Coarse Dirt
+        if(doordirection == 2): #door is on left
+            mc.setBlocks(self.xstart+roomDepth//2,self.ystart+1,self.zstart-doorWidth,self.xstart+roomDepth//2+doorWidth,self.ystart+doorHeight,self.zstart+doorWidth,0) #Granite
+        if(doordirection == 3): #door is on right
+            mc.setBlocks(self.xstart+roomDepth//2,self.ystart+1,self.zend-doorWidth,self.xstart+roomDepth//2+doorWidth,self.ystart+doorHeight,self.zend+doorWidth,0) #Polished Diorite
 
     def createPool(self,mc):
         pooldepth = 4
