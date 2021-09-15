@@ -1,8 +1,11 @@
+import math
+from direction import Direction
 from mcpi.vec3 import Vec3
 import mcpi.block as block
 
 class Foundation():
-    def __init__(self, centerPoint, size):
+    def __init__(self, centerPoint, size, fId):
+        self.id = fId
         self.boundingBox = {
                 "northEast": Vec3(centerPoint.x + (size // 2), centerPoint.y, centerPoint.z - (size // 2)),
                 "southEast": Vec3(centerPoint.x + (size // 2), centerPoint.y, centerPoint.z + (size // 2)),
@@ -11,7 +14,54 @@ class Foundation():
                "centerPoint": centerPoint
             }
         self.neighbours = []
-    
+
+    #calculates length of the vector from self to compare
+    def getDistance(self, compare):
+        return math.sqrt(
+            ((compare.boundingBox["centerPoint"].x - self.boundingBox["centerPoint"].x)**2)
+            + ((compare.boundingBox["centerPoint"].y - self.boundingBox["centerPoint"].y)**2)
+            + ((compare.boundingBox["centerPoint"].z - self.boundingBox["centerPoint"].z)**2)
+        )
+
+    #calculates the directional unit vector from self to compare, then returns the appropriate cardinal direction enum
+    def getDirection(self, compare):
+        magnitude = self.getDistance(compare)
+        unitVector = Vec3(
+            (compare.boundingBox["centerPoint"].x - self.boundingBox["centerPoint"].x) / magnitude,
+            (compare.boundingBox["centerPoint"].y - self.boundingBox["centerPoint"].y) / magnitude,
+            (compare.boundingBox["centerPoint"].z - self.boundingBox["centerPoint"].z) / magnitude
+        )
+        return Direction.getCardinalDirection(unitVector)
+
+
+    def getPathPoint(self, direction):
+        print(self.boundingBox)
+        print(direction)
+        if direction == Direction.NORTH:
+            return Vec3(
+                self.boundingBox["northEast"].x - ((self.boundingBox["northEast"].x - self.boundingBox["northWest"].x) // 2),
+                self.boundingBox["northEast"].y,
+                self.boundingBox["northEast"].z
+            )
+        elif direction == Direction.EAST:
+            return Vec3(
+                self.boundingBox["northEast"].x,
+                self.boundingBox["northEast"].y,
+                self.boundingBox["southEast"].z - ((self.boundingBox["southEast"].z - self.boundingBox["northEast"].z) // 2)
+            )
+        elif direction == Direction.SOUTH:
+            return Vec3(
+                self.boundingBox["southEast"].x - ((self.boundingBox["southEast"].x - self.boundingBox["southWest"].x) // 2),
+                self.boundingBox["southEast"].y,
+                self.boundingBox["southEast"].z
+            )
+        elif direction == Direction.WEST:
+            return Vec3(
+                self.boundingBox["northWest"].x,
+                self.boundingBox["northWest"].y,
+                self.boundingBox["southWest"].z - ((self.boundingBox["southWest"].z - self.boundingBox["northWest"].z) // 2)
+            )
+
     def _addFoundationSupports(self, mc):
         for (key, item) in self.boundingBox.items():
             if key != "centerPoint":
