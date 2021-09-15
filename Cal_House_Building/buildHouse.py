@@ -100,7 +100,7 @@ class house2:
         for room in self.rooms: #search through all the rooms, add a door to the first full room
             if room.full: #this room is a full room
                 room.doors[2] = 2 #There is a door in the left position (2). Store it in the doors array
-                room.createFrontDoor(mc)
+                room.drawDoor(mc,2,'single')
                 break
 
     # CONTINUE WORK ON ADD DOORS FUNCTION
@@ -172,7 +172,7 @@ class room2:
         ## Add list of rooms that are connected bot,top,left,right
         self.connectedRooms = [None,None,None,None]
         self.gridCoord = (gridX,gridZ)
-        self.full = False #Does it exist
+        self.full = False #Room does not exist by default
         self.doors = [None,None,None,None]
 
     def createRoom(self,mc,roomtype):
@@ -202,13 +202,13 @@ class room2:
             print('self.doors:',self.doors)
             self.drawDoor(mc,currentLocation, doortype)
     
-    def createFrontDoor(self, mc):
-        doorWidth = 1
-        doorDepth = 1
-        doorHeight = 3
-        roomWidth = abs(self.xstart-self.xend)
-        roomDepth = abs(self.zstart-self.zend)
-        mc.setBlocks(self.xstart+roomDepth//2,self.ystart+1,self.zstart-doorWidth,self.xstart+roomDepth//2+doorWidth,self.ystart+doorHeight,self.zstart+doorWidth,0) #Granite
+    # def createFrontDoor(self, mc):
+    #     doorWidth = 1
+    #     doorDepth = 1
+    #     doorHeight = 3
+    #     roomWidth = abs(self.xstart-self.xend)
+    #     roomDepth = abs(self.zstart-self.zend)
+    #     mc.setBlocks(self.xstart+roomDepth//2,self.ystart+1,self.zstart-doorWidth,self.xstart+roomDepth//2+doorWidth,self.ystart+doorHeight,self.zstart+doorWidth,0) #Granite
 
     def drawDoor(self,mc,doordirection,doortype):
         doorWidth = 1
