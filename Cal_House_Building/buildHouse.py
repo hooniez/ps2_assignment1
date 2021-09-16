@@ -28,10 +28,10 @@ class house: #this is a house class has an array of floors
         self.propertyEdge = prop.propertyEdge
 
     def createFloor(self):
-        avaliableLocations = []
+        unavaliableLocations = []
         if len(self.floors) == 0: #this is the first floor, so use default
             newFloor = floor(self.prop)
-            newFloor.createEmptyFloor(self.propertyEdge,0,self.floorHeight,self.roomSize)
+            newFloor.createEmptyFloor(self.propertyEdge,0,self.floorHeight,self.roomSize,unavaliableLocations)
             self.floors.append(newFloor)
         else: # their is already a previous floor
             upperFloor = self.floors[-1] #select the last floor in floors array
@@ -40,19 +40,12 @@ class house: #this is a house class has an array of floors
                 print('No Rooms avaliable on level', len(self.floors))
                 return
             else:
-                for currRoom, fromRoom in upperFloor.roomsOrder:
-                    if upperFloor.rooms[currRoom].roomType != 'pool': #can't build above a pool
-                        avaliableLocations.append(currRoom)
-                newFloor = floor(self.prop)
-                newFloor.createEmptyFloor(self.propertyEdge,len(self.floors)+1,self.floorHeigh,self.roomSize)
-
-                    
-
+                for room in upperFloor.rooms: #go through all the rooms
+                    if room.buildUpAvaliablity == False:
+                        unavaliableLocations.append(room.roomPos)
             
-
-            #for the second floor rooms can only be built in locations that have a room below them
             newFloor = floor(self.prop)
-            newFloor.createEmptyFloor(self.floorHeight,self.roomSize,0)
+            newFloor.createEmptyFloor(self.propertyEdge,len(self.floors)+1,self.floorHeigh,self.roomSize,unavaliableLocations)
  
 
 class floor: #new class for floors
@@ -68,7 +61,7 @@ class floor: #new class for floors
         #       y
         ################
 
-    def createEmptyFloor(self,propertyEdge,floorLevel,floorHeight,roomsize):
+    def createEmptyFloor(self,propertyEdge,floorLevel,floorHeight,roomsize,unavaliableLocations):
         self.floorLevel = floorLevel
         self.floorHeight = floorHeight
         self.roomsperx = (self.prop.width - propertyEdge*2)//roomsize #calculates the number of rooms that will be created along the X direction
@@ -87,6 +80,8 @@ class floor: #new class for floors
                                         self.prop.zstart+(roomsizedepth*(z+1))+propertyEdge,\
                                         x+(z*self.roomsperz),\
                                         x,z) #coordinates in the grid
+                if(newSpace.roomPos in unavaliableLocations): #this location is not avaliable to be built above
+                    newSpace.
                 self.setConnectedRooms(newSpace)
                 print('connected rooms array',newSpace.connectedRooms)
                 self.rooms.append(newSpace) #Coordinates of location in grid
@@ -217,7 +212,8 @@ class room:
         self.connectedRooms = [None,None,None,None]
         self.gridCoord = (gridX,gridZ)
         self.full = False #Room does not exist by default
-        self.roomType = 'unavaliable'
+        self.roomType = 'none'
+        self.buildUpAvaliablity = False
         self.doors = [None,None,None,None]
 
     def createRoom(self,mc,roomtype):
@@ -226,10 +222,12 @@ class room:
             self.createBox(mc)
             self.emptyBox(mc)
             self.full = True #There is now something in the room
+            self.buildUpAvaliablity = True
         if(roomtype=='pool'):
             self.roomType = 'pool'
             self.createPool(mc)
             self.full = True #There is now something in the room
+            self.buildUpAvaliablity = False
     def createBox(self,mc): #Creates a box of blocks used in createRoom Func
         print('room walls is',self.roomPos+1)
         mc.setBlocks(self.xstart,self.ystart,self.zstart,self.xend,self.yend,self.zend,35,self.roomPos+1)
