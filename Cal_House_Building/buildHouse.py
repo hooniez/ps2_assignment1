@@ -14,23 +14,48 @@ class house_property:
         # print('zend is',self.zend)
         self.width = width #to simplify future calculations
         self.depth = depth
+        self.propertyEdge = 1
 
     def drawProperty(self,mc): #creates a property of green grass can be removed later depending on if needed.
         mc.setBlocks(self.xstart,self.base,self.zstart,self.xend,self.base,self.zend,2)
 
-class house:
+class house: #this is a house class has an array of floors 
     def __init__(self,prop,floorHeight,roomSize):
         self.prop = prop #the property
         self.floors = [] #all the house levels
         self.floorHeight = floorHeight
         self.roomSize = roomSize
+        self.propertyEdge = prop.propertyEdge
 
     def createFloor(self):
-        newFloor = floor(self.prop)
-        newFloor.createEmptyFloor(self.floorHeight,self.roomSize)
-        self.floors.append(newFloor)
+        avaliableLocations = []
+        if len(self.floors) == 0: #this is the first floor, so use default
+            newFloor = floor(self.prop)
+            newFloor.createEmptyFloor(self.propertyEdge,0,self.floorHeight,self.roomSize)
+            self.floors.append(newFloor)
+        else: # their is already a previous floor
+            upperFloor = self.floors[-1] #select the last floor in floors array
+            # check that the upper floor isn't empty:
+            if len(upperFloor.roomsOrder)==0: #all the rooms on the upperFloor are empty
+                print('No Rooms avaliable on level', len(self.floors))
+                return
+            else:
+                for currRoom, fromRoom in upperFloor.roomsOrder:
+                    if upperFloor.rooms[currRoom].roomType != 'pool': #can't build above a pool
+                        avaliableLocations.append(currRoom)
+                newFloor = floor(self.prop)
+                newFloor.createEmptyFloor(self.propertyEdge,len(self.floors)+1,self.floorHeigh,self.roomSize)
 
-class floor:
+                    
+
+            
+
+            #for the second floor rooms can only be built in locations that have a room below them
+            newFloor = floor(self.prop)
+            newFloor.createEmptyFloor(self.floorHeight,self.roomSize,0)
+ 
+
+class floor: #new class for floors
     def __init__(self,prop): 
         self.prop = prop #the property that the house exists on
         self.rooms = [] #list of all the room locations in the house
@@ -43,22 +68,22 @@ class floor:
         #       y
         ################
 
-    def createEmptyFloor(self,roomheight,roomsize):
-        propertyEdge = 1 #amount of space around the property before the rooms start
-        self.roomheight = roomheight
+    def createEmptyFloor(self,propertyEdge,floorLevel,floorHeight,roomsize):
+        self.floorLevel = floorLevel
+        self.floorHeight = floorHeight
         self.roomsperx = (self.prop.width - propertyEdge*2)//roomsize #calculates the number of rooms that will be created along the X direction
         self.roomsperz = (self.prop.depth - propertyEdge*2)//roomsize #calculates the number of rooms that will be created along the Z direction
         # print('roomsperx',self.roomsperx) #for testing
         # print('roomsperz',self.roomsperz) #for testing
         roomsizewidth = roomsize 
         roomsizedepth = roomsize
-        for z in range(0,self.roomsperz): #following initalised empty rooms in an array. The rooms can later be filled with different types by calling functions in room2 class (may rename this class in future)
+        for z in range(0,self.roomsperz): #following initalised empty rooms in an array. The rooms can later be filled with different types by calling functions in room class
             for x in range(0,self.roomsperx):
-                newSpace = room2(self.prop.xstart+(roomsizewidth*x)+propertyEdge,\
+                newSpace = room(self.prop.xstart+(roomsizewidth*x)+propertyEdge,\
                                         self.prop.base,\
                                         self.prop.zstart+(roomsizedepth*z)+propertyEdge,\
                                         self.prop.xstart+(roomsizewidth*(x+1))+propertyEdge,\
-                                        self.prop.base+self.roomheight,\
+                                        self.prop.base+self.floorHeight,\
                                         self.prop.zstart+(roomsizedepth*(z+1))+propertyEdge,\
                                         x+(z*self.roomsperz),\
                                         x,z) #coordinates in the grid
@@ -120,12 +145,7 @@ class floor:
             if room.full: #this room is a full room
                 room.doors[2] = 2 #There is a door in the left position (2). Store it in the doors array
                 room.drawDoor(mc,2,'single')
-                break
-
-    def addLevel(self,mc): #Adds a new level to the house
-        pass
-
-    
+                break 
 
     # CONTINUE WORK ON ADD DOORS FUNCTION
     def setConnectedRooms(self,emptyRoom):
@@ -184,7 +204,7 @@ class floor:
                 availableRooms.append(self.rooms[currentRoom.roomPos + self.roomsperx])
         return availableRooms #list of avaliable indexs
 
-class room2:
+class room:
     def __init__(self,xstart,ystart,zstart,xend,yend,zend,roomPos,gridX,gridZ,type=0):
         self.xstart = xstart
         self.ystart = ystart
@@ -197,7 +217,7 @@ class room2:
         self.connectedRooms = [None,None,None,None]
         self.gridCoord = (gridX,gridZ)
         self.full = False #Room does not exist by default
-        self.roomType = 'none'
+        self.roomType = 'unavaliable'
         self.doors = [None,None,None,None]
 
     def createRoom(self,mc,roomtype):
