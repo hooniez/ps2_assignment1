@@ -25,21 +25,27 @@ roomSize = 8
 floorHeight = 5
 myHouse = buildHouse.house(prop,floorHeight,roomSize)
 myHouse.createFloor() # specify the room size, currently only squares
-print('called addRoom')
+
 myHouse.floors[0].addRoom(mc)
-print('called addRoom')
+
 myHouse.floors[0].addRoom(mc)
-print('called addRoom')
+
+myHouse.floors[0].addRoom(mc)
+myHouse.floors[0].addRoom(mc)
 myHouse.floors[0].addRoom(mc)
 myHouse.floors[0].addDoors(mc)
 myHouse.floors[0].addFrontDoor(mc)
 print('---------')
 myHouse.createFloor()
-print('called addRoom')
+
 myHouse.floors[1].addRoom(mc)
-print('called addRoom')
+
 myHouse.floors[1].addRoom(mc)
-print('called addRoom')
+
 myHouse.floors[1].addRoom(mc)
 myHouse.floors[1].addDoors(mc)
+myHouse.createFloor()
+myHouse.floors[2].addRoom(mc)
+myHouse.floors[2].addRoom(mc)
+myHouse.floors[2].addDoors(mc)
 # Building a new level

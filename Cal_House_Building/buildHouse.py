@@ -14,7 +14,7 @@ class house_property:
         # print('zend is',self.zend)
         self.width = width #to simplify future calculations
         self.depth = depth
-        self.propertyEdge = 1
+        self.propertyEdge = 2
 
     def drawProperty(self,mc): #creates a property of green grass can be removed later depending on if needed.
         mc.setBlocks(self.xstart,self.base,self.zstart,self.xend,self.base,self.zend,2)
@@ -90,6 +90,7 @@ class floor: #new class for floors
         # print('rooms length is:',len(self.rooms)) #for testing
                 
     def addRoom(self,mc,roomtype='basic'):
+        print('called addRoom')
         empty = True
         builtRooms = []
         avaliableRooms = []
@@ -306,6 +307,11 @@ class room:
             mc.setBlocks(self.xstart+roomDepth//2,self.ystart+1,self.zstart-doorWidth,self.xstart+roomDepth//2+doorWidth,self.ystart+doorHeight,self.zstart+doorWidth,0) #Granite
         if(doordirection == 3): #door is on right
             mc.setBlocks(self.xstart+roomDepth//2,self.ystart+1,self.zend-doorWidth,self.xstart+roomDepth//2+doorWidth,self.ystart+doorHeight,self.zend+doorWidth,0) #Polished Diorite
+
+
+    # Start implementation of staircase
+    def createStaircase(self):
+        pass
 
     def createPool(self,mc):
         pooldepth = 4
