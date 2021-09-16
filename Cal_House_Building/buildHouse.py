@@ -18,13 +18,32 @@ class house_property:
     def drawProperty(self,mc): #creates a property of green grass can be removed later depending on if needed.
         mc.setBlocks(self.xstart,self.base,self.zstart,self.xend,self.base,self.zend,2)
 
-class house2:
+class house:
+    def __init__(self,prop,floorHeight,roomSize):
+        self.prop = prop #the property
+        self.floors = [] #all the house levels
+        self.floorHeight = floorHeight
+        self.roomSize = roomSize
+
+    def createFloor(self):
+        newFloor = floor(self.prop)
+        newFloor.createEmptyFloor(self.floorHeight,self.roomSize)
+        self.floors.append(newFloor)
+
+class floor:
     def __init__(self,prop): 
         self.prop = prop #the property that the house exists on
         self.rooms = [] #list of all the room locations in the house
-        self.roomOrder = []
+        self.roomOrder = [] #order that rooms are place in the house
+        #to imagine grid layout as array indexs
+        ################
+        #   2 | 5 | 8
+        # x 1 | 4 | 7
+        #   0 | 3 | 6
+        #       y
+        ################
 
-    def createEmptyHouse(self,roomheight,roomsize):
+    def createEmptyFloor(self,roomheight,roomsize):
         propertyEdge = 1 #amount of space around the property before the rooms start
         self.roomheight = roomheight
         self.roomsperx = (self.prop.width - propertyEdge*2)//roomsize #calculates the number of rooms that will be created along the X direction
@@ -42,7 +61,7 @@ class house2:
                                         self.prop.base+self.roomheight,\
                                         self.prop.zstart+(roomsizedepth*(z+1))+propertyEdge,\
                                         x+(z*self.roomsperz),\
-                                        x,z)
+                                        x,z) #coordinates in the grid
                 self.setConnectedRooms(newSpace)
                 print('connected rooms array',newSpace.connectedRooms)
                 self.rooms.append(newSpace) #Coordinates of location in grid
@@ -102,6 +121,11 @@ class house2:
                 room.doors[2] = 2 #There is a door in the left position (2). Store it in the doors array
                 room.drawDoor(mc,2,'single')
                 break
+
+    def addLevel(self,mc): #Adds a new level to the house
+        pass
+
+    
 
     # CONTINUE WORK ON ADD DOORS FUNCTION
     def setConnectedRooms(self,emptyRoom):
@@ -173,14 +197,17 @@ class room2:
         self.connectedRooms = [None,None,None,None]
         self.gridCoord = (gridX,gridZ)
         self.full = False #Room does not exist by default
+        self.roomType = 'none'
         self.doors = [None,None,None,None]
 
     def createRoom(self,mc,roomtype):
         if(roomtype=='basic'):
+            self.roomType = 'basic'
             self.createBox(mc)
             self.emptyBox(mc)
             self.full = True #There is now something in the room
         if(roomtype=='pool'):
+            self.roomType = 'pool'
             self.createPool(mc)
             self.full = True #There is now something in the room
     def createBox(self,mc): #Creates a box of blocks used in createRoom Func
@@ -202,16 +229,8 @@ class room2:
             print('self.doors:',self.doors)
             self.drawDoor(mc,currentLocation, doortype)
     
-    # def createFrontDoor(self, mc):
-    #     doorWidth = 1
-    #     doorDepth = 1
-    #     doorHeight = 3
-    #     roomWidth = abs(self.xstart-self.xend)
-    #     roomDepth = abs(self.zstart-self.zend)
-    #     mc.setBlocks(self.xstart+roomDepth//2,self.ystart+1,self.zstart-doorWidth,self.xstart+roomDepth//2+doorWidth,self.ystart+doorHeight,self.zstart+doorWidth,0) #Granite
-
     def drawDoor(self,mc,doordirection,doortype):
-        doorWidth = 1
+        doorWidth = 1 #these are hard coded but could be changed to be given as inputs to the function at a later date
         doorDepth = 1
         doorHeight = 3
         roomWidth = abs(self.xstart-self.xend)

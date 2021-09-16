@@ -21,16 +21,17 @@ gap = 3
 #     room.drawRoom(mc)
 prop = buildHouse.house_property(p,30,30)
 prop.drawProperty(mc)
-roomsize = 8
-roomheight = 2
-myHouse = buildHouse.house2(prop)
-myHouse.createEmptyHouse(roomheight,roomsize) # specify the room size, currently only squares
-myHouse.addRoom(mc)
-myHouse.addRoom(mc)
-myHouse.addRoom(mc)
-myHouse.addRoom(mc)
-myHouse.addRoom(mc)
-myHouse.addRoom(mc)
-myHouse.addRoom(mc,'pool')
-myHouse.addDoors(mc)
-myHouse.addFrontDoor(mc)
+roomSize = 8
+floorHeight = 4
+myHouse = buildHouse.house(prop,floorHeight,roomSize)
+myHouse.createFloor() # specify the room size, currently only squares
+myHouse.floors[0].addRoom(mc)
+myHouse.floors[0].addRoom(mc)
+myHouse.floors[0].addRoom(mc)
+myHouse.floors[0].addRoom(mc)
+myHouse.floors[0].addRoom(mc)
+myHouse.floors[0].addRoom(mc)
+myHouse.floors[0].addRoom(mc,'pool')
+myHouse.floors[0].addDoors(mc)
+myHouse.floors[0].addFrontDoor(mc)
+# Building a new level
