@@ -379,6 +379,9 @@ class room:
         if(doordirection == 3): #door is on right
             mc.setBlocks(self.xstart+roomDepth//2,self.ystart+1,self.zend-doorWidth,self.xstart+roomDepth//2+doorWidth,self.ystart+doorHeight,self.zend+doorWidth,0) #Polished Diorite
 
+
+
+    # MUST IMPLEMENT CHANGES TO PREVENT POOL CREATION ON ANYTHING OTHER THAN GROUND LEVEL
     def createPool(self,mc):
         pooldepth = 4
         boundrywidth = 2
