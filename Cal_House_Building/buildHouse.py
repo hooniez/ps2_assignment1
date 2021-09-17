@@ -46,7 +46,12 @@ class house: #this is a house class has an array of floors
                         #at least one room can be built off
                         break
             newFloor = floor(self.prop)
-            newFloor.createEmptyFloor(self.propertyEdge,belowFloor,len(self.floors),self.floorHeight,self.roomSize)
+            newFloor.createEmptyFloor(
+                                    self.propertyEdge,belowFloor,
+                                    len(self.floors),
+                                    self.floorHeight,
+                                    self.roomSize
+                                    )
             self.floors.append(newFloor)
 
     def addAllStairs(self,mc):
@@ -64,7 +69,7 @@ class floor: #new class for floors
         #   2 | 5 | 8
         # x 1 | 4 | 7
         #   0 | 3 | 6
-        #       y
+        #       z
         ################
 
     def createEmptyFloor(self,propertyEdge,belowFloor,floorLevel,floorHeight,roomsize):
@@ -73,26 +78,22 @@ class floor: #new class for floors
         self.floorHeight = floorHeight
         self.roomsperx = (self.prop.width - propertyEdge*2)//roomsize #calculates the number of rooms that will be created along the X direction
         self.roomsperz = (self.prop.depth - propertyEdge*2)//roomsize #calculates the number of rooms that will be created along the Z direction
-        # print('roomsperx',self.roomsperx) #for testing
-        # print('roomsperz',self.roomsperz) #for testing
         roomsizewidth = roomsize 
         roomsizedepth = roomsize
         for z in range(0,self.roomsperz): #following initalised empty rooms in an array. The rooms can later be filled with different types by calling functions in room class
             for x in range(0,self.roomsperx):
-
-                newSpace = room(self.prop.xstart+(roomsizewidth*x)+propertyEdge,\
-                                        self.prop.base+(floorHeight*floorLevel),\
-                                        self.prop.zstart+(roomsizedepth*z)+propertyEdge,\
-                                        self.prop.xstart+(roomsizewidth*(x+1))+propertyEdge,\
-                                        self.prop.base+self.floorHeight+(floorHeight*floorLevel),\
-                                        self.prop.zstart+(roomsizedepth*(z+1))+propertyEdge,\
-                                        x+(z*self.roomsperz),\
-                                        x,z) #coordinates in the grid
+                newSpace = room(
+                                self.prop.xstart+(roomsizewidth*x)+propertyEdge,
+                                self.prop.base+(floorHeight*floorLevel),
+                                self.prop.zstart+(roomsizedepth*z)+propertyEdge,
+                                self.prop.xstart+(roomsizewidth*(x+1))+propertyEdge,
+                                self.prop.base+self.floorHeight+(floorHeight*floorLevel),
+                                self.prop.zstart+(roomsizedepth*(z+1))+propertyEdge,
+                                x+(z*self.roomsperz),
+                                x,z
+                                ) #coordinates in the grid
                 self.setConnectedRooms(newSpace)
-                # print('connected rooms array',newSpace.connectedRooms)
                 self.rooms.append(newSpace) #Coordinates of location in grid
-        # print('rooms length is:',len(self.rooms)) #for testing
-                
     def addRoom(self,mc,roomtype='basic'):
         print('called addRoom')
         empty = True
@@ -105,38 +106,22 @@ class floor: #new class for floors
             for room in self.belowFloor.rooms:
                 if room.buildUpAvaliablity == True: #A room can be built up from
                     avaliableRooms.append(self.rooms[room.roomPos]) #add to the avaliableRooms array
-                    # print('can build above location',room.roomPos)
         if len(avaliableRooms) == 0: #No avaliable rooms
             print('No avaliable room positions at level:',self.floorLevel)
         else:
-            # print('avaliableRooms')
-            # for room in avaliableRooms:
-            #     print(room.roomPos)
             for room in avaliableRooms: #search through all rooms
                 if room.full == True: #if a room exists (anything that isn't air. Pool is a room Room is a room etc)
                     empty = False
                     builtRooms.append(room) #add the room to the builtrooms working array
-            # print('builtRooms')
-            # for room in builtRooms:
-            #     print(room.roomPos)
             if empty:
-                # print('the floor was empty')
                 currentRoom = avaliableRooms[random.randint(0,len(avaliableRooms)-1)] #If there are not yet any rooms select a random room as the starting room.
-                # print('build a room at x = ',currentRoom.gridCoord[0], 'z = ',currentRoom.gridCoord[1])
                 currentRoom.createRoom(mc,roomtype)
                 self.roomOrder.append((currentRoom.roomPos,None))
-                # print('first room selected was:',currentRoom.roomPos)
             else:
                 roomIndex = random.randint(0,len(builtRooms)-1)
-                # print(f'{roomIndex = }')
                 fromRoom = builtRooms[roomIndex] #Select a room at random from the built rooms
-                # print('fromRoom is ',fromRoom.roomPos)
                 builtRooms.pop(roomIndex) #Remove this room from the builtRooms array
-                # print('in addRoom, length of builtRooms is:',len(builtRooms))
                 builable = self.checkAvailableRooms(fromRoom) #List of avaliable rooms
-                # print('builable locations are:')
-                # for item in builable:
-                    # print(item.roomPos)
                 while len(builable)==0: #while there are no avaliable room spaces select a new room to start search from
                     if(len(builtRooms)==0): #No more rooms to build From
                         print('No more room space avaliable')
@@ -146,25 +131,19 @@ class floor: #new class for floors
                         fromRoom = builtRooms[roomIndex]
                         builtRooms.pop(roomIndex)
                         builable = self.checkAvailableRooms(fromRoom) #List of avaliable rooms
-                # print('fromroom is:',fromRoom.roomPos)
                 randNum = random.randint(0,len(builable)-1) #room select to create that connects to the current Room
                 currentRoom = builable[randNum] #Select a room from avaliable Rooms at random
-                # print('build a room at x = ',currentRoom.gridCoord[0], 'z = ',currentRoom.gridCoord[1])
                 currentRoom.createRoom(mc,roomtype)
                 self.roomOrder.append((currentRoom.roomPos,fromRoom.roomPos))
             
     def addDoors(self, mc):
-        # print('room order is',self.roomOrder)
         for index in range(len(self.roomOrder)): #the position of the first room in rooms list
-            # print('this rooms location is:',self.roomOrder[index][0]) #first element in the roomOrder tuple
-            # print('this rooms creator is:',self.roomOrder[index][1]) #first element in the roomOrder tuple
             if(self.roomOrder[index][1]!=None): #if its not the first room
                 self.rooms[self.roomOrder[index][0]].createDoor(mc,self.rooms[self.roomOrder[index][1]]) #create a door between this room
             else: #its the first room, send in None
                 self.rooms[self.roomOrder[index][0]].createDoor(mc,None)
 
     def addFrontDoor(self, mc):
-        # print('creating front door')
         for room in self.rooms: #search through all the rooms, add a door to the first full room
             if room.full: #this room is a full room
                 room.doors[2] = 2 #There is a door in the left position (2). Store it in the doors array
@@ -172,8 +151,6 @@ class floor: #new class for floors
                 break 
     
     def addStairs(self,mc):
-        # print('Entered addStairs as floor:',self.floorLevel)
-        # print('The floor below me is,',self.belowFloor)
         if(self.belowFloor == None): #If we are at the ground level
             #don't build any stairs
             pass
@@ -183,18 +160,13 @@ class floor: #new class for floors
             for room in self.rooms:
                 if room.full==True: #The room is full
                     avaliableRooms.append(room.roomPos) #add to list of avaliable Rooms
-            # print('AvaliableRooms in addStairs')
-            # print(avaliableRooms)
             randIndex = random.randint(0,len(avaliableRooms)-1) #select a random index from the avaliableRooms array
-            # print(f'{randIndex=}')
             currentRoom = self.rooms[avaliableRooms[randIndex]] #set the current room to the value at this index
-            # print('currentRoom pos is:',currentRoom.roomPos)
             belowRoom = self.belowFloor.rooms[avaliableRooms[randIndex]]
             avaliableRooms.pop(randIndex) #remove this value from the avaliable Rooms
             avaliableSpace = currentRoom.findSpaceOnRoomWalls(belowRoom)
             while len(avaliableSpace) == 0: #while their is no avaliable space
                 if(len(avaliableRooms) == 0): #check if their is any more possible rooms
-                    # print('cannot add staircase from ',self.belowFloor.floorLevel,'to',self.floorLevel)
                     return
                 else:
                     randIndex = random.randint(0,len(avaliableRooms)-1) #select a random index from the avaliableRooms array
@@ -308,7 +280,6 @@ class room:
 
     def createRoom(self,mc,roomtype):
         print('Created a room of type',roomtype,'at location',self.roomPos)
-        # print('Created from from:',self.ystart,'to',self.yend)
         if(roomtype=='basic'):
             self.roomType = 'basic'
             self.createBox(mc)
@@ -322,13 +293,9 @@ class room:
             self.buildUpAvaliablity = False
             
     def createBox(self,mc): #Creates a box of blocks used in createRoom Func
-        # print('room walls is',self.roomPos+1)
         mc.setBlocks(self.xstart,self.ystart,self.zstart,self.xend,self.yend,self.zend,35,self.roomPos+1)
-        #print('in createBox: ',self.xstart,self.ystart,self.zstart,self.xend,self.yend,self.zend)
-
     def emptyBox(self,mc):  #Emptys the box of blocks used in createRoom
         mc.setBlocks(self.xstart+1,self.ystart+1,self.zstart+1,self.xend-1,self.yend-0,self.zend-1,0)
-        #print('in emptyBox: ',self.xstart+1,self.ystart+1,self.zstart+1,self.xend-1,self.yend-0,self.zend-1)
 
     def createDoor(self,mc,prevRoom,doortype='single'):
         if(prevRoom is None): #Do nothing
@@ -338,7 +305,6 @@ class room:
             self.doors[currentLocation] = currentLocation
             doorLocationPrev = prevRoom.connectedRooms.index(self.roomPos) #find index of current room in the prevRoom room connectedRooms array
             prevRoom.doors[doorLocationPrev] = doorLocationPrev
-            # print('self.doors:',self.doors)
             self.drawDoor(mc,currentLocation, doortype)
     
     # Start implementation of staircase
@@ -368,7 +334,7 @@ class room:
                              belowRoom.xend-stairWidth,belowRoom.ystart+i,belowRoom.zstart+roomHeight+1,45) #brick
             #then create a hole in the floor
                 mc.setBlocks(belowRoom.xend-1,belowRoom.yend,belowRoom.zstart+2,\
-                             belowRoom.xend-stairWidth,belowRoom.yend,belowRoom.zend+(roomHeight-roomDepth),0)
+                             belowRoom.xend-stairWidth,belowRoom.yend,belowRoom.zend+(roomHeight-roomDepth),0,)
         if(randSpace == 2): #door is on left
             for i in range(1,roomHeight+1):
                 mc.setBlocks(belowRoom.xstart+i+1,belowRoom.ystart+i,belowRoom.zstart+1,\
@@ -404,21 +370,16 @@ class room:
         if(doordirection == 3): #door is on right
             mc.setBlocks(self.xstart+roomDepth//2,self.ystart+1,self.zend-doorWidth,self.xstart+roomDepth//2+doorWidth,self.ystart+doorHeight,self.zend+doorWidth,0) #Polished Diorite
 
-
-
     # MUST IMPLEMENT CHANGES TO PREVENT POOL CREATION ON ANYTHING OTHER THAN GROUND LEVEL
     def createPool(self,mc):
         pooldepth = 4
         boundrywidth = 2
-        # mc.setBlocks(self.xstart,self.ystart,self.zstart,\
-        #             self.xend,self.ystart,self.zend,24) #create outer pool shell boundry
         mc.setBlocks(self.xstart+boundrywidth,self.ystart,self.zstart+boundrywidth,\
                     self.xend-boundrywidth,self.ystart-pooldepth-1,self.zend-boundrywidth,1,2) #create pool shell
         mc.setBlocks(self.xstart+boundrywidth+1,self.ystart,self.zstart+boundrywidth+1,\
                     self.xend-boundrywidth-1,self.ystart-pooldepth,self.zend-boundrywidth-1,9) #create water
 
     def findSpaceOnRoomWalls(self,belowRoom):
-
         #Check if the below room has space for a staircase:
         belowSpace = belowRoom.doors #get the location of doors
         currentSpace = self.doors #get the location of doors
@@ -427,3 +388,5 @@ class room:
             if (currentSpace[i] == None) and (belowSpace[i] == None): #this slot is avaliable
                 avaliableSpace.append(i)
         return avaliableSpace
+
+    
