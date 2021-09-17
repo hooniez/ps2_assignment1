@@ -8,7 +8,6 @@ Connectionn-oriented prorocol
 Guarentees delivery
 Widely used for cruical applications (like email)
 
-
 3 way handshake
 TCP Flags
 SYN packets identify flags reuesting new connection
