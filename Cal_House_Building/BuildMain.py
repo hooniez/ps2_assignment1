@@ -20,7 +20,7 @@ def HouseScript():
 
     myHouse.createFloor() # specify the room size, currently only squares
     FirstFloorRoomNumber = 6
-    
+
     myHouse.floors[0].addRoom(mc)
     myHouse.floors[0].addRoom(mc)
     myHouse.floors[0].addRoom(mc)
@@ -35,7 +35,7 @@ def HouseScript():
 
 
     myHouse.floors[1].addRoom(mc)
-    myHouse.floors[1].addRoom(mc)
+    myHouse.floors[1].addRoom(mc,'pool')
     myHouse.floors[1].addRoom(mc)
     myHouse.floors[1].addDoors(mc)
 
