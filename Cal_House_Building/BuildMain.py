@@ -25,13 +25,16 @@ def HouseScript():
     myHouse.floors[0].addRoom(mc)
     myHouse.floors[0].addRoom(mc)
     myHouse.floors[0].addRoom(mc)
+    myHouse.floors[0].addRoom(mc)
+    myHouse.floors[0].addRoom(mc)
     myHouse.floors[0].addDoors(mc)
     print('---------')
 
 
     myHouse.createFloor()
 
-
+    myHouse.floors[1].addRoom(mc)
+    myHouse.floors[1].addRoom(mc)
     myHouse.floors[1].addRoom(mc)
     myHouse.floors[1].addRoom(mc)
     myHouse.floors[1].addRoom(mc)
@@ -40,13 +43,19 @@ def HouseScript():
     myHouse.createFloor()
     myHouse.floors[2].addRoom(mc)
     myHouse.floors[2].addRoom(mc)
+    myHouse.floors[2].addRoom(mc)
+    myHouse.floors[2].addRoom(mc)
     myHouse.floors[2].addDoors(mc)
 
     myHouse.createFloor()
     myHouse.floors[3].addRoom(mc)
+    myHouse.floors[3].addRoom(mc)
+    myHouse.floors[3].addDoors(mc)
 
     myHouse.createFloor()
     myHouse.floors[4].addRoom(mc)
+    myHouse.floors[4].addRoom(mc)
+    myHouse.floors[4].addDoors(mc)
 
     myHouse.floors[0].addFrontDoor(mc)
     myHouse.addAllStairs(mc)

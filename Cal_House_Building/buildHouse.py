@@ -189,10 +189,6 @@ class floor: #new class for floors
                     else:
                         if(currentRoom.walls[index] == None):
                             currentRoom.createWindow(mc,index)
-                        #do nothing
-
-        pass
-
 
     def setConnectedRooms(self,emptyRoom):
         arrayLocationX = emptyRoom.gridCoord[0]
@@ -493,6 +489,8 @@ class room:
                 avaliableSpace.append(i)
         return avaliableSpace
 
+
+    #NEED TO IMPLEMENT 
     def createWindow(self,mc,windowLoc):
         print('In create Window')
         print('windowLoc is',windowLoc)
