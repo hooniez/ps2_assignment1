@@ -311,7 +311,7 @@ class room:
                     self.zend,
                     35,
                     self.roomPos+1
-        ) #Room Color Selection
+                    ) #Room Color Selection
     def emptyBox(self,mc):  #Emptys the box of blocks used in createRoom
         mc.setBlocks(
                     self.xstart+1,
