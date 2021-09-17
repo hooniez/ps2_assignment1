@@ -81,15 +81,16 @@ class floor: #new class for floors
         roomsizedepth = roomsize
         for z in range(0,self.roomsperz): #following initalised empty rooms in an array. The rooms can later be filled with different types by calling functions in room class
             for x in range(0,self.roomsperx):
-
-                newSpace = room(self.prop.xstart+(roomsizewidth*x)+propertyEdge,\
-                                        self.prop.base+(floorHeight*floorLevel),\
-                                        self.prop.zstart+(roomsizedepth*z)+propertyEdge,\
-                                        self.prop.xstart+(roomsizewidth*(x+1))+propertyEdge,\
-                                        self.prop.base+self.floorHeight+(floorHeight*floorLevel),\
-                                        self.prop.zstart+(roomsizedepth*(z+1))+propertyEdge,\
-                                        x+(z*self.roomsperz),\
-                                        x,z) #coordinates in the grid
+                newSpace = room(
+                                self.prop.xstart+(roomsizewidth*x)+propertyEdge,
+                                self.prop.base+(floorHeight*floorLevel),
+                                self.prop.zstart+(roomsizedepth*z)+propertyEdge,
+                                self.prop.xstart+(roomsizewidth*(x+1))+propertyEdge,
+                                self.prop.base+self.floorHeight+(floorHeight*floorLevel),
+                                self.prop.zstart+(roomsizedepth*(z+1))+propertyEdge,
+                                x+(z*self.roomsperz),
+                                x,z
+                                ) #coordinates in the grid
                 self.setConnectedRooms(newSpace)
                 # print('connected rooms array',newSpace.connectedRooms)
                 self.rooms.append(newSpace) #Coordinates of location in grid
@@ -133,15 +134,9 @@ class floor: #new class for floors
                 # print('first room selected was:',currentRoom.roomPos)
             else:
                 roomIndex = random.randint(0,len(builtRooms)-1)
-                # print(f'{roomIndex = }')
                 fromRoom = builtRooms[roomIndex] #Select a room at random from the built rooms
-                # print('fromRoom is ',fromRoom.roomPos)
                 builtRooms.pop(roomIndex) #Remove this room from the builtRooms array
-                # print('in addRoom, length of builtRooms is:',len(builtRooms))
                 builable = self.checkAvailableRooms(fromRoom) #List of avaliable rooms
-                # print('builable locations are:')
-                # for item in builable:
-                    # print(item.roomPos)
                 while len(builable)==0: #while there are no avaliable room spaces select a new room to start search from
                     if(len(builtRooms)==0): #No more rooms to build From
                         print('No more room space avaliable')
@@ -159,14 +154,16 @@ class floor: #new class for floors
                 self.roomOrder.append((currentRoom.roomPos,fromRoom.roomPos))
             
     def addDoors(self, mc):
+        doorTypes = ['fullwidth','single'] #Add new door types here to insert them into random selector
         # print('room order is',self.roomOrder)
         for index in range(len(self.roomOrder)): #the position of the first room in rooms list
             # print('this rooms location is:',self.roomOrder[index][0]) #first element in the roomOrder tuple
             # print('this rooms creator is:',self.roomOrder[index][1]) #first element in the roomOrder tuple
+            randomDoorType = doorTypes[random.randint(0,len(doorTypes)-1)]
             if(self.roomOrder[index][1]!=None): #if its not the first room
-                self.rooms[self.roomOrder[index][0]].createDoor(mc,self.rooms[self.roomOrder[index][1]]) #create a door between this room
+                self.rooms[self.roomOrder[index][0]].createDoor(mc,self.rooms[self.roomOrder[index][1]],randomDoorType) #create a door between this room
             else: #its the first room, send in None
-                self.rooms[self.roomOrder[index][0]].createDoor(mc,None)
+                self.rooms[self.roomOrder[index][0]].createDoor(mc,None,randomDoorType)
 
     def addFrontDoor(self, mc):
         # print('creating front door')
@@ -317,7 +314,6 @@ class room:
         ##          |________|
         ##              Z
         ##              Bot
-
         self.connectedRooms = [None,None,None,None] #bot,top,left,right
         self.gridCoord = (gridX,gridZ)
         self.full = False #Room does not exist by default
@@ -341,13 +337,26 @@ class room:
             self.buildUpAvaliablity = False
             
     def createBox(self,mc): #Creates a box of blocks used in createRoom Func
-        # print('room walls is',self.roomPos+1)
-        mc.setBlocks(self.xstart,self.ystart,self.zstart,self.xend,self.yend,self.zend,35,self.roomPos+1)
-        #print('in createBox: ',self.xstart,self.ystart,self.zstart,self.xend,self.yend,self.zend)
-
+        mc.setBlocks(
+                    self.xstart,
+                    self.ystart,
+                    self.zstart,
+                    self.xend,
+                    self.yend,
+                    self.zend,
+                    35,
+                    self.roomPos+1 #Room Color Selection
+                    ) 
     def emptyBox(self,mc):  #Emptys the box of blocks used in createRoom
-        mc.setBlocks(self.xstart+1,self.ystart+1,self.zstart+1,self.xend-1,self.yend-0,self.zend-1,0)
-        #print('in emptyBox: ',self.xstart+1,self.ystart+1,self.zstart+1,self.xend-1,self.yend-0,self.zend-1)
+        mc.setBlocks(
+                    self.xstart+1,
+                    self.ystart+1,
+                    self.zstart+1,
+                    self.xend-1,
+                    self.yend-0,
+                    self.zend-1,
+                    0
+                    )
 
     def createDoor(self,mc,prevRoom,doortype='single'):
         if(prevRoom is None): #Do nothing
@@ -362,82 +371,227 @@ class room:
     
     # Start implementation of staircase
     def createStaircase(self,mc,belowRoom,randSpace): #belowroom holds the room below
-        print('randSpace is')
-        print(randSpace)
-        print('BelowRoom walls')
-        print(belowRoom.walls)
-        print('self walls (above room)')
-        print(self.walls)
         stairWidth = 2 #these are hard coded but could be changed to be given as inputs to the function at a later date
         wallWidth = 1
         roomWidth = abs(self.xstart-self.xend)
         roomDepth = abs(self.zstart-self.zend)
         roomHeight = abs(self.ystart-self.yend)
+        #door is on bot
+        if(randSpace == 0):
+            for i in range(1,roomHeight+1):
+                mc.setBlocks(
+                            belowRoom.xstart+1,
+                            belowRoom.ystart+i,
+                            belowRoom.zstart+i+1,
+                            belowRoom.xstart+stairWidth,
+                            belowRoom.ystart+i,
+                            belowRoom.zstart+roomHeight+1,
+                            45
+                            ) #brick
+            #then create a hole in the floor
+            mc.setBlocks(
+                        belowRoom.xstart+1,
+                        belowRoom.yend,
+                        belowRoom.zstart+2,\
+                        belowRoom.xstart+stairWidth,
+                        belowRoom.yend,
+                        belowRoom.zend+(roomHeight-roomDepth),
+                        0 #air
+                        )
 
-        if(randSpace == 0): #door is on bot
+        #door is on top
+        if(randSpace == 1):
             for i in range(1,roomHeight+1):
-                mc.setBlocks(belowRoom.xstart+1,belowRoom.ystart+i,belowRoom.zstart+i+1,\
-                             belowRoom.xstart+stairWidth,belowRoom.ystart+i,belowRoom.zstart+roomHeight+1,45) #brick
+                mc.setBlocks(
+                            belowRoom.xend-1,
+                            belowRoom.ystart+i,
+                            belowRoom.zstart+i+1,
+                            belowRoom.xend-stairWidth,
+                            belowRoom.ystart+i,
+                            belowRoom.zstart+roomHeight+1,
+                            45
+                            ) #brick
             #then create a hole in the floor
-                mc.setBlocks(belowRoom.xstart+1,belowRoom.yend,belowRoom.zstart+2,\
-                             belowRoom.xstart+stairWidth,belowRoom.yend,belowRoom.zend+(roomHeight-roomDepth),0)
-        if(randSpace == 1): #door is on top
+            mc.setBlocks(
+                        belowRoom.xend-1,
+                        belowRoom.yend,
+                        belowRoom.zstart+2,
+                        belowRoom.xend-stairWidth,
+                        belowRoom.yend,
+                        belowRoom.zend+(roomHeight-roomDepth),
+                        0 #air
+                        )
+        #door is on left
+        if(randSpace == 2):
             for i in range(1,roomHeight+1):
-                mc.setBlocks(belowRoom.xend-1,belowRoom.ystart+i,belowRoom.zstart+i+1,\
-                             belowRoom.xend-stairWidth,belowRoom.ystart+i,belowRoom.zstart+roomHeight+1,45) #brick
+                mc.setBlocks(
+                            belowRoom.xstart+i+1,
+                            belowRoom.ystart+i,
+                            belowRoom.zstart+1,
+                            belowRoom.xstart+roomHeight+1,
+                            belowRoom.ystart+i,
+                            belowRoom.zstart+stairWidth,
+                            45
+                            ) #brick
             #then create a hole in the floor
-                mc.setBlocks(belowRoom.xend-1,belowRoom.yend,belowRoom.zstart+2,\
-                             belowRoom.xend-stairWidth,belowRoom.yend,belowRoom.zend+(roomHeight-roomDepth),0)
-        if(randSpace == 2): #door is on left
+            mc.setBlocks(
+                        belowRoom.xstart+2,
+                        belowRoom.yend,
+                        belowRoom.zstart+1,
+                        belowRoom.xend+(roomHeight-roomWidth),
+                        belowRoom.yend,
+                        belowRoom.zstart+stairWidth,
+                        0
+                        )
+        #door is on right
+        if(randSpace == 3):
             for i in range(1,roomHeight+1):
-                mc.setBlocks(belowRoom.xstart+i+1,belowRoom.ystart+i,belowRoom.zstart+1,\
-                             belowRoom.xstart+roomHeight+1,belowRoom.ystart+i,belowRoom.zstart+stairWidth,45) #brick
+                mc.setBlocks(
+                            belowRoom.xstart+i+1,
+                            belowRoom.ystart+i,
+                            belowRoom.zend-1,
+                            belowRoom.xstart+roomHeight+1,
+                            belowRoom.ystart+i,
+                            belowRoom.zend-stairWidth,
+                            45
+                            ) #brick
             #then create a hole in the floor
-                mc.setBlocks(belowRoom.xstart+2,belowRoom.yend,belowRoom.zstart+1,\
-                             belowRoom.xend+(roomHeight-roomWidth),belowRoom.yend,belowRoom.zstart+stairWidth,0)
-            # mc.setBlocks(self.xstart+roomDepth//2,self.ystart+1,self.zstart-doorWidth,self.xstart+roomDepth//2+doorWidth,self.ystart+doorHeight,self.zstart+doorWidth,0) #Granite
-        if(randSpace == 3): #door is on right
-            for i in range(1,roomHeight+1):
-                mc.setBlocks(belowRoom.xstart+i+1,belowRoom.ystart+i,belowRoom.zend-1,\
-                             belowRoom.xstart+roomHeight+1,belowRoom.ystart+i,belowRoom.zend-stairWidth,45) #brick
-            #then create a hole in the floor
-                mc.setBlocks(belowRoom.xstart+2,belowRoom.yend,belowRoom.zend-1,\
-                             belowRoom.xend+(roomHeight-roomWidth),belowRoom.yend,belowRoom.zend-stairWidth,0)
-            # mc.setBlocks(self.xstart+roomDepth//2,self.ystart+1,self.zend-doorWidth,self.xstart+roomDepth//2+doorWidth,self.ystart+doorHeight,self.zend+doorWidth,0) #Polished Diorite
-        
-        belowRoom.walls[randSpace] = randSpace #Set the walls array to the new space
+            mc.setBlocks(
+                        belowRoom.xstart+2,
+                        belowRoom.yend,
+                        belowRoom.zend-1,
+                        belowRoom.xend+(roomHeight-roomWidth),
+                        belowRoom.yend,
+                        belowRoom.zend-stairWidth,
+                        0
+                        )
+
+        belowRoom.walls[randSpace] = randSpace #Set the doors array to the new space
         self.walls[randSpace] = randSpace
     
+    
     def drawDoor(self,mc,doordirection,doortype):
-        doorWidth = 1 #these are hard coded but could be changed to be given as inputs to the function at a later date
-        doorDepth = 1
-        doorHeight = 3
         roomWidth = abs(self.xstart-self.xend)
         roomDepth = abs(self.zstart-self.zend)
-        if(doordirection == 0): #door is on bot
-            mc.setBlocks(self.xstart-doorDepth,self.ystart+1,self.zstart+roomDepth//2,self.xstart+doorDepth,self.ystart+doorHeight,self.zstart+roomDepth//2+doorWidth,0) #Acacia Wood Plank
-        if(doordirection == 1): #door is on top
-            mc.setBlocks(self.xend+doorWidth,self.ystart+1,self.zstart+roomDepth//2,self.xend-doorWidth,self.ystart+doorHeight,self.zstart+roomDepth//2+doorWidth,0) #Coarse Dirt
-        if(doordirection == 2): #door is on left
-            mc.setBlocks(self.xstart+roomDepth//2,self.ystart+1,self.zstart-doorWidth,self.xstart+roomDepth//2+doorWidth,self.ystart+doorHeight,self.zstart+doorWidth,0) #Granite
-        if(doordirection == 3): #door is on right
-            mc.setBlocks(self.xstart+roomDepth//2,self.ystart+1,self.zend-doorWidth,self.xstart+roomDepth//2+doorWidth,self.ystart+doorHeight,self.zend+doorWidth,0) #Polished Diorite
-
+        roomHeight = abs(self.ystart-self.yend)
+        doorWidth = 1 #Width of the door
+        doorDepth = 1 #How far the door sticks out from the wall (this is to prevent other objects from blocking the doors entry)
+        doorHeight = 3
+        if doortype == 'fullwidth':
+            doorHeight = roomHeight - 1
+            if(doordirection == 0): #door is on bot
+                doorWidth = roomDepth - 1
+                mc.setBlocks(
+                            self.xstart-doorDepth,
+                            self.ystart+1,
+                            self.zstart+1,
+                            self.xstart+doorDepth,
+                            self.ystart+doorHeight,
+                            self.zstart+doorWidth,
+                            0
+                            )
+            if(doordirection == 1): #door is on top
+                doorWidth = roomDepth - 1
+                mc.setBlocks(
+                            self.xend+doorDepth,
+                            self.ystart+1,
+                            self.zstart+1,
+                            self.xend-doorDepth,
+                            self.ystart+doorHeight,
+                            self.zstart+doorWidth,
+                            0
+                            )
+            if(doordirection == 2): #door is on left
+                doorWidth = roomWidth - 1
+                mc.setBlocks(
+                            self.xstart+1,
+                            self.ystart+1,
+                            self.zstart-doorDepth,
+                            self.xstart+doorWidth,
+                            self.ystart+doorHeight,
+                            self.zstart+doorDepth,
+                            0
+                            )
+            if(doordirection == 3): #door is on right]
+                doorWidth = roomWidth - 1
+                mc.setBlocks(
+                            self.xstart+1,
+                            self.ystart+1,
+                            self.zend-doorDepth,
+                            self.xstart+doorWidth,
+                            self.ystart+doorHeight,
+                            self.zend+doorDepth,
+                            0
+                            )
+        if doortype == 'single':
+            doorWidth = 1
+            doorHeight = 3
+            if(doordirection == 0): #door is on bot
+                mc.setBlocks(
+                    self.xstart-doorDepth,
+                    self.ystart+1,
+                    self.zstart+roomDepth//2,
+                    self.xstart+doorDepth,
+                    self.ystart+doorHeight,
+                    self.zstart+roomDepth//2+doorWidth,
+                    0)
+            if(doordirection == 1): #door is on top
+                mc.setBlocks(
+                            self.xend+doorWidth,
+                            self.ystart+1,
+                            self.zstart+roomDepth//2,
+                            self.xend-doorWidth,
+                            self.ystart+doorHeight,
+                            self.zstart+roomDepth//2+doorWidth,
+                            0
+                            )
+            if(doordirection == 2): #door is on left
+                mc.setBlocks(
+                            self.xstart+roomDepth//2,
+                            self.ystart+1,
+                            self.zstart-doorWidth,
+                            self.xstart+roomDepth//2+doorWidth,
+                            self.ystart+doorHeight,
+                            self.zstart+doorWidth,
+                            0
+                            )
+            if(doordirection == 3): #door is on right
+                mc.setBlocks(
+                            self.xstart+roomDepth//2,
+                            self.ystart+1,
+                            self.zend-doorWidth,
+                            self.xstart+roomDepth//2+doorWidth,
+                            self.ystart+doorHeight,
+                            self.zend+doorWidth,
+                            0
+                            )
 
 
     # MUST IMPLEMENT CHANGES TO PREVENT POOL CREATION ON ANYTHING OTHER THAN GROUND LEVEL
     def createPool(self,mc):
         pooldepth = 4
         boundrywidth = 2
-        # mc.setBlocks(self.xstart,self.ystart,self.zstart,\
-        #             self.xend,self.ystart,self.zend,24) #create outer pool shell boundry
-        mc.setBlocks(self.xstart+boundrywidth,self.ystart,self.zstart+boundrywidth,\
-                    self.xend-boundrywidth,self.ystart-pooldepth-1,self.zend-boundrywidth,1,2) #create pool shell
-        mc.setBlocks(self.xstart+boundrywidth+1,self.ystart,self.zstart+boundrywidth+1,\
-                    self.xend-boundrywidth-1,self.ystart-pooldepth,self.zend-boundrywidth-1,9) #create water
+        mc.setBlocks(
+                    self.xstart+boundrywidth,
+                    self.ystart,
+                    self.zstart+boundrywidth,
+                    self.xend-boundrywidth,
+                    self.ystart-pooldepth-1,
+                    self.zend-boundrywidth,
+                    1,
+                    2
+                    ) #create pool shell
+        mc.setBlocks(
+                    self.xstart+boundrywidth+1,
+                    self.ystart,
+                    self.zstart+boundrywidth+1,
+                    self.xend-boundrywidth-1,
+                    self.ystart-pooldepth,
+                    self.zend-boundrywidth-1,
+                    9
+                    ) #create water
 
     def findStairSpaceOnRoomWalls(self,belowRoom):
-
         #Check if the below room has space for a staircase:
         belowSpace = belowRoom.walls #get the location of walls
         currentSpace = self.walls #get the location of walls
@@ -496,7 +650,7 @@ class room:
                         )
 
 
-
+# Used for testing 
 if __name__ == '__main__':
     import mcpi.minecraft as minecraft
     import mcpi.block as block
