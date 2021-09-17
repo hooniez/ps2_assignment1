@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 import numpy as np
 import random
 class house_property:
@@ -540,4 +538,3 @@ class room:
                         self.zend,
                         20
                         )
->>>>>>> bf578e6e2d504ee5847a66c8bf4c1dc93ab879f4
