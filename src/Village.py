@@ -1,7 +1,7 @@
 import random
 import math
 import datetime
-import path
+from path import Path as path
 from direction import Direction
 import mcpi.block as block
 from mcpi.minecraft import Minecraft
@@ -94,8 +94,7 @@ class Village():
         return centroid
 
 
-    # connects each foundation to it's closest neighbour that remains in the unconnected list
-    # currently only connects one other foundation, but will expand to more + intersections
+    # connects each foundation to it's closest neighbours that remains in the unconnected list
     def groupProximalFoundations(self):
         remaining = [f for f in self.foundations]
 
@@ -105,7 +104,6 @@ class Village():
 
             minDist = min([point.getDistance(r) for r in remaining if r != point])
             closestFoundation = [r for r in remaining if point.getDistance(r) == minDist][0]
-            print(f'closest to {point.boundingBox["centerPoint"]}: {closestFoundation.boundingBox["centerPoint"]}')
             point.neighbours.append(closestFoundation)
             if point not in closestFoundation.neighbours:
                 closestFoundation.neighbours.append(point)
@@ -131,8 +129,6 @@ class Village():
         zVals = None
         ZRange = None
         minDist = self.foundationSize + 22
-        print(self.foundationSize)
-        print(minDist)
         
         if self.boundingBox["northWest"].x < self.boundingBox["northEast"].x:
             xVals = sorted(random.sample(range(self.boundingBox["northWest"].x, self.boundingBox["northEast"].x), self.numHouses))
@@ -150,7 +146,6 @@ class Village():
         # foundations with adjacent x vals are dealt with later
         for i in range(2, len(xVals) - 1):
             xDiff = (xVals[i] - xVals[i - 2])
-            print(f"center point distance from {xVals[i]} to {xVals[i - 2]}: {xDiff}")
             if xDiff < minDist:
                 xVals[i] += minDist - xDiff
 
@@ -159,11 +154,8 @@ class Village():
         for x, z in zip(xVals, zVals):
             # if the foundations are too close together, pick a new z val that isn't already taken
             if previousVals is not None and (x - previousVals[0]) < minDist and (z - previousVals[1]) < minDist:
-                print(f"old z: {z}")
-                print(range(previousVals[1] - minDist, previousVals[1] + minDist))
                 possibleZVals = [n for n in ZRange if n not in range(previousVals[1] - minDist, previousVals[1] + minDist)]
                 z = random.choice(possibleZVals)
-                print(f"new z: {z}")
 
             self.foundations.append(Foundation(Vec3(x, 0, z), self.foundationSize, count))
             count += 1
@@ -173,19 +165,17 @@ class Village():
 if __name__ == '__main__':
     startTime = datetime.datetime.now()
     mc = Minecraft.create()
-    print(mc.player.getDirection())
-    path = path.Path()
     village = Village(mc.player.getTilePos(), mc.player.getDirection(), 25, 200, 9)
     # village.displayBoundingBox()
     village.generateFoundations()
     village.layFoundations()
     village.groupProximalFoundations()
     for foundation in village.foundations:
-        print(village.paths)
+        print(f"foundation {foundation.id}:")
         for neighbour in foundation.neighbours:
-            print(f"path for {foundation.id} to {neighbour.id} should start: {foundation.getDirection(neighbour)}")
+            print(f"    - to foundation {neighbour.id}:")
             if (foundation.id, neighbour.id) not in village.paths:
-                print(f"path point start at {foundation.getPathPoint(foundation.getDirection(neighbour))}")
+                print(f"        -- path point start at {foundation.getPathPoint(foundation.getDirection(neighbour))}")
                 path.generatePath(
                     foundation.getPathPoint(foundation.getDirection(neighbour)),
                     neighbour.getPathPoint(neighbour.getDirection(foundation)),
@@ -194,6 +184,8 @@ if __name__ == '__main__':
                 )
                 village.paths.append((foundation.id, neighbour.id))
                 village.paths.append((neighbour.id, foundation.id))
+            else:
+                print("         -- path already exists")
 
     endTime = datetime.datetime.now()
 

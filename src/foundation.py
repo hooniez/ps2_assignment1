@@ -35,8 +35,6 @@ class Foundation():
 
 
     def getPathPoint(self, direction):
-        print(self.boundingBox)
-        print(direction)
         if direction == Direction.NORTH:
             return Vec3(
                 self.boundingBox["northEast"].x - ((self.boundingBox["northEast"].x - self.boundingBox["northWest"].x) // 2),
@@ -95,8 +93,6 @@ class Foundation():
 
         for point in self.boundingBox.values():
             point.y = highestPoint
-    
-        print(f"new y vals: {highestPoint}")
 
 
     def placeFoundation(self, mc):
