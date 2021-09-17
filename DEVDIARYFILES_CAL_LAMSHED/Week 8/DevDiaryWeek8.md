@@ -344,5 +344,6 @@ it is trivial to work out the room which is below the current room
 18-09-2021: 8:55am
     Started implentation of room coupling (wide door)
     Wide rooms created without problem, simply added a new door type of 'fullwidth' which draws a door that takes the entire width of the room.
-    Very happy with implementation and simplicity of building double walls, will put a random chance generater in the wall building function to move between this type of door and regular doors
+    Very happy with implementation and simplicity of building double walls, will put a random chance generater in the wall building function to move between this type of door and regular doors.
+    Random selection functionality created, uses an array which holds a list of possible door types and selects each with equal probability
 
