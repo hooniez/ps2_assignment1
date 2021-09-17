@@ -7,24 +7,16 @@ import mcpi.block as block
 from mcpi.minecraft import Minecraft
 from mcpi.vec3 import Vec3
 from foundation import Foundation
-
+from house import House
 
 SPAWN_DISTANCE_FROM_PLAYER = 10
 
-def get_height_actual_block(x, z):
-    ''' Ensure blocks like LEAVES are excluded from the method mc.getHeight'''
-    blocks_to_avoid = [block.LEAVES.id]
-    height = mc.getHeight(x,z)
-    random_block = mc.getBlock(x, height, z)
-    while random_block in blocks_to_avoid:
-        height -= 1
-        random_block = mc.getBlock(x, height, z)
-    return height
 
 
 class Village():
     def __init__(self, playerPos, playerDirection, foundationSize=10, villageAreaSize=100, numHouses=8):
         self.foundations = []
+        self.houses = []
         self.paths = []
         self.villageAreaSize = villageAreaSize
         self.foundationSize = foundationSize
@@ -157,9 +149,41 @@ class Village():
                 possibleZVals = [n for n in ZRange if n not in range(previousVals[1] - minDist, previousVals[1] + minDist)]
                 z = random.choice(possibleZVals)
 
-            self.foundations.append(Foundation(Vec3(x, 0, z), self.foundationSize, count))
+            self.foundations.append(Foundation(mc, Vec3(x, 0, z), self.foundationSize, count))
             count += 1
             previousVals = (x, z)
+
+    def generateHouses(self):
+        for foundation in self.foundations:
+            foundation.setBase(mc)
+            house = House(foundation)
+            self.houses.append(house)
+            house.createFloor()
+            house.floors[0].addRoom(mc)
+            house.floors[0].addRoom(mc)
+            house.floors[0].addRoom(mc)
+            house.floors[0].addRoom(mc)
+            house.floors[0].addRoom(mc)
+            house.floors[0].addDoors(mc)
+            house.floors[0].addFrontDoor(mc)
+            print('---------')
+            house.createFloor()
+            house.floors[1].addRoom(mc)
+            house.floors[1].addRoom(mc)
+            house.floors[1].addRoom(mc)
+            house.floors[1].addDoors(mc)
+            
+            house.createFloor()
+            house.floors[2].addRoom(mc)
+            house.floors[2].addRoom(mc)
+            house.floors[2].addDoors(mc)
+            
+            house.addAllStairs(mc)
+
+            
+            
+            
+
 
 
 if __name__ == '__main__':
@@ -169,6 +193,7 @@ if __name__ == '__main__':
     # village.displayBoundingBox()
     village.generateFoundations()
     village.layFoundations()
+    village.generateHouses()
     village.groupProximalFoundations()
     for foundation in village.foundations:
         print(f"foundation {foundation.id}:")
