@@ -25,9 +25,7 @@ def HouseScript():
     myHouse.floors[0].addRoom(mc)
     myHouse.floors[0].addRoom(mc)
     myHouse.floors[0].addRoom(mc)
-    myHouse.floors[0].addRoom(mc,'pool')
     myHouse.floors[0].addDoors(mc)
-    myHouse.floors[0].addFrontDoor(mc)
     print('---------')
 
 
@@ -35,7 +33,7 @@ def HouseScript():
 
 
     myHouse.floors[1].addRoom(mc)
-    myHouse.floors[1].addRoom(mc,'pool')
+    myHouse.floors[1].addRoom(mc)
     myHouse.floors[1].addRoom(mc)
     myHouse.floors[1].addDoors(mc)
 
@@ -44,8 +42,15 @@ def HouseScript():
     myHouse.floors[2].addRoom(mc)
     myHouse.floors[2].addDoors(mc)
 
-    myHouse.addAllStairs(mc)
+    myHouse.createFloor()
+    myHouse.floors[3].addRoom(mc)
 
+    myHouse.createFloor()
+    myHouse.floors[4].addRoom(mc)
+
+    myHouse.floors[0].addFrontDoor(mc)
+    myHouse.addAllStairs(mc)
+    myHouse.addAllWindows(mc)
 if __name__ == '__main__':
     HouseScript()
 else:

@@ -50,6 +50,10 @@ class house: #this is a house class has an array of floors
     def addAllStairs(self,mc):
         for floor in self.floors:
             floor.addStairs(mc)
+
+    def addAllWindows(self,mc):
+        for floor in self.floors:
+            floor.addWindows(mc)
  
 
 class floor: #new class for floors
@@ -172,6 +176,23 @@ class floor: #new class for floors
                 randSpace = random.randint(0,len(avaliableSpace)-1) #select a space at random
                 currentRoom.createStaircase(mc,belowRoom,avaliableSpace[randSpace])
 
+    def addWindows(self,mc):
+        for currentRoom in self.rooms: #Search through all the rooms
+            if currentRoom.full == True: #The room is filled
+                print(f'{currentRoom.roomPos=}')
+                print(f'{currentRoom.roomPos} has empty wall space at {currentRoom.walls}')
+                for index, conRoom in enumerate(currentRoom.connectedRooms): #look at the connected rooms:
+                    if conRoom != None: #If there is no room there potential window Location
+                        if self.rooms[conRoom].full == False:
+                            if(currentRoom.walls[index] == None):
+                                currentRoom.createWindow(mc,index)
+                    else:
+                        if(currentRoom.walls[index] == None):
+                            currentRoom.createWindow(mc,index)
+                        #do nothing
+
+        pass
+
 
     def setConnectedRooms(self,emptyRoom):
         arrayLocationX = emptyRoom.gridCoord[0]
@@ -197,7 +218,7 @@ class floor: #new class for floors
         if(back):
             emptyRoom.connectedRooms[3] = emptyRoom.roomPos + self.roomsperx
 
-
+    # Check if a room is avaliable to build on floor.
     def checkAvailableRooms(self,currentRoom):
         arrayLocationX = currentRoom.gridCoord[0]
         arrayLocationZ = currentRoom.gridCoord[1]
@@ -222,7 +243,6 @@ class floor: #new class for floors
             elif self.belowFloor.rooms[currentRoom.roomPos - 1].buildUpAvaliablity == True: #if its not the ground floor, but it can be built on
                 if self.rooms[currentRoom.roomPos - 1].full == False:
                     availableRooms.append(self.rooms[currentRoom.roomPos - 1])
-
         if top:
             if self.belowFloor==None: #If its the ground floor                
                 if self.rooms[currentRoom.roomPos + 1].full == False:
@@ -270,7 +290,7 @@ class room:
         self.full = False #Room does not exist by default
         self.roomType = 'none'
         self.buildUpAvaliablity = False
-        self.walls = [None,None,None,None] #bot,top,left,right (doors array now contains eveything that sticks to a wall, e.g stairs)
+        self.walls = [None,None,None,None] #bot,top,left,right
 
     def createRoom(self,mc,roomtype):
         if(roomtype=='basic'):
@@ -324,8 +344,6 @@ class room:
         roomWidth = abs(self.xstart-self.xend)
         roomDepth = abs(self.zstart-self.zend)
         roomHeight = abs(self.ystart-self.yend)
-
-
         #door is on bot
         if(randSpace == 0):
             for i in range(1,roomHeight+1):
@@ -348,7 +366,6 @@ class room:
                         belowRoom.zend+(roomHeight-roomDepth),
                         0 #air
                         )
-
 
         #door is on top
         if(randSpace == 1):
@@ -375,7 +392,8 @@ class room:
         #door is on left
         if(randSpace == 2):
             for i in range(1,roomHeight+1):
-                            mc.setBlocks(belowRoom.xstart+i+1,
+                mc.setBlocks(
+                            belowRoom.xstart+i+1,
                             belowRoom.ystart+i,
                             belowRoom.zstart+1,
                             belowRoom.xstart+roomHeight+1,
@@ -475,4 +493,50 @@ class room:
                 avaliableSpace.append(i)
         return avaliableSpace
 
-    
+    def createWindow(self,mc,windowLoc):
+        print('In create Window')
+        print('windowLoc is',windowLoc)
+        wallWidth = 1
+        roomWidth = abs(self.xstart-self.xend)
+        roomDepth = abs(self.zstart-self.zend)
+        roomHeight = abs(self.ystart-self.yend)
+        if(windowLoc == 0): #bot
+            mc.setBlocks(
+                        self.xstart,
+                        self.ystart+roomHeight//2,
+                        self.zstart+roomDepth//4,
+                        self.xstart,
+                        self.yend-roomHeight//2,
+                        self.zend-roomDepth//4,
+                        20
+                        )
+        if(windowLoc == 1): #top
+            mc.setBlocks(
+                        self.xend,
+                        self.ystart+roomHeight//2,
+                        self.zstart+roomDepth//4,
+                        self.xend,
+                        self.yend-roomHeight//2,
+                        self.zend-roomDepth//4,
+                        20
+                        )
+        if(windowLoc == 2): #left
+            mc.setBlocks(
+                        self.xstart+roomWidth//4,
+                        self.ystart+roomHeight//2,
+                        self.zstart,
+                        self.xend-roomWidth//4,
+                        self.yend-roomHeight//2,
+                        self.zstart,
+                        20
+                        )
+        if(windowLoc == 3): #right
+            mc.setBlocks(
+                        self.xstart+roomWidth//4,
+                        self.ystart+roomHeight//2,
+                        self.zend,
+                        self.xend-roomDepth//4,
+                        self.yend-roomHeight//2,
+                        self.zend,
+                        20
+                        )
