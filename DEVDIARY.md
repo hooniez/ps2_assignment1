@@ -44,7 +44,73 @@ Please, report your key activities in each week this assignment is running.
 
 **Week 2**
 
-.....
+* Myeonghoon Sun
+    Cal's house class needs to be integrated into Max's foundation class. Cal's house_property class equals Max's foundaion class. As Max's Village class contains a list for foundations, we can build a method inside it to generate houses on each foundation. 
+
+    Cal's foundation class:
+    - Arguments 
+        1. location
+        2. width
+        3. depth (which is the same thing as width at the moment)
+    - Attributes
+        1. xstart (based on the player's position.x + 1)
+        2. base (based on the player's position.y - 1)
+        3. zstart (based on the player's position.z + 1)
+        4. xend (based on the player's position.x + width + 1)
+        5. zend (based on the player's position.z + depth + 1)
+        6. width ( == foundationSize found in Max's class)
+        7. depth ( == foundationSize found in Max's class)
+
+    Max's foudnation class:
+    - Arguments
+        1. centerPoint
+        2. size
+        3. fId
+    - Attributes
+        1. id
+        2. boundingBox (contains 4 vectors and the center vector)
+        3. neightbours (not a necessary component for integration)
+
+    How does Cal build his house?
+    1. `prop = buildHouse.house_property(p,30,30)` first assigns location, width, and depth
+    2.  `myHouse = buildHouse.house(prop,floorHeight,roomSize)` then generates a house instance with foundation passed as an argument
+    3.  `myHouse.createFloor()` creates a floor
+    4. 
+    ```
+       myHouse.floors[0].addRoom(mc)
+       myHouse.floors[0].addRoom(mc)
+       myHouse.floors[0].addRoom(mc)
+       myHouse.floors[0].addRoom(mc)
+       myHouse.floors[0].addRoom(mc)
+       myHouse.floors[0].addDoors(mc)
+       myHouse.floors[0].addFrontDoor(mc)
+       print('---------')
+       myHouse.createFloor()
+       myHouse.floors[1].addRoom(mc)
+       myHouse.floors[1].addRoom(mc)
+       myHouse.floors[1].addRoom(mc)
+       myHouse.floors[1].addDoors(mc)
+       
+       myHouse.createFloor()
+       myHouse.floors[2].addRoom(mc)
+       myHouse.floors[2].addRoom(mc)
+       myHouse.floors[2].addDoors(mc)
+       
+       myHouse.addAllStairs(mc)
+    ``` creates rooms, another floor, more rooms, and stairs.
+
+    Cal's y-axis doesn't match up with Max's. Where is Cal's pointing to? player.pos.y - 1 Where is Max's pointing to? centerPoint.y. Cal's house doesn't populate with varying y-axes. His houses are all position at the same y-axis whereas Max's foundations vary in heights. 
+
+    Cal's
+    self.base refers to centerPoint.y. createEmptyFloor uses it to build a floor. Max's centerPoint.y axis gets set to the proper value not at the initialisation, but along the way. 
+
+    Foundation() class picks a random x, z coordinate and assign it with centerPoint 
+    
+       
+
+
+
+
 .....
 .....
 
