@@ -204,7 +204,7 @@ class floor: #new class for floors
                     avaliableSpace = currentRoom.findSpaceOnRoomWalls(belowRoom)
             else:
                 randSpace = random.randint(0,len(avaliableSpace)-1) #select a space at random
-                currentRoom.createStaircase(mc,belowRoom,randSpace)
+                currentRoom.createStaircase(mc,belowRoom,avaliableSpace[randSpace])
 
 
     def setConnectedRooms(self,emptyRoom):
@@ -290,12 +290,21 @@ class room:
         self.zend = zend
         self.roomPos = roomPos #position in the rooms Array
         ## Add list of rooms that are connected bot,top,left,right
-        self.connectedRooms = [None,None,None,None]
+        ##
+        ##              Top      
+        ##           ________
+        ## Left     |        |     Right
+        ##        X |        |
+        ##          |________|
+        ##              Z
+        ##              Bot
+
+        self.connectedRooms = [None,None,None,None] #bot,top,left,right
         self.gridCoord = (gridX,gridZ)
         self.full = False #Room does not exist by default
         self.roomType = 'none'
         self.buildUpAvaliablity = False
-        self.doors = [None,None,None,None]
+        self.doors = [None,None,None,None] #bot,top,left,right (doors array now contains eveything that sticks to a wall, e.g stairs)
 
     def createRoom(self,mc,roomtype):
         print('Created a room of type',roomtype,'at location',self.roomPos)
@@ -334,20 +343,18 @@ class room:
     
     # Start implementation of staircase
     def createStaircase(self,mc,belowRoom,randSpace): #belowroom holds the room below
-        print('belowRoom Pos:',belowRoom.roomPos)
-        print("belowRoom Spaces :")
+        print('randSpace is')
+        print(randSpace)
+        print('BelowRoom Doors')
         print(belowRoom.doors)
-        print('Self Pos:',self.roomPos)
-        print("Self Spaces:")
+        print('self doors (above room)')
         print(self.doors)
         stairWidth = 2 #these are hard coded but could be changed to be given as inputs to the function at a later date
         wallWidth = 1
         roomWidth = abs(self.xstart-self.xend)
         roomDepth = abs(self.zstart-self.zend)
-        print(roomDepth)
         roomHeight = abs(self.ystart-self.yend)
-        print(roomHeight)
-        randSpace = 0 #TESTING
+
         if(randSpace == 0): #door is on bot
             for i in range(1,roomHeight+1):
                 mc.setBlocks(belowRoom.xstart+1,belowRoom.ystart+i,belowRoom.zstart+i+1,\
@@ -356,13 +363,31 @@ class room:
                 mc.setBlocks(belowRoom.xstart+1,belowRoom.yend,belowRoom.zstart+2,\
                              belowRoom.xstart+stairWidth,belowRoom.yend,belowRoom.zend+(roomHeight-roomDepth),0)
         if(randSpace == 1): #door is on top
-            mc.setBlocks(self.xend+doorWidth,self.ystart+1,self.zstart+roomDepth//2,self.xend-doorWidth,self.ystart+doorHeight,self.zstart+roomDepth//2+doorWidth,0) #Coarse Dirt
+            for i in range(1,roomHeight+1):
+                mc.setBlocks(belowRoom.xend-1,belowRoom.ystart+i,belowRoom.zstart+i+1,\
+                             belowRoom.xend-stairWidth,belowRoom.ystart+i,belowRoom.zstart+roomHeight+1,45) #brick
+            #then create a hole in the floor
+                mc.setBlocks(belowRoom.xend-1,belowRoom.yend,belowRoom.zstart+2,\
+                             belowRoom.xend-stairWidth,belowRoom.yend,belowRoom.zend+(roomHeight-roomDepth),0)
         if(randSpace == 2): #door is on left
-            mc.setBlocks(self.xstart+roomDepth//2,self.ystart+1,self.zstart-doorWidth,self.xstart+roomDepth//2+doorWidth,self.ystart+doorHeight,self.zstart+doorWidth,0) #Granite
+            for i in range(1,roomHeight+1):
+                mc.setBlocks(belowRoom.xstart+i+1,belowRoom.ystart+i,belowRoom.zstart+1,\
+                             belowRoom.xstart+roomHeight+1,belowRoom.ystart+i,belowRoom.zstart+stairWidth,45) #brick
+            #then create a hole in the floor
+                mc.setBlocks(belowRoom.xstart+2,belowRoom.yend,belowRoom.zstart+1,\
+                             belowRoom.xend+(roomHeight-roomWidth),belowRoom.yend,belowRoom.zstart+stairWidth,0)
+            # mc.setBlocks(self.xstart+roomDepth//2,self.ystart+1,self.zstart-doorWidth,self.xstart+roomDepth//2+doorWidth,self.ystart+doorHeight,self.zstart+doorWidth,0) #Granite
         if(randSpace == 3): #door is on right
-            mc.setBlocks(self.xstart+roomDepth//2,self.ystart+1,self.zend-doorWidth,self.xstart+roomDepth//2+doorWidth,self.ystart+doorHeight,self.zend+doorWidth,0) #Polished Diorite
-
-        pass
+            for i in range(1,roomHeight+1):
+                mc.setBlocks(belowRoom.xstart+i+1,belowRoom.ystart+i,belowRoom.zend-1,\
+                             belowRoom.xstart+roomHeight+1,belowRoom.ystart+i,belowRoom.zend-stairWidth,45) #brick
+            #then create a hole in the floor
+                mc.setBlocks(belowRoom.xstart+2,belowRoom.yend,belowRoom.zend-1,\
+                             belowRoom.xend+(roomHeight-roomWidth),belowRoom.yend,belowRoom.zend-stairWidth,0)
+            # mc.setBlocks(self.xstart+roomDepth//2,self.ystart+1,self.zend-doorWidth,self.xstart+roomDepth//2+doorWidth,self.ystart+doorHeight,self.zend+doorWidth,0) #Polished Diorite
+        
+        belowRoom.doors[randSpace] = randSpace #Set the doors array to the new space
+        self.doors[randSpace] = randSpace
     
     def drawDoor(self,mc,doordirection,doortype):
         doorWidth = 1 #these are hard coded but could be changed to be given as inputs to the function at a later date
@@ -393,11 +418,12 @@ class room:
                     self.xend-boundrywidth-1,self.ystart-pooldepth,self.zend-boundrywidth-1,9) #create water
 
     def findSpaceOnRoomWalls(self,belowRoom):
+
         #Check if the below room has space for a staircase:
         belowSpace = belowRoom.doors #get the location of doors
         currentSpace = self.doors #get the location of doors
         avaliableSpace = []
         for i in range(len(currentSpace)):
-            if (currentSpace[i] == None) and (belowSpace[i] == None): #this slow is avaliable
+            if (currentSpace[i] == None) and (belowSpace[i] == None): #this slot is avaliable
                 avaliableSpace.append(i)
         return avaliableSpace
