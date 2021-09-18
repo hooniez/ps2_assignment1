@@ -651,11 +651,12 @@ class room:
 
 # Preparation for pool
 class pool(room):
+    pass
     # currently the room class has a property called connectedRooms, this array tells you all the rooms that are connected to this room (the array holds the index of these floors.rooms location in the rooms array)
     # the room class also has a flagging class called room.full, the system works by creating empty rooms as a first step, these rooms hold the dimentions that a room built in a slot will take, 
     # there shouldn't be a problem with creating larger pools if you set the room.full property to be true whenever you fill a new pool space.
     # secondly their is the room.buildUpAvaliablity this class makes sure the next floor built doesn't build on a room which is full (e.g. a pool) but can't be built on (because otherwise the building could hover above the pool)
-    # so this room.buildUpAvaliablity will also need to be set as false (it's defualt is false so you might be able to get away with it)
+    # so this room.buildUpAvaliablity will also need to be set as false for each pool section you add.
 
 # Used for testing 
 if __name__ == '__main__':
