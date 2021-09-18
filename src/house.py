@@ -2,15 +2,10 @@ import random
 class house_property:
     def __init__(self,location,width,depth):
         self.xstart = location.x+1 #starts 1x square away from player, can be changed later
-        # print('xstart is',self.xstart)
         self.base = location.y-1 #starts -1y square away from player
-        # print('base is',self.base)
         self.zstart = location.z+1 #starts 1z square away from player
-        # print('zstart is',self.zstart)
         self.xend = location.x+width+1 #extends width +1 from player in x direction
-        # print('xend is',self.xend)
         self.zend = location.z+depth+1 #extends width +1 from player in z direction
-        # print('zend is',self.zend)
         self.width = width #to simplify future calculations
         self.depth = depth
 
@@ -22,13 +17,12 @@ class house: #this is a house class has an array of floors
         self.prop = prop #the property
         self.floors = [] #all the house levels
         self.floorHeight = 5
-        self.roomSize = 8
+        self.roomSize = 10
         self.propertyEdge = 2
 
     def createFloor(self):
         print('self.floors length is: ',len(self.floors))
         if len(self.floors) == 0: #this is the first floor, so use default
-            # print('in self.floors')
             newFloor = floor(self.prop)
             newFloor.createEmptyFloor(self.propertyEdge,None,0,self.floorHeight,self.roomSize) #There is no below floor
             self.floors.append(newFloor)
@@ -75,8 +69,6 @@ class floor: #new class for floors
         self.floorHeight = floorHeight
         self.roomsperx = (self.prop.width - propertyEdge*2)//roomsize #calculates the number of rooms that will be created along the X direction
         self.roomsperz = (self.prop.depth - propertyEdge*2)//roomsize #calculates the number of rooms that will be created along the Z direction
-        # print('roomsperx',self.roomsperx) #for testing
-        # print('roomsperz',self.roomsperz) #for testing
         roomsizewidth = roomsize 
         roomsizedepth = roomsize
         for z in range(0,self.roomsperz): #following initalised empty rooms in an array. The rooms can later be filled with different types by calling functions in room class
@@ -92,16 +84,17 @@ class floor: #new class for floors
                                 x,z
                                 ) #coordinates in the grid
                 self.setConnectedRooms(newSpace)
-                # print('connected rooms array',newSpace.connectedRooms)
                 self.rooms.append(newSpace) #Coordinates of location in grid
-        # print('rooms length is:',len(self.rooms)) #for testing
                 
     def addRoom(self,mc,roomtype='basic'):
         print('called addRoom')
         empty = True
         builtRooms = []
         avaliableRooms = []
-        if(roomtype == 'pool' and self.floorLevel != 0):
+        if len(self.roomOrder)>len(self.rooms):
+            print('Already Max rooms at this level, room not added')
+            return
+        if roomtype == 'pool' and self.floorLevel != 0:
             print('Can only add pool to ground floor, room not added')
             return
         #first check if we are the ground Floor
@@ -115,23 +108,14 @@ class floor: #new class for floors
         if len(avaliableRooms) == 0: #No avaliable rooms
             print('No avaliable room positions at level:',self.floorLevel)
         else:
-            # print('avaliableRooms')
-            # for room in avaliableRooms:
-            #     print(room.roomPos)
             for room in avaliableRooms: #search through all rooms
                 if room.full == True: #if a room exists (anything that isn't air. Pool is a room Room is a room etc)
                     empty = False
                     builtRooms.append(room) #add the room to the builtrooms working array
-            # print('builtRooms')
-            # for room in builtRooms:
-            #     print(room.roomPos)
             if empty:
-                # print('the floor was empty')
                 currentRoom = avaliableRooms[random.randint(0,len(avaliableRooms)-1)] #If there are not yet any rooms select a random room as the starting room.
-                # print('build a room at x = ',currentRoom.gridCoord[0], 'z = ',currentRoom.gridCoord[1])
                 currentRoom.createRoom(mc,roomtype)
                 self.roomOrder.append((currentRoom.roomPos,None))
-                # print('first room selected was:',currentRoom.roomPos)
             else:
                 roomIndex = random.randint(0,len(builtRooms)-1)
                 fromRoom = builtRooms[roomIndex] #Select a room at random from the built rooms
@@ -146,19 +130,14 @@ class floor: #new class for floors
                         fromRoom = builtRooms[roomIndex]
                         builtRooms.pop(roomIndex)
                         builable = self.checkAvailableRooms(fromRoom) #List of avaliable rooms
-                # print('fromroom is:',fromRoom.roomPos)
                 randNum = random.randint(0,len(builable)-1) #room select to create that connects to the current Room
                 currentRoom = builable[randNum] #Select a room from avaliable Rooms at random
-                # print('build a room at x = ',currentRoom.gridCoord[0], 'z = ',currentRoom.gridCoord[1])
                 currentRoom.createRoom(mc,roomtype)
                 self.roomOrder.append((currentRoom.roomPos,fromRoom.roomPos))
             
     def addDoors(self, mc):
         doorTypes = ['fullwidth','single'] #Add new door types here to insert them into random selector
-        # print('room order is',self.roomOrder)
         for index in range(len(self.roomOrder)): #the position of the first room in rooms list
-            # print('this rooms location is:',self.roomOrder[index][0]) #first element in the roomOrder tuple
-            # print('this rooms creator is:',self.roomOrder[index][1]) #first element in the roomOrder tuple
             randomDoorType = doorTypes[random.randint(0,len(doorTypes)-1)]
             if(self.roomOrder[index][1]!=None): #if its not the first room
                 self.rooms[self.roomOrder[index][0]].createDoor(mc,self.rooms[self.roomOrder[index][1]],randomDoorType) #create a door between this room
@@ -166,7 +145,6 @@ class floor: #new class for floors
                 self.rooms[self.roomOrder[index][0]].createDoor(mc,None,randomDoorType)
 
     def addFrontDoor(self, mc):
-        # print('creating front door')
         for room in self.rooms: #search through all the rooms, add a door to the first full room
             if room.full: #this room is a full room
                 room.walls[2] = 2 #There is a door in the left position (2). Store it in the walls array
@@ -174,8 +152,6 @@ class floor: #new class for floors
                 break 
     
     def addStairs(self,mc):
-        # print('Entered addStairs as floor:',self.floorLevel)
-        # print('The floor below me is,',self.belowFloor)
         if(self.belowFloor == None): #If we are at the ground level
             #don't build any stairs
             pass
@@ -185,18 +161,13 @@ class floor: #new class for floors
             for room in self.rooms:
                 if room.full==True: #The room is full
                     avaliableRooms.append(room.roomPos) #add to list of avaliable Rooms
-            # print('AvaliableRooms in addStairs')
-            # print(avaliableRooms)
             randIndex = random.randint(0,len(avaliableRooms)-1) #select a random index from the avaliableRooms array
-            # print(f'{randIndex=}')
             currentRoom = self.rooms[avaliableRooms[randIndex]] #set the current room to the value at this index
-            # print('currentRoom pos is:',currentRoom.roomPos)
             belowRoom = self.belowFloor.rooms[avaliableRooms[randIndex]]
             avaliableRooms.pop(randIndex) #remove this value from the avaliable Rooms
             avaliableSpace = currentRoom.findStairSpaceOnRoomWalls(belowRoom)
             while len(avaliableSpace) == 0: #while their is no avaliable space
                 if(len(avaliableRooms) == 0): #check if their is any more possible rooms
-                    # print('cannot add staircase from ',self.belowFloor.floorLevel,'to',self.floorLevel)
                     return
                 else:
                     randIndex = random.randint(0,len(avaliableRooms)-1) #select a random index from the avaliableRooms array
@@ -298,6 +269,7 @@ class floor: #new class for floors
 
 class room:
     def __init__(self,xstart,ystart,zstart,xend,yend,zend,roomPos,gridX,gridZ,type=0):
+        self.color = random.randint(1,15) #choose a random color wool
         self.xstart = xstart
         self.ystart = ystart
         self.zstart = zstart
@@ -323,7 +295,6 @@ class room:
 
     def createRoom(self,mc,roomtype):
         print('Created a room of type',roomtype,'at location',self.roomPos)
-        # print('Created from from:',self.ystart,'to',self.yend)
         if(roomtype=='basic'):
             self.roomType = 'basic'
             self.createBox(mc)
@@ -345,7 +316,7 @@ class room:
                     self.yend,
                     self.zend,
                     35,
-                    self.roomPos+1 #Room Color Selection
+                    self.color #Room Color Selection
                     ) 
     def emptyBox(self,mc):  #Emptys the box of blocks used in createRoom
         mc.setBlocks(
@@ -366,7 +337,6 @@ class room:
             self.walls[currentLocation] = currentLocation
             doorLocationPrev = prevRoom.connectedRooms.index(self.roomPos) #find index of current room in the prevRoom room connectedRooms array
             prevRoom.walls[doorLocationPrev] = doorLocationPrev
-            # print('self.walls:',self.walls)
             self.drawDoor(mc,currentLocation, doortype)
     
     # Start implementation of staircase
@@ -386,7 +356,8 @@ class room:
                             belowRoom.xstart+stairWidth,
                             belowRoom.ystart+i,
                             belowRoom.zstart+roomHeight+1,
-                            45
+                            35, #wool brick type
+                            self.color
                             ) #brick
             #then create a hole in the floor
             mc.setBlocks(
@@ -409,7 +380,8 @@ class room:
                             belowRoom.xend-stairWidth,
                             belowRoom.ystart+i,
                             belowRoom.zstart+roomHeight+1,
-                            45
+                            35, #wool brick type
+                            self.color
                             ) #brick
             #then create a hole in the floor
             mc.setBlocks(
@@ -431,7 +403,8 @@ class room:
                             belowRoom.xstart+roomHeight+1,
                             belowRoom.ystart+i,
                             belowRoom.zstart+stairWidth,
-                            45
+                            35, #wool brick type
+                            self.color
                             ) #brick
             #then create a hole in the floor
             mc.setBlocks(
@@ -453,7 +426,8 @@ class room:
                             belowRoom.xstart+roomHeight+1,
                             belowRoom.ystart+i,
                             belowRoom.zend-stairWidth,
-                            45
+                            35, #wool brick type
+                            self.color
                             ) #brick
             #then create a hole in the floor
             mc.setBlocks(
@@ -667,9 +641,9 @@ if __name__ == '__main__':
     p = mc.player.getTilePos()
 
     houseLocation = p
-    prop = house_property(p,30,30)
+    prop = house_property(p,34,34)
     prop.drawProperty(mc)
-    roomSize = 8
+    roomSize = 10
     floorHeight = 5
 
     myHouse = house(prop)
@@ -677,6 +651,12 @@ if __name__ == '__main__':
     myHouse.createFloor() # specify the room size, currently only squares
     FirstFloorRoomNumber = 6
 
+    myHouse.floors[0].addRoom(mc)
+    myHouse.floors[0].addRoom(mc)
+    myHouse.floors[0].addRoom(mc)
+    myHouse.floors[0].addRoom(mc)
+    myHouse.floors[0].addRoom(mc)
+    myHouse.floors[0].addRoom(mc)
     myHouse.floors[0].addRoom(mc)
     myHouse.floors[0].addRoom(mc)
     myHouse.floors[0].addRoom(mc)
@@ -703,15 +683,15 @@ if __name__ == '__main__':
     myHouse.floors[2].addRoom(mc)
     myHouse.floors[2].addDoors(mc)
 
-    myHouse.createFloor()
-    myHouse.floors[3].addRoom(mc)
-    myHouse.floors[3].addRoom(mc)
-    myHouse.floors[3].addDoors(mc)
+    # myHouse.createFloor()
+    # myHouse.floors[3].addRoom(mc)
+    # myHouse.floors[3].addRoom(mc)
+    # myHouse.floors[3].addDoors(mc)
 
-    myHouse.createFloor()
-    myHouse.floors[4].addRoom(mc)
-    myHouse.floors[4].addRoom(mc)
-    myHouse.floors[4].addDoors(mc)
+    # myHouse.createFloor()
+    # myHouse.floors[4].addRoom(mc)
+    # myHouse.floors[4].addRoom(mc)
+    # myHouse.floors[4].addDoors(mc)
 
     myHouse.floors[0].addFrontDoor(mc)
     myHouse.addAllStairs(mc)
