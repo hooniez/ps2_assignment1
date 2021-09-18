@@ -54,6 +54,11 @@ class house: #this is a house class has an array of floors
     def addAllRoofs(self,mc):
         for floor in self.floors:
             floor.addRoof(mc)
+
+    def addFurniture(self,mc):
+        for floor in self.floors:
+            floor.addFurniture(mc)
+
  
 
 class floor: #new class for floors
@@ -68,6 +73,7 @@ class floor: #new class for floors
         #   0 | 3 | 6
         #       y
         ################
+        self.available_space = None
 
     def createEmptyFloor(self,propertyEdge,belowFloor,floorLevel,floorHeight,roomsize):
         self.floorLevel = floorLevel
@@ -286,6 +292,11 @@ class floor: #new class for floors
                     availableRooms.append(self.rooms[currentRoom.roomPos + self.roomsperx])
         return availableRooms #list of avaliable indexs
 
+    def addFurniture(self, mc):
+        for room in self.rooms:
+            if room.full:
+                room.scanRoom(mc)
+
 class room:
     def __init__(self,xstart,ystart,zstart,xend,yend,zend,roomPos,gridX,gridZ,type=0):
         self.color = random.randint(1,15) #choose a random color wool
@@ -318,6 +329,7 @@ class room:
             self.ystart,
             self.zstart + self.z_to_center
         )
+        self.avaialble_space = None
 
     def createRoom(self,mc,roomtype):
         print('Created a room of type',roomtype,'at location',self.roomPos)
@@ -391,8 +403,6 @@ class room:
         mc.setBlock(center_point_minus_x, torch, 2)
         mc.setBlock(center_point_plus_z, torch, 3)
         mc.setBlock(center_point_minus_z, torch, 4)
-
-    # def furnishBox(self, mc):
         
 
 
@@ -691,6 +701,18 @@ class room:
                         20
                         )
 
+    def scanRoom(self, mc):
+        space_above_floor = mc.getBlocks(
+            self.xstart + 1,
+            self.ystart + 1,
+            self.zstart + 1,
+            self.xend - 1,
+            self.ystart + 1,
+            self.zend - 1
+        )
+
+        self.avaialble_space
+
 
 
 # Preparation for pool
@@ -750,3 +772,4 @@ if __name__ == '__main__':
     myHouse.floors[0].addFrontDoor(mc)
     myHouse.addAllStairs(mc)
     myHouse.addAllWindows(mc)
+    myHouse.addFurniture(mc)
