@@ -349,3 +349,7 @@ it is trivial to work out the room which is below the current room
     Started testing with larger block sizing. Added color property to a room, set at houseCreation, staircases will take color of floor above them to help navigation
     No issues yet found with larger block sizes.
     Discovered and fixed a bug related to the adding more rooms to a level than can be be fitted in the space,
+
+18-09-2021: 12:06am
+    Fixed bugs related to the location of the staircase, now all stairs share a similar directional pattern, making them fit together.
+    Started working on implementing the building roof.
