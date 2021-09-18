@@ -311,6 +311,13 @@ class room:
         self.roomType = 'none'
         self.buildUpAvaliablity = False
         self.walls = [None,None,None,None] #bot,top,left,right (walls array now contains eveything that sticks to a wall, e.g stairs)
+        self.x_to_center = abs(self.xstart - self.xend) // 2 
+        self.z_to_center = abs(self.zstart - self.zend) // 2
+        self.center_point = Vec3(
+            self.xstart + self.x_to_center,
+            self.ystart,
+            self.zstart + self.z_to_center
+        )
 
     def createRoom(self,mc,roomtype):
         print('Created a room of type',roomtype,'at location',self.roomPos)
@@ -350,43 +357,42 @@ class room:
                     )
 
     def lightenBox(self, mc):
-        center_block = 20 
+        center_block = 209 
         torch = 50
-        x_to_center = abs(self.xstart - self.xend) // 2
-        z_to_center = abs(self.zstart - self.zend) // 2
-        middle_height = abs(self.ystart - self.yend) // 2
         
 
-        centerPoint = Vec3(
-            self.xstart + x_to_center,
+        center_point_ceiling = Vec3(
+            self.center_point.x,
             self.yend - 1,
-            self.zstart + z_to_center
+            self.center_point.z
         )
-        centerPoint_plus_x_middle_height = Vec3(
-            centerPoint.x + 1,
-            centerPoint.y,
-            centerPoint.z
+        center_point_plus_x = Vec3(
+            center_point_ceiling.x + 1,
+            center_point_ceiling.y,
+            center_point_ceiling.z
         )
-        centerPoint_minus_x_middle_height = Vec3(
-            centerPoint.x - 1,
-            centerPoint.y,
-            centerPoint.z
+        center_point_minus_x = Vec3(
+            center_point_ceiling.x - 1,
+            center_point_ceiling.y,
+            center_point_ceiling.z
         )
-        centerPoint_plus_z_middle_height = Vec3(
-            centerPoint.x,
-            centerPoint.y,
-            centerPoint.z + 1
+        center_point_plus_z = Vec3(
+            center_point_ceiling.x,
+            center_point_ceiling.y,
+            center_point_ceiling.z + 1
         )
-        centerPoint_minus_z_middle_height = Vec3(
-            centerPoint.x,
-            centerPoint.y,
-            centerPoint.z - 1 
+        center_point_minus_z = Vec3(
+            center_point_ceiling.x,
+            center_point_ceiling.y,
+            center_point_ceiling.z - 1
         )
-        mc.setBlock(centerPoint, center_block)
-        mc.setBlock(centerPoint_plus_x_middle_height, torch)
-        mc.setBlock(centerPoint_minus_x_middle_height, torch, 2)
-        mc.setBlock(centerPoint_plus_z_middle_height, torch, 3)
-        mc.setBlock(centerPoint_minus_z_middle_height, torch, 4)
+        mc.setBlock(center_point_ceiling, center_block)
+        mc.setBlock(center_point_plus_x, torch)
+        mc.setBlock(center_point_minus_x, torch, 2)
+        mc.setBlock(center_point_plus_z, torch, 3)
+        mc.setBlock(center_point_minus_z, torch, 4)
+
+    # def furnishBox(self, mc):
         
 
 
