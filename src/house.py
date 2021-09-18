@@ -350,12 +350,44 @@ class room:
                     )
 
     def lightenBox(self, mc):
-        glowstone = 89
+        center_block = 20 
+        torch = 50
         x_to_center = abs(self.xstart - self.xend) // 2
         z_to_center = abs(self.zstart - self.zend) // 2
+        middle_height = abs(self.ystart - self.yend) // 2
+        
 
-        centerPoint = Vec3(self.xstart + x_to_center, self.ystart, self.zstart + z_to_center)
-        mc.setBlock(centerPoint, glowstone)
+        centerPoint = Vec3(
+            self.xstart + x_to_center,
+            self.yend - 1,
+            self.zstart + z_to_center
+        )
+        centerPoint_plus_x_middle_height = Vec3(
+            centerPoint.x + 1,
+            centerPoint.y,
+            centerPoint.z
+        )
+        centerPoint_minus_x_middle_height = Vec3(
+            centerPoint.x - 1,
+            centerPoint.y,
+            centerPoint.z
+        )
+        centerPoint_plus_z_middle_height = Vec3(
+            centerPoint.x,
+            centerPoint.y,
+            centerPoint.z + 1
+        )
+        centerPoint_minus_z_middle_height = Vec3(
+            centerPoint.x,
+            centerPoint.y,
+            centerPoint.z - 1 
+        )
+        mc.setBlock(centerPoint, center_block)
+        mc.setBlock(centerPoint_plus_x_middle_height, torch)
+        mc.setBlock(centerPoint_minus_x_middle_height, torch, 2)
+        mc.setBlock(centerPoint_plus_z_middle_height, torch, 3)
+        mc.setBlock(centerPoint_minus_z_middle_height, torch, 4)
+        
 
 
     def createDoor(self,mc,prevRoom,doortype='single'):
