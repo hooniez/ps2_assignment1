@@ -629,6 +629,9 @@ class room:
                             )
 
     def createRoof(self,mc, adjustmentsArray,overlapArray):
+        print('overlapArray is:')
+        print('for ',self.roomPos)
+        print(overlapArray)
         roomWidth = abs(self.xstart-self.xend)
         roomDepth = abs(self.zstart-self.zend)
         for i in range(0,roomDepth//2,1):
@@ -641,6 +644,15 @@ class room:
                         self.zend-adjustmentsArray[3]-i+overlapArray[3],
                         45
                         )    
+            mc.setBlocks(
+                        self.xstart+adjustmentsArray[0],
+                        self.yend,
+                        self.zstart+adjustmentsArray[2],
+                        self.xend-adjustmentsArray[1],
+                        self.yend,
+                        self.zend-adjustmentsArray[3],
+                        45
+                        )       
 
     # MUST IMPLEMENT CHANGES TO PREVENT POOL CREATION ON ANYTHING OTHER THAN GROUND LEVEL
     def createPool(self,mc):
