@@ -345,4 +345,7 @@ it is trivial to work out the room which is below the current room
     Wide rooms created without problem, simply added a new door type of 'fullwidth' which draws a door that takes the entire width of the room.
     Very happy with implementation and simplicity of building double walls, will put a random chance generater in the wall building function to move between this type of door and regular doors.
     Random selection functionality created, uses an array which holds a list of possible door types and selects each with equal probability
-
+18-09-2021: 10:22am
+    Started testing with larger block sizing. Added color property to a room, set at houseCreation, staircases will take color of floor above them to help navigation
+    No issues yet found with larger block sizes.
+    Discovered and fixed a bug related to the adding more rooms to a level than can be be fitted in the space,
