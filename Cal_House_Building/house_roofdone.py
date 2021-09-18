@@ -1,6 +1,4 @@
 import random
-import numpy as np
-import pandas as pd
 from mcpi.vec3 import Vec3
 
 class house_property:
@@ -56,11 +54,6 @@ class house: #this is a house class has an array of floors
     def addAllRoofs(self,mc):
         for floor in self.floors:
             floor.addRoof(mc)
-
-    def addFurniture(self,mc):
-        for floor in self.floors:
-            floor.addFurniture(mc)
-
  
 
 class floor: #new class for floors
@@ -75,7 +68,6 @@ class floor: #new class for floors
         #   0 | 3 | 6
         #       y
         ################
-        self.available_space = None
 
     def createEmptyFloor(self,propertyEdge,belowFloor,floorLevel,floorHeight,roomsize):
         self.floorLevel = floorLevel
@@ -316,11 +308,6 @@ class floor: #new class for floors
                     availableRooms.append(self.rooms[currentRoom.roomPos + self.roomsperx])
         return availableRooms #list of avaliable indexs
 
-    def addFurniture(self, mc):
-        for room in self.rooms:
-            if room.full:
-                room.scanRoom(mc)
-
 class room:
     def __init__(self,xstart,ystart,zstart,xend,yend,zend,roomPos,gridX,gridZ,type=0):
         self.color = random.randint(1,15) #choose a random color wool
@@ -353,7 +340,6 @@ class room:
             self.ystart,
             self.zstart + self.z_to_center
         )
-        self.avaialble_space = None
 
     def createRoom(self,mc,roomtype):
         print('Created a room of type',roomtype,'at location',self.roomPos)
@@ -428,6 +414,8 @@ class room:
         mc.setBlock(center_point_minus_x, torch, 2)
         mc.setBlock(center_point_plus_z, torch, 3)
         mc.setBlock(center_point_minus_z, torch, 4)
+
+    # def furnishBox(self, mc):
         
 
     def createDoor(self,mc,prevRoom,doortype='single'):
@@ -641,6 +629,9 @@ class room:
                             )
 
     def createRoof(self,mc, adjustmentsArray,overlapArray):
+        print('overlapArray is:')
+        print('for ',self.roomPos)
+        print(overlapArray)
         roomWidth = abs(self.xstart-self.xend)
         roomDepth = abs(self.zstart-self.zend)
         for i in range(0,roomDepth//2,1):
@@ -653,6 +644,15 @@ class room:
                         self.zend-adjustmentsArray[3]-i+overlapArray[3],
                         45
                         )    
+            mc.setBlocks(
+                        self.xstart+adjustmentsArray[0],
+                        self.yend,
+                        self.zstart+adjustmentsArray[2],
+                        self.xend-adjustmentsArray[1],
+                        self.yend,
+                        self.zend-adjustmentsArray[3],
+                        45
+                        )       
 
     # MUST IMPLEMENT CHANGES TO PREVENT POOL CREATION ON ANYTHING OTHER THAN GROUND LEVEL
     def createPool(self,mc):
@@ -736,47 +736,6 @@ class room:
                         20
                         )
 
-    def scanRoom(self, mc):
-        space_above_floor = mc.getBlocks(
-            self.xstart + 1,
-            self.ystart + 1,
-            self.zstart + 1,
-            self.xend - 1,
-            self.ystart + 1,
-            self.zend - 1
-        )
-
-        space_of_the_floor = mc.getBlocks(
-            self.xstart + 1,
-            self.ystart,
-            self.zstart + 1,
-            self.xend - 1,
-            self.ystart,
-            self.zend - 1
-        )
-
-        idx = pd.MultiIndex.from_product([np.arange(self.xstart + 1, self.xend), np.arange(self.zstart + 1, self.zend)])
-        idx.set_names(['x', 'z'], inplace=True)
-
-        space_above_floor = np.array(list(space_above_floor))
-        space_of_the_floor = np.array(list(space_of_the_floor))
-
-        df = pd.DataFrame({
-            'space_above': space_above_floor,  
-            'space_of': space_of_the_floor}, index=idx)
-
-        df = df[(df['space_of'] > 0) & (df['space_above'] == 0)]
-        half_index = df.count() // 2
-        # 
-        # mc.setBlock(df.iloc[half_index].index[0][0], self.ystart + 1, df.iloc[half_index].index[0][1], 218)
-        
-        
-        for idx, df_select in df.groupby(level=[0, 1]):
-            mc.setBlock(idx[0], self.ystart + 1, idx[1], 78)
-            
-
-
-
 
 
 # Preparation for pool
@@ -840,4 +799,4 @@ if __name__ == '__main__':
     myHouse.floors[0].addFrontDoor(mc)
     myHouse.addAllStairs(mc)
     myHouse.addAllWindows(mc)
-    myHouse.addFurniture(mc)
+    myHouse.addAllRoofs(mc)
