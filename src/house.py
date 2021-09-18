@@ -352,10 +352,10 @@ class room:
                 mc.setBlocks(
                             belowRoom.xstart+1,
                             belowRoom.ystart+i,
-                            belowRoom.zstart+i+1,
+                            belowRoom.zstart+1,
                             belowRoom.xstart+stairWidth,
                             belowRoom.ystart+i,
-                            belowRoom.zstart+roomHeight+1,
+                            belowRoom.zstart+roomHeight+1-i,
                             35, #wool brick type
                             self.color
                             ) #brick
@@ -376,10 +376,10 @@ class room:
                 mc.setBlocks(
                             belowRoom.xend-1,
                             belowRoom.ystart+i,
-                            belowRoom.zstart+i+1,
+                            belowRoom.zend-roomHeight+i-1,
                             belowRoom.xend-stairWidth,
                             belowRoom.ystart+i,
-                            belowRoom.zstart+roomHeight+1,
+                            belowRoom.zend-1,
                             35, #wool brick type
                             self.color
                             ) #brick
@@ -387,20 +387,20 @@ class room:
             mc.setBlocks(
                         belowRoom.xend-1,
                         belowRoom.yend,
-                        belowRoom.zstart+2,
+                        belowRoom.zend-roomHeight,
                         belowRoom.xend-stairWidth,
                         belowRoom.yend,
-                        belowRoom.zend+(roomHeight-roomDepth),
+                        belowRoom.zend-2,
                         0 #air
                         )
         #door is on left
         if(randSpace == 2):
             for i in range(1,roomHeight+1):
                 mc.setBlocks(
-                            belowRoom.xstart+i+1,
+                            belowRoom.xstart+i+(roomWidth-roomHeight)-1,
                             belowRoom.ystart+i,
                             belowRoom.zstart+1,
-                            belowRoom.xstart+roomHeight+1,
+                            belowRoom.xend-1,
                             belowRoom.ystart+i,
                             belowRoom.zstart+stairWidth,
                             35, #wool brick type
@@ -408,10 +408,10 @@ class room:
                             ) #brick
             #then create a hole in the floor
             mc.setBlocks(
-                        belowRoom.xstart+2,
+                        belowRoom.xend-roomHeight,
                         belowRoom.yend,
                         belowRoom.zstart+1,
-                        belowRoom.xend+(roomHeight-roomWidth),
+                        belowRoom.xend-2,
                         belowRoom.yend,
                         belowRoom.zstart+stairWidth,
                         0
@@ -420,10 +420,10 @@ class room:
         if(randSpace == 3):
             for i in range(1,roomHeight+1):
                 mc.setBlocks(
-                            belowRoom.xstart+i+1,
+                            belowRoom.xstart+1,
                             belowRoom.ystart+i,
                             belowRoom.zend-1,
-                            belowRoom.xstart+roomHeight+1,
+                            belowRoom.xstart+roomHeight+1-i,
                             belowRoom.ystart+i,
                             belowRoom.zend-stairWidth,
                             35, #wool brick type
@@ -652,17 +652,6 @@ if __name__ == '__main__':
     FirstFloorRoomNumber = 6
 
     myHouse.floors[0].addRoom(mc)
-    myHouse.floors[0].addRoom(mc)
-    myHouse.floors[0].addRoom(mc)
-    myHouse.floors[0].addRoom(mc)
-    myHouse.floors[0].addRoom(mc)
-    myHouse.floors[0].addRoom(mc)
-    myHouse.floors[0].addRoom(mc)
-    myHouse.floors[0].addRoom(mc)
-    myHouse.floors[0].addRoom(mc)
-    myHouse.floors[0].addRoom(mc)
-    myHouse.floors[0].addRoom(mc)
-    myHouse.floors[0].addRoom(mc)
     myHouse.floors[0].addDoors(mc)
     print('---------')
 
@@ -670,28 +659,23 @@ if __name__ == '__main__':
     myHouse.createFloor()
 
     myHouse.floors[1].addRoom(mc)
-    myHouse.floors[1].addRoom(mc)
-    myHouse.floors[1].addRoom(mc)
-    myHouse.floors[1].addRoom(mc)
-    myHouse.floors[1].addRoom(mc)
+
     myHouse.floors[1].addDoors(mc)
 
     myHouse.createFloor()
     myHouse.floors[2].addRoom(mc)
-    myHouse.floors[2].addRoom(mc)
-    myHouse.floors[2].addRoom(mc)
-    myHouse.floors[2].addRoom(mc)
+
     myHouse.floors[2].addDoors(mc)
 
-    # myHouse.createFloor()
-    # myHouse.floors[3].addRoom(mc)
-    # myHouse.floors[3].addRoom(mc)
-    # myHouse.floors[3].addDoors(mc)
+    myHouse.createFloor()
+    myHouse.floors[3].addRoom(mc)
 
-    # myHouse.createFloor()
-    # myHouse.floors[4].addRoom(mc)
-    # myHouse.floors[4].addRoom(mc)
-    # myHouse.floors[4].addDoors(mc)
+    myHouse.floors[3].addDoors(mc)
+
+    myHouse.createFloor()
+    myHouse.floors[4].addRoom(mc)
+
+    myHouse.floors[4].addDoors(mc)
 
     myHouse.floors[0].addFrontDoor(mc)
     myHouse.addAllStairs(mc)
