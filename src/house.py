@@ -1,4 +1,6 @@
 import random
+from mcpi.vec3 import Vec3
+
 class house_property:
     def __init__(self,location,width,depth):
         self.xstart = location.x+1 #starts 1x square away from player, can be changed later
@@ -316,6 +318,7 @@ class room:
             self.roomType = 'basic'
             self.createBox(mc)
             self.emptyBox(mc)
+            self.lightenBox(mc)
             self.full = True #There is now something in the room
             self.buildUpAvaliablity = True
         if(roomtype=='pool'):
@@ -345,6 +348,47 @@ class room:
                     self.zend-1,
                     0
                     )
+
+    def lightenBox(self, mc):
+        center_block = 20 
+        torch = 50
+        x_to_center = abs(self.xstart - self.xend) // 2
+        z_to_center = abs(self.zstart - self.zend) // 2
+        middle_height = abs(self.ystart - self.yend) // 2
+        
+
+        centerPoint = Vec3(
+            self.xstart + x_to_center,
+            self.yend - 1,
+            self.zstart + z_to_center
+        )
+        centerPoint_plus_x_middle_height = Vec3(
+            centerPoint.x + 1,
+            centerPoint.y,
+            centerPoint.z
+        )
+        centerPoint_minus_x_middle_height = Vec3(
+            centerPoint.x - 1,
+            centerPoint.y,
+            centerPoint.z
+        )
+        centerPoint_plus_z_middle_height = Vec3(
+            centerPoint.x,
+            centerPoint.y,
+            centerPoint.z + 1
+        )
+        centerPoint_minus_z_middle_height = Vec3(
+            centerPoint.x,
+            centerPoint.y,
+            centerPoint.z - 1 
+        )
+        mc.setBlock(centerPoint, center_block)
+        mc.setBlock(centerPoint_plus_x_middle_height, torch)
+        mc.setBlock(centerPoint_minus_x_middle_height, torch, 2)
+        mc.setBlock(centerPoint_plus_z_middle_height, torch, 3)
+        mc.setBlock(centerPoint_minus_z_middle_height, torch, 4)
+        
+
 
     def createDoor(self,mc,prevRoom,doortype='single'):
         if(prevRoom is None): #Do nothing
