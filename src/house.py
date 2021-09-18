@@ -48,6 +48,10 @@ class house: #this is a house class has an array of floors
     def addAllWindows(self,mc):
         for floor in self.floors:
             floor.addWindows(mc)
+
+    def addAllRoofs(self,mc):
+        for floor in self.floors:
+            floor.addRoof(mc)
  
 
 class floor: #new class for floors
@@ -66,6 +70,7 @@ class floor: #new class for floors
     def createEmptyFloor(self,propertyEdge,belowFloor,floorLevel,floorHeight,roomsize):
         self.floorLevel = floorLevel
         self.belowFloor = belowFloor
+        self.aboveFloor = None
         self.floorHeight = floorHeight
         self.roomsperx = (self.prop.width - propertyEdge*2)//roomsize #calculates the number of rooms that will be created along the X direction
         self.roomsperz = (self.prop.depth - propertyEdge*2)//roomsize #calculates the number of rooms that will be created along the Z direction
@@ -85,6 +90,11 @@ class floor: #new class for floors
                                 ) #coordinates in the grid
                 self.setConnectedRooms(newSpace)
                 self.rooms.append(newSpace) #Coordinates of location in grid
+        if(self.belowFloor == None): #Base case, ground floor
+            pass
+        else:
+            print('self is',self)
+            self.belowFloor.aboveFloor = self
                 
     def addRoom(self,mc,roomtype='basic'):
         print('called addRoom')
@@ -104,7 +114,6 @@ class floor: #new class for floors
             for room in self.belowFloor.rooms:
                 if room.buildUpAvaliablity == True: #A room can be built up from
                     avaliableRooms.append(self.rooms[room.roomPos]) #add to the avaliableRooms array
-                    # print('can build above location',room.roomPos)
         if len(avaliableRooms) == 0: #No avaliable rooms
             print('No avaliable room positions at level:',self.floorLevel)
         else:
@@ -193,6 +202,14 @@ class floor: #new class for floors
                         if(currentRoom.walls[index] == None):
                             currentRoom.createWindow(mc,index)
 
+    def addRoof(self,mc):
+        for currentRoom in self.rooms: #Search through all the rooms
+            if currentRoom.full == True: #The room is filled
+                #Look above
+                above = self.aboveFloor
+                if self.aboveFloor.rooms[currentRoom.roomPos]: #if the above room
+                    pass
+                #Look at the room index in the above room.
 
     def setConnectedRooms(self,emptyRoom):
         arrayLocationX = emptyRoom.gridCoord[0]
@@ -539,6 +556,9 @@ class room:
                             0
                             )
 
+    def createRoof(self,mc):
+        pass
+
     # MUST IMPLEMENT CHANGES TO PREVENT POOL CREATION ON ANYTHING OTHER THAN GROUND LEVEL
     def createPool(self,mc):
         pooldepth = 4
@@ -620,6 +640,7 @@ class room:
                         self.zend,
                         20
                         )
+
 
 
 # Preparation for pool
