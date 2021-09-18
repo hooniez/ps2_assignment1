@@ -347,7 +347,7 @@ class room:
         roomDepth = abs(self.zstart-self.zend)
         roomHeight = abs(self.ystart-self.yend)
         #door is on bot
-        if(randSpace == 0):
+        if(randSpace == 0): #Correct
             for i in range(1,roomHeight+1):
                 mc.setBlocks(
                             belowRoom.xstart+1,
@@ -362,16 +362,15 @@ class room:
             #then create a hole in the floor
             mc.setBlocks(
                         belowRoom.xstart+1,
-                        belowRoom.yend,
-                        belowRoom.zstart+2,\
+                        belowRoom.yend, #Dont change
+                        belowRoom.zstart+2,
                         belowRoom.xstart+stairWidth,
-                        belowRoom.yend,
-                        belowRoom.zend+(roomHeight-roomDepth),
+                        belowRoom.yend, #Dont change
+                        belowRoom.zstart+roomHeight,
                         0 #air
                         )
-
         #door is on top
-        if(randSpace == 1):
+        if(randSpace == 1): #Correct
             for i in range(1,roomHeight+1):
                 mc.setBlocks(
                             belowRoom.xend-1,
@@ -394,10 +393,10 @@ class room:
                         0 #air
                         )
         #door is on left
-        if(randSpace == 2):
+        if(randSpace == 2): #Correct
             for i in range(1,roomHeight+1):
                 mc.setBlocks(
-                            belowRoom.xstart+i+(roomWidth-roomHeight)-1,
+                            belowRoom.xend+i-roomHeight-1,
                             belowRoom.ystart+i,
                             belowRoom.zstart+1,
                             belowRoom.xend-1,
@@ -417,7 +416,7 @@ class room:
                         0
                         )
         #door is on right
-        if(randSpace == 3):
+        if(randSpace == 3): #Correct
             for i in range(1,roomHeight+1):
                 mc.setBlocks(
                             belowRoom.xstart+1,
@@ -434,7 +433,7 @@ class room:
                         belowRoom.xstart+2,
                         belowRoom.yend,
                         belowRoom.zend-1,
-                        belowRoom.xend+(roomHeight-roomWidth),
+                        belowRoom.xstart+roomHeight,
                         belowRoom.yend,
                         belowRoom.zend-stairWidth,
                         0
