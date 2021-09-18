@@ -7,7 +7,7 @@ import mcpi.block as block
 from mcpi.minecraft import Minecraft
 from mcpi.vec3 import Vec3
 from foundation import Foundation
-from house import House
+from house import house
 
 SPAWN_DISTANCE_FROM_PLAYER = 10
 
@@ -156,29 +156,29 @@ class Village():
     def generateHouses(self):
         for foundation in self.foundations:
             foundation.setBase(mc)
-            house = House(foundation)
-            self.houses.append(house)
-            house.createFloor()
-            house.floors[0].addRoom(mc)
-            house.floors[0].addRoom(mc)
-            house.floors[0].addRoom(mc)
-            house.floors[0].addRoom(mc)
-            house.floors[0].addRoom(mc)
-            house.floors[0].addDoors(mc)
-            house.floors[0].addFrontDoor(mc)
+            house_ = house(foundation)
+            self.houses.append(house_)
+            house_.createFloor()
+            house_.floors[0].addRoom(mc)
+            house_.floors[0].addRoom(mc)
+            house_.floors[0].addRoom(mc)
+            house_.floors[0].addRoom(mc)
+            house_.floors[0].addRoom(mc)
+            house_.floors[0].addDoors(mc)
+            house_.floors[0].addFrontDoor(mc)
             print('---------')
-            house.createFloor()
-            house.floors[1].addRoom(mc)
-            house.floors[1].addRoom(mc)
-            house.floors[1].addRoom(mc)
-            house.floors[1].addDoors(mc)
+            house_.createFloor()
+            house_.floors[1].addRoom(mc)
+            house_.floors[1].addRoom(mc)
+            house_.floors[1].addRoom(mc)
+            house_.floors[1].addDoors(mc)
             
-            house.createFloor()
-            house.floors[2].addRoom(mc)
-            house.floors[2].addRoom(mc)
-            house.floors[2].addDoors(mc)
+            house_.createFloor()
+            house_.floors[2].addRoom(mc)
+            house_.floors[2].addRoom(mc)
+            house_.floors[2].addDoors(mc)
             
-            house.addAllStairs(mc)
+            house_.addAllStairs(mc)
 
             
             

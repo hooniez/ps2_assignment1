@@ -1,4 +1,6 @@
 import random
+from mcpi.vec3 import Vec3
+
 class house_property:
     def __init__(self,location,width,depth):
         self.xstart = location.x+1 #starts 1x square away from player, can be changed later
@@ -316,6 +318,7 @@ class room:
             self.roomType = 'basic'
             self.createBox(mc)
             self.emptyBox(mc)
+            self.lightenBox(mc)
             self.full = True #There is now something in the room
             self.buildUpAvaliablity = True
         if(roomtype=='pool'):
@@ -345,6 +348,15 @@ class room:
                     self.zend-1,
                     0
                     )
+
+    def lightenBox(self, mc):
+        glowstone = 89
+        x_to_center = abs(self.xstart - self.xend) // 2
+        z_to_center = abs(self.zstart - self.zend) // 2
+
+        centerPoint = Vec3(self.xstart + x_to_center, self.ystart, self.zstart + z_to_center)
+        mc.setBlock(centerPoint, glowstone)
+
 
     def createDoor(self,mc,prevRoom,doortype='single'):
         if(prevRoom is None): #Do nothing
