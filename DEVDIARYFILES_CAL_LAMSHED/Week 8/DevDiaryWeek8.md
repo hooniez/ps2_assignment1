@@ -353,3 +353,7 @@ it is trivial to work out the room which is below the current room
 18-09-2021: 12:06am
     Fixed bugs related to the location of the staircase, now all stairs share a similar directional pattern, making them fit together.
     Started working on implementing the building roof, added a property to floor which points to the floor above it.
+
+18-09-2021 7:30
+    Continued working on building roof, noticed a problem with room overlap when the roof is not building on the top story.
+    Created a class to 

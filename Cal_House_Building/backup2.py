@@ -1,6 +1,4 @@
 import random
-import numpy as np
-import pandas as pd
 from mcpi.vec3 import Vec3
 
 class house_property:
@@ -56,11 +54,6 @@ class house: #this is a house class has an array of floors
     def addAllRoofs(self,mc):
         for floor in self.floors:
             floor.addRoof(mc)
-
-    def addFurniture(self,mc):
-        for floor in self.floors:
-            floor.addFurniture(mc)
-
  
 
 class floor: #new class for floors
@@ -75,7 +68,6 @@ class floor: #new class for floors
         #   0 | 3 | 6
         #       y
         ################
-        self.available_space = None
 
     def createEmptyFloor(self,propertyEdge,belowFloor,floorLevel,floorHeight,roomsize):
         self.floorLevel = floorLevel
@@ -213,24 +205,22 @@ class floor: #new class for floors
                             currentRoom.createWindow(mc,index)
 
     def addRoof(self,mc):
-        infoArrays = ([0,0,0,0],[0,0,0,0])
         for currentRoom in self.rooms: #Search through all the rooms
             if currentRoom.full == True: #The room is filled
                 #Look above
                 above = self.aboveFloor
                 if self.aboveFloor == None: #if there is no above floor
-                    currentRoom.createRoof(mc,infoArrays[0],infoArrays[1]) #create a roof
+                    currentRoom.createRoof(mc,[0,0,0,0]) #create a roof
                 else:
                     if self.aboveFloor.rooms[currentRoom.roomPos].full == False: #There is a floor above, but nothing above this room
                         aboveRoom = self.aboveFloor.rooms[currentRoom.roomPos]
-                        infoArrays = self.roofAdjustments(aboveRoom)
-                        currentRoom.createRoof(mc,infoArrays[0],infoArrays[1])  
+                        adjustmentArray = self.roofAdjustments(aboveRoom)
+                        currentRoom.createRoof(mc,adjustmentArray)  
                     #build a roof over this floor.
                     
                 #Look at the room index in the above room.
     def roofAdjustments(self,aboveRoom):
         adjustmentsArray = [0,0,0,0]
-        overlapArray = [0,0,0,0]
         for index, connected in enumerate(aboveRoom.connectedRooms):
             if connected == None:
                 pass
@@ -238,10 +228,11 @@ class floor: #new class for floors
             else:
                 if self.rooms[connected].full == True:
                     adjustmentsArray[index] = 1
-                    if self.aboveFloor.rooms[self.rooms[connected].roomPos].full == False:
-                        overlapArray[index] = 1
                     #its empty
-        return adjustmentsArray,overlapArray
+        return adjustmentsArray
+
+
+        return adjustmentsArray
 
 
     def setConnectedRooms(self,emptyRoom):
@@ -316,11 +307,6 @@ class floor: #new class for floors
                     availableRooms.append(self.rooms[currentRoom.roomPos + self.roomsperx])
         return availableRooms #list of avaliable indexs
 
-    def addFurniture(self, mc):
-        for room in self.rooms:
-            if room.full:
-                room.scanRoom(mc)
-
 class room:
     def __init__(self,xstart,ystart,zstart,xend,yend,zend,roomPos,gridX,gridZ,type=0):
         self.color = random.randint(1,15) #choose a random color wool
@@ -346,14 +332,6 @@ class room:
         self.roomType = 'none'
         self.buildUpAvaliablity = False
         self.walls = [None,None,None,None] #bot,top,left,right (walls array now contains eveything that sticks to a wall, e.g stairs)
-        self.x_to_center = abs(self.xstart - self.xend) // 2 
-        self.z_to_center = abs(self.zstart - self.zend) // 2
-        self.center_point = Vec3(
-            self.xstart + self.x_to_center,
-            self.ystart,
-            self.zstart + self.z_to_center
-        )
-        self.avaialble_space = None
 
     def createRoom(self,mc,roomtype):
         print('Created a room of type',roomtype,'at location',self.roomPos)
@@ -394,40 +372,42 @@ class room:
 
     # creates a light in the middle of the room (helps with dark rooms)
     def lightenBox(self, mc):
-        center_block = 209 
+        center_block = 20 
         torch = 50
-        
+        x_to_center = abs(self.xstart - self.xend) // 2
+        z_to_center = abs(self.zstart - self.zend) // 2
+        middle_height = abs(self.ystart - self.yend) // 2
 
-        center_point_ceiling = Vec3(
-            self.center_point.x,
+        centerPoint = Vec3(
+            self.xstart + x_to_center,
             self.yend - 1,
-            self.center_point.z
+            self.zstart + z_to_center
         )
-        center_point_plus_x = Vec3(
-            center_point_ceiling.x + 1,
-            center_point_ceiling.y,
-            center_point_ceiling.z
+        centerPoint_plus_x_middle_height = Vec3(
+            centerPoint.x + 1,
+            centerPoint.y,
+            centerPoint.z
         )
-        center_point_minus_x = Vec3(
-            center_point_ceiling.x - 1,
-            center_point_ceiling.y,
-            center_point_ceiling.z
+        centerPoint_minus_x_middle_height = Vec3(
+            centerPoint.x - 1,
+            centerPoint.y,
+            centerPoint.z
         )
-        center_point_plus_z = Vec3(
-            center_point_ceiling.x,
-            center_point_ceiling.y,
-            center_point_ceiling.z + 1
+        centerPoint_plus_z_middle_height = Vec3(
+            centerPoint.x,
+            centerPoint.y,
+            centerPoint.z + 1
         )
-        center_point_minus_z = Vec3(
-            center_point_ceiling.x,
-            center_point_ceiling.y,
-            center_point_ceiling.z - 1
+        centerPoint_minus_z_middle_height = Vec3(
+            centerPoint.x,
+            centerPoint.y,
+            centerPoint.z - 1 
         )
-        mc.setBlock(center_point_ceiling, center_block)
-        mc.setBlock(center_point_plus_x, torch)
-        mc.setBlock(center_point_minus_x, torch, 2)
-        mc.setBlock(center_point_plus_z, torch, 3)
-        mc.setBlock(center_point_minus_z, torch, 4)
+        mc.setBlock(centerPoint, center_block)
+        mc.setBlock(centerPoint_plus_x_middle_height, torch)
+        mc.setBlock(centerPoint_minus_x_middle_height, torch, 2)
+        mc.setBlock(centerPoint_plus_z_middle_height, torch, 3)
+        mc.setBlock(centerPoint_minus_z_middle_height, torch, 4)
         
 
     def createDoor(self,mc,prevRoom,doortype='single'):
@@ -640,31 +620,38 @@ class room:
                             0
                             )
 
-    def createRoof(self,mc, adjustmentsArray,overlapArray):
-        print('overlapArray is:')
-        print('for ',self.roomPos)
-        print(overlapArray)
+    def createRoof(self,mc, adjustmentsArray):
+        print('adjustmentsArray is:')
+        print(adjustmentsArray)
         roomWidth = abs(self.xstart-self.xend)
         roomDepth = abs(self.zstart-self.zend)
-        for i in range(0,roomDepth//2,1):
-            mc.setBlocks(
-                        self.xstart+i+adjustmentsArray[0]-overlapArray[0],
-                        self.yend,
-                        self.zstart+adjustmentsArray[2]+i-overlapArray[2],
-                        self.xend-i-adjustmentsArray[1]+overlapArray[1],
-                        self.yend+i,
-                        self.zend-adjustmentsArray[3]-i+overlapArray[3],
-                        45
-                        )    
-            mc.setBlocks(
-                        self.xstart+adjustmentsArray[0],
-                        self.yend,
-                        self.zstart+adjustmentsArray[2],
-                        self.xend-adjustmentsArray[1],
-                        self.yend,
-                        self.zend-adjustmentsArray[3],
-                        45
-                        )       
+        minimum = roomWidth
+        if roomWidth < roomDepth:
+            minimum = roomWidth-(adjustmentsArray[0]+adjustmentsArray[1])
+        else:
+            minimum = roomDepth-(adjustmentsArray[2]+adjustmentsArray[3])
+        if(roomWidth<=roomDepth):
+            for i in range(0,2):
+                mc.setBlocks(
+                            self.xstart+i+adjustmentsArray[0],
+                            self.yend,
+                            self.zstart+adjustmentsArray[2],
+                            self.xend-i-adjustmentsArray[1],
+                            self.yend+i,
+                            self.zend-adjustmentsArray[3],
+                            45
+                            )
+        else:
+            for i in range(0,2):
+                mc.setBlocks(
+                            self.xstart+adjustmentsArray[0],
+                            self.yend,
+                            self.zstart+i+adjustmentsArray[2],
+                            self.xend-adjustmentsArray[1],
+                            self.yend+i,
+                            self.zend-i-adjustmentsArray[3],
+                            45
+                            )            
 
     # MUST IMPLEMENT CHANGES TO PREVENT POOL CREATION ON ANYTHING OTHER THAN GROUND LEVEL
     def createPool(self,mc):
@@ -748,47 +735,6 @@ class room:
                         20
                         )
 
-    def scanRoom(self, mc):
-        space_above_floor = mc.getBlocks(
-            self.xstart + 1,
-            self.ystart + 1,
-            self.zstart + 1,
-            self.xend - 1,
-            self.ystart + 1,
-            self.zend - 1
-        )
-
-        space_of_the_floor = mc.getBlocks(
-            self.xstart + 1,
-            self.ystart,
-            self.zstart + 1,
-            self.xend - 1,
-            self.ystart,
-            self.zend - 1
-        )
-
-        idx = pd.MultiIndex.from_product([np.arange(self.xstart + 1, self.xend), np.arange(self.zstart + 1, self.zend)])
-        idx.set_names(['x', 'z'], inplace=True)
-
-        space_above_floor = np.array(list(space_above_floor))
-        space_of_the_floor = np.array(list(space_of_the_floor))
-
-        df = pd.DataFrame({
-            'space_above': space_above_floor,  
-            'space_of': space_of_the_floor}, index=idx)
-
-        df = df[(df['space_of'] > 0) & (df['space_above'] == 0)]
-        half_index = df.count() // 2
-        # print(f'half index:{df.iloc[half_index].index[0]}')
-        # mc.setBlock(df.iloc[half_index].index[0][0], self.ystart + 1, df.iloc[half_index].index[0][1], 218)
-        
-        
-        for idx, df_select in df.groupby(level=[0, 1]):
-            mc.setBlock(idx[0], self.ystart + 1, idx[1], 78)
-            
-
-
-
 
 
 # Preparation for pool
@@ -852,4 +798,4 @@ if __name__ == '__main__':
     myHouse.floors[0].addFrontDoor(mc)
     myHouse.addAllStairs(mc)
     myHouse.addAllWindows(mc)
-    myHouse.addFurniture(mc)
+    myHouse.addAllRoofs(mc)
