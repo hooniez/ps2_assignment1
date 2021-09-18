@@ -356,4 +356,7 @@ it is trivial to work out the room which is below the current room
 
 18-09-2021 7:30
     Continued working on building roof, noticed a problem with room overlap when the roof is not building on the top story.
-    Created a class to 
+    Created a class to draw roof
+18-09-2021 11:00
+    Finished implementation of roof class, had problems with having the roofs adjusted their size depending on if they have rooms next to them.
+    This was needed to prevent the roofs overlapping with the rooms. Created a helper method to solve the problem.
