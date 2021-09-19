@@ -737,43 +737,57 @@ class room:
                         )
 
     def scanRoom(self, mc):
-        space_above_floor = mc.getBlocks(
+        space_above_floor = np.array(list(mc.getBlocks(
             self.xstart + 1,
             self.ystart + 1,
             self.zstart + 1,
             self.xend - 1,
             self.ystart + 1,
             self.zend - 1
-        )
+        )))
 
-        space_of_the_floor = mc.getBlocks(
+        space_of_the_floor = np.array(list(mc.getBlocks(
             self.xstart + 1,
             self.ystart,
             self.zstart + 1,
             self.xend - 1,
             self.ystart,
             self.zend - 1
-        )
+        )))
 
         idx = pd.MultiIndex.from_product([np.arange(self.xstart + 1, self.xend), np.arange(self.zstart + 1, self.zend)])
         idx.set_names(['x', 'z'], inplace=True)
 
-        space_above_floor = np.array(list(space_above_floor))
-        space_of_the_floor = np.array(list(space_of_the_floor))
-
-        df = pd.DataFrame({
-            'space_above': space_above_floor,  
-            'space_of': space_of_the_floor}, index=idx)
-
-        df = df[(df['space_of'] > 0) & (df['space_above'] == 0)]
-        half_index = df.count() // 2
-        # 
-        # mc.setBlock(df.iloc[half_index].index[0][0], self.ystart + 1, df.iloc[half_index].index[0][1], 218)
+        space_above_floor_boolean = space_above_floor == 0
+        space_of_the_floor_boolean = space_of_the_floor != 0
+        space_boolean = np.minimum(space_above_floor_boolean, space_of_the_floor_boolean)
         
+        if np.all(space_boolean):
+            pass
+        else:
+            self.furnishRoomWithStairs(mc, idx, space_boolean)
+    
+    def furnishRoomWithStairs(self, mc, idx, space_boolean):
+        randomSingleBlocks = np.array([91, 92, 118, 117, 116, 154, 218, 63, 145, 146, 84, 58, 54, 25])
         
+
+        df = pd.DataFrame({'available space': space_boolean}, index=idx)
+    
+        df = df[df['available space'] == True]
+
         for idx, df_select in df.groupby(level=[0, 1]):
-            mc.setBlock(idx[0], self.ystart + 1, idx[1], 78)
+            randnum = np.random.randint(0, 11)
+            if randnum == 3:
+                randomBlock = np.random.choice(randomSingleBlocks)
+                mc.setBlock(idx[0], self.ystart + 1, idx[1], randomBlock)
+
+            else:
+                mc.setBlock(idx[0], self.ystart + 1, idx[1], 171)
             
+
+        df = df.unstack(level=1)
+        print(df)
+        print(df.isna().sum())
 
 
 
