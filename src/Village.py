@@ -165,7 +165,7 @@ class Village():
             house_.floors[0].addRoom(mc)
             house_.floors[0].addRoom(mc)
             house_.floors[0].addDoors(mc)
-            house_.floors[0].addFrontDoor(mc)
+
             print('---------')
             house_.createFloor()
             house_.floors[1].addRoom(mc)
@@ -177,8 +177,11 @@ class Village():
             house_.floors[2].addRoom(mc)
             house_.floors[2].addRoom(mc)
             house_.floors[2].addDoors(mc)
-            
+
+            house_.floors[0].addFrontDoor(mc)
             house_.addAllStairs(mc)
+            hourse_.addAllWindows(mc)
+            house_.addAllRoofs(mc)
 
             
             
