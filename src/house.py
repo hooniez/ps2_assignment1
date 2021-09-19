@@ -1,4 +1,6 @@
 import random
+import numpy as np
+import pandas as pd
 from mcpi.vec3 import Vec3
 
 class house_property:
@@ -54,6 +56,11 @@ class house: #this is a house class has an array of floors
     def addAllRoofs(self,mc):
         for floor in self.floors:
             floor.addRoof(mc)
+
+    def addFurniture(self,mc):
+        for floor in self.floors:
+            floor.addFurniture(mc)
+
  
 
 class floor: #new class for floors
@@ -68,6 +75,7 @@ class floor: #new class for floors
         #   0 | 3 | 6
         #       y
         ################
+        self.available_space = None
 
     def createEmptyFloor(self,propertyEdge,belowFloor,floorLevel,floorHeight,roomsize):
         self.floorLevel = floorLevel
@@ -308,6 +316,11 @@ class floor: #new class for floors
                     availableRooms.append(self.rooms[currentRoom.roomPos + self.roomsperx])
         return availableRooms #list of avaliable indexs
 
+    def addFurniture(self, mc):
+        for room in self.rooms:
+            if room.full:
+                room.scanRoom(mc)
+
 class room:
     def __init__(self,xstart,ystart,zstart,xend,yend,zend,roomPos,gridX,gridZ,type=0):
         self.color = random.randint(1,15) #choose a random color wool
@@ -340,6 +353,7 @@ class room:
             self.ystart,
             self.zstart + self.z_to_center
         )
+        self.avaialble_space = None
 
     def createRoom(self,mc,roomtype):
         print('Created a room of type',roomtype,'at location',self.roomPos)
@@ -414,8 +428,6 @@ class room:
         mc.setBlock(center_point_minus_x, torch, 2)
         mc.setBlock(center_point_plus_z, torch, 3)
         mc.setBlock(center_point_minus_z, torch, 4)
-
-    # def furnishBox(self, mc):
         
 
     def createDoor(self,mc,prevRoom,doortype='single'):
@@ -724,6 +736,61 @@ class room:
                         20
                         )
 
+    def scanRoom(self, mc):
+        space_above_floor = np.array(list(mc.getBlocks(
+            self.xstart + 1,
+            self.ystart + 1,
+            self.zstart + 1,
+            self.xend - 1,
+            self.ystart + 1,
+            self.zend - 1
+        )))
+
+        space_of_the_floor = np.array(list(mc.getBlocks(
+            self.xstart + 1,
+            self.ystart,
+            self.zstart + 1,
+            self.xend - 1,
+            self.ystart,
+            self.zend - 1
+        )))
+
+        idx = pd.MultiIndex.from_product([np.arange(self.xstart + 1, self.xend), np.arange(self.zstart + 1, self.zend)])
+        idx.set_names(['x', 'z'], inplace=True)
+
+        space_above_floor_boolean = space_above_floor == 0
+        space_of_the_floor_boolean = space_of_the_floor != 0
+        space_boolean = np.minimum(space_above_floor_boolean, space_of_the_floor_boolean)
+        
+        if np.all(space_boolean):
+            pass
+        else:
+            self.furnishRoomWithStairs(mc, idx, space_boolean)
+    
+    def furnishRoomWithStairs(self, mc, idx, space_boolean):
+        randomSingleBlocks = np.array([91, 92, 118, 117, 116, 154, 218, 63, 145, 146, 84, 58, 54, 25])
+        
+
+        df = pd.DataFrame({'available space': space_boolean}, index=idx)
+    
+        df = df[df['available space'] == True]
+
+        for idx, df_select in df.groupby(level=[0, 1]):
+            randnum = np.random.randint(0, 11)
+            if randnum == 3:
+                randomBlock = np.random.choice(randomSingleBlocks)
+                mc.setBlock(idx[0], self.ystart + 1, idx[1], randomBlock)
+
+            else:
+                mc.setBlock(idx[0], self.ystart + 1, idx[1], 171)
+            
+
+        df = df.unstack(level=1)
+        print(df)
+        print(df.isna().sum())
+
+
+
 
 
 # Preparation for pool
@@ -787,4 +854,4 @@ if __name__ == '__main__':
     myHouse.floors[0].addFrontDoor(mc)
     myHouse.addAllStairs(mc)
     myHouse.addAllWindows(mc)
-    myHouse.addAllRoofs(mc)
+    myHouse.addFurniture(mc)

@@ -28,11 +28,14 @@ Please, report your key activities in each week this assignment is running.
     - My personal DevDiary can be found in the Folder DEVDIARYFILES_CAL_LAMSHED in the file [DEVDIARY_CAL_LAMSHED.md](DEVDIARYFILES_CAL_LAMSHED/DEVDIARY_CAL_LAMSHED.md)
 
 * Myeonghoon Sun
-    - [x] Read chapter 1 & 2 on textbook 📖
+    ## Week 1
+    - [x] Read chapter 1 & 2 on textbook 📖 
     - [x] Setup VS Code, and Minecraft on my Mac 🆚
-    - [x] Implemented Hello Minecraft! 🎮
-    - [ ] <!-- Built a foundation generator -->
-    
+    - [x] Implemented Hello Minecraft! [Hello Minecraft](Myeonghoon%20Sun's%20PAs/hello_world.py)
+    - [x] I've finished writing my version of a foundation generator which randomly chooses from a limited range of values to pad a foundation with buffers. Buffers ensure against another buffer piling up on pre-existing ones. This process gets repeated until the maximum number of foundations is generated in all rows. It also adds to the element of randomness by spacing out these grids. The result of this algorithm is metropolitan grids where buildings are never far away from each other, but never predictably placed to take the fun away from a potential wanderer. You could find more about it through this link: [link](foundation_generator/foundation_grid.py)
+
+    On a side note, my code will never see the light of day in the implementation of our code, as another teammate has taken it upon himself to build his own version to accomodate his roads. 
+
     * PAs
       - Convert the binary number 10101 to decimal: 21
       - Convert the hexadecimal number 3E to decimal: 62
@@ -41,10 +44,12 @@ Please, report your key activities in each week this assignment is running.
       - Convert the decimal number 63 to hexadecimal: 3f
       - [Stairway](Myeonghoon%20Sun's%20PAs/staircase.py)    
 
+    ---
 
-**Week 2**
-
-* Myeonghoon Sun
+    ## Week 2
+    
+    ### Integration of teammate's works
+    
     Cal's house class needs to be integrated into Max's foundation class. Cal's house_property class equals Max's foundaion class. As Max's Village class contains a list for foundations, we can build a method inside it to generate houses on each foundation. 
 
     Cal's foundation class:
@@ -76,7 +81,7 @@ Please, report your key activities in each week this assignment is running.
     2.  `myHouse = buildHouse.house(prop,floorHeight,roomSize)` then generates a house instance with foundation passed as an argument
     3.  `myHouse.createFloor()` creates a floor
     4. 
-    ```
+    ```python
        myHouse.floors[0].addRoom(mc)
        myHouse.floors[0].addRoom(mc)
        myHouse.floors[0].addRoom(mc)
@@ -97,7 +102,8 @@ Please, report your key activities in each week this assignment is running.
        myHouse.floors[2].addDoors(mc)
        
        myHouse.addAllStairs(mc)
-    ``` creates rooms, another floor, more rooms, and stairs.
+    ``` 
+    creates rooms, another floor, more rooms, and stairs.
 
     Cal's y-axis doesn't match up with Max's. Where is Cal's pointing to? player.pos.y - 1 Where is Max's pointing to? centerPoint.y. Cal's house doesn't populate with varying y-axes. His houses are all position at the same y-axis whereas Max's foundations vary in heights. 
 
@@ -105,14 +111,32 @@ Please, report your key activities in each week this assignment is running.
     self.base refers to centerPoint.y. createEmptyFloor uses it to build a floor. Max's centerPoint.y axis gets set to the proper value not at the initialisation, but along the way. 
 
     Foundation() class picks a random x, z coordinate and assign it with centerPoint 
-    
-       
+
+    The integration is now complete.
+
+    ## Save and Load Blocks to build a dictionary of furniture
+
+    Inspired by some students from our cohort, I've created scripts to write to a csv file information about the composition of any gob of blocks, in this case furniture. [save_blocks.py](foundation_generator/save_blocks.py) As a way to find out whether I can translate this information with Minecraft blocks, I have also written a script to place furniture saved in the form of rows in a csv file. You could try this script: [load_blocks.py](foundation_generator/load_blocks.py). My next job is to generate a random piece of furniture in a randomly selected room. 
+
+    * PAs
+      1. Identify threat sources
+        * Cyber attack
+	  2. Identify threat sources
+	    * Power outage due to cyber attacks
+	  3. Identify vulnerabilities and the conditions needed to exploit them
+	    * No back up infrastructure in the case of power outage; lack of staff members to deal with the issue efficiently
+	  4. Identify the likelihood such attacks would succeed
+	    * Probably the assessed likelihood by the organisation is lower than it actually is in reality, and then only it falls victim to the attack, it realises the likelihood was a lot higher. How would you accurately access the likelihood in the case of a cyber attack?
+	  5. Identify the potential impact
+	    * The besmirched reputation of the organisation, and client dissatisfaction
+	  6. Determine the risk posed
+	    * Discontinuation of service
+        
+      7. My public IP address:
+      8. What is the IP address of www.rmit.edu.au?
+         54.79.75.6131.170.77.128
 
 
-
-
-.....
-.....
 
 **Week 3**
 
