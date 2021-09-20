@@ -158,6 +158,10 @@ class Village():
             foundation.setBase(mc)
             house_ = house(foundation)
             self.houses.append(house_)
+
+            #Zain create a for loop that randomises the amount of floors generated. 
+
+            print('Create Floor 0')
             house_.createFloor()
             house_.floors[0].addRoom(mc)
             house_.floors[0].addRoom(mc)
@@ -166,18 +170,24 @@ class Village():
             house_.floors[0].addRoom(mc)
             house_.floors[0].addDoors(mc)
 
-            print('---------')
+            print('Create Floor 1')
             house_.createFloor()
             house_.floors[1].addRoom(mc)
             house_.floors[1].addRoom(mc)
             house_.floors[1].addRoom(mc)
             house_.floors[1].addDoors(mc)
             
+            print('Create Floor 2')
             house_.createFloor()
             house_.floors[2].addRoom(mc)
             house_.floors[2].addRoom(mc)
             house_.floors[2].addDoors(mc)
 
+
+            #These functions are added at the end as their scope is the entire house / must be done after all rooms have been created
+            
+            # Best to use this order, changing the order of calls may effect the workings of the functions
+            print('Implement global hourse styles')
             house_.floors[0].addFrontDoor(mc)
             house_.addAllStairs(mc)
             hourse_.addAllWindows(mc)
