@@ -24,10 +24,10 @@ class house: #this is a house class has an array of floors
         self.roomSize = 10
         self.propertyEdge = 2
 
-    def createFloor(self):
+    def createFloor(self, floorColor):
         print('self.floors length is: ',len(self.floors))
         if len(self.floors) == 0: #this is the first floor, so use default
-            newFloor = floor(self.prop)
+            newFloor = floor(self.prop,floorColor)
             newFloor.createEmptyFloor(self.propertyEdge,None,0,self.floorHeight,self.roomSize) #There is no below floor
             self.floors.append(newFloor)
         else: # their is already a previous floor
@@ -41,7 +41,7 @@ class house: #this is a house class has an array of floors
                     if room.buildUpAvaliablity == True:
                         #at least one room can be built off
                         break
-            newFloor = floor(self.prop)
+            newFloor = floor(self.prop, floorColor)
             newFloor.createEmptyFloor(self.propertyEdge,belowFloor,len(self.floors),self.floorHeight,self.roomSize)
             self.floors.append(newFloor)
 
@@ -61,10 +61,16 @@ class house: #this is a house class has an array of floors
         for floor in self.floors:
             floor.addFurniture(mc)
 
- 
+    def addAllDoors(self,mc):
+        for floor in self.floors:
+            floor.addDoors(mc)
+
+    def connectAllPools(self,mc):
+        if len(self.floors) > 0:
+            self.floors[0].connectPools(mc)
 
 class floor: #new class for floors
-    def __init__(self,prop): 
+    def __init__(self,prop, floorColor): 
         self.prop = prop #the property that the house exists on
         self.rooms = [] #list of all the room locations in the house
         self.roomOrder = [] #order that rooms are place in the house
@@ -73,9 +79,9 @@ class floor: #new class for floors
         #   2 | 5 | 8
         # x 1 | 4 | 7
         #   0 | 3 | 6
-        #       y
+        #       z
         ################
-        self.available_space = None
+        self.floorColor = floorColor
 
     def createEmptyFloor(self,propertyEdge,belowFloor,floorLevel,floorHeight,roomsize):
         self.floorLevel = floorLevel
@@ -95,11 +101,12 @@ class floor: #new class for floors
                                 self.prop.xstart+(roomsizewidth*(x+1))+propertyEdge,
                                 self.prop.base+self.floorHeight+(floorHeight*floorLevel),
                                 self.prop.zstart+(roomsizedepth*(z+1))+propertyEdge,
-                                x+(z*self.roomsperz),
-                                x,z
+                                x+(z*self.roomsperz), #Position of room in array room.roomPos
+                                x,z,
+                                self.floorColor #floor Color
                                 ) #coordinates in the grid
-                self.setConnectedRooms(newSpace)
                 self.rooms.append(newSpace) #Coordinates of location in grid
+        self.setConnectedRooms(self.rooms) #new connected rooms setup
         if(self.belowFloor == None): #Base case, ground floor
             pass
         else:
@@ -155,7 +162,7 @@ class floor: #new class for floors
                 self.roomOrder.append((currentRoom.roomPos,fromRoom.roomPos))
             
     def addDoors(self, mc):
-        doorTypes = ['fullwidth','single'] #Add new door types here to insert them into random selector
+        doorTypes = ['fullwidthDoor','singleDoor'] #Add new door types here to insert them into random selector
 
         for index in range(len(self.roomOrder)): #the position of the first room in rooms list
             if(self.roomOrder[index][1]!=None): #if its not the first room
@@ -166,8 +173,8 @@ class floor: #new class for floors
     def addFrontDoor(self, mc):
         for room in self.rooms: #search through all the rooms, add a door to the first full room
             if room.full: #this room is a full room
-                room.walls[2] = 2 #There is a door in the left position (2). Store it in the walls array
-                room.drawDoor(mc,2,'single')
+                room.walls[2] = 'singleDoor' #There is a door in the left position (2). Store it in the walls array
+                room.drawDoor(mc,2,'singleDoor')
                 break 
     
     def addStairs(self,mc):
@@ -205,11 +212,11 @@ class floor: #new class for floors
                 print(f'{currentRoom.roomPos} has empty wall space at {currentRoom.walls}')
                 for index, conRoom in enumerate(currentRoom.connectedRooms): #look at the connected rooms:
                     if conRoom != None: #If there is no room there potential window Location
-                        if self.rooms[conRoom].full == False:
-                            if(currentRoom.walls[index] == None):
+                        if (conRoom.full == False) or (conRoom.roomType == 'pool'):
+                            if(currentRoom.walls[index] == None) or (currentRoom.walls[index] == 'stairsUpper'):
                                 currentRoom.createWindow(mc,index)
-                    else:
-                        if(currentRoom.walls[index] == None):
+                    else: # Its a None room, so on the edge.
+                        if(currentRoom.walls[index] == None) or (currentRoom.walls[index] == 'stairsUpper'):
                             currentRoom.createWindow(mc,index)
 
     def addRoof(self,mc):
@@ -236,40 +243,45 @@ class floor: #new class for floors
                 pass
                 #the room is on the edge do nothing
             else:
-                if self.rooms[connected].full == True:
+                if connected.full == True:
                     adjustmentsArray[index] = 1
-                    if self.aboveFloor.rooms[self.rooms[connected].roomPos].full == False:
+                    if self.aboveFloor.rooms[connected.roomPos].full == False:
                         overlapArray[index] = 1
                     #its empty
         return adjustmentsArray,overlapArray
 
+    #################
+    def setConnectedRooms(self,roomArray):
+        for emptyRoom in roomArray:
+            arrayLocationX = emptyRoom.gridCoord[0]
+            arrayLocationZ = emptyRoom.gridCoord[1]
+            left = True
+            right = True
+            back = True
+            front = True
+            if(arrayLocationX == 0): #On bot edge
+                left = False
+            if(arrayLocationX == self.roomsperx-1): #On top edge
+                right = False
+            if(arrayLocationZ == 0): #On the left edge
+                front = False
+            if(arrayLocationZ == self.roomsperz-1): #On right edge
+                back = False
+            if(left):
+                emptyRoom.connectedRooms[0] = roomArray[emptyRoom.roomPos - 1]
+            if(right):
+                emptyRoom.connectedRooms[1] = roomArray[emptyRoom.roomPos + 1]
+            if(front):
+                emptyRoom.connectedRooms[2] = roomArray[emptyRoom.roomPos - self.roomsperx]
+            if(back):
+                emptyRoom.connectedRooms[3] = roomArray[emptyRoom.roomPos + self.roomsperx]
 
-    def setConnectedRooms(self,emptyRoom):
-        arrayLocationX = emptyRoom.gridCoord[0]
-        arrayLocationZ = emptyRoom.gridCoord[1]
-        left = True
-        right = True
-        back = True
-        front = True
-        if(arrayLocationX == 0): #On bot edge
-            left = False
-        if(arrayLocationX == self.roomsperx-1): #On top edge
-            right = False
-        if(arrayLocationZ == 0): #On the left edge
-            front = False
-        if(arrayLocationZ == self.roomsperz-1): #On right edge
-            back = False
-        if(left):
-            emptyRoom.connectedRooms[0] = emptyRoom.roomPos - 1
-        if(right):
-            emptyRoom.connectedRooms[1] = emptyRoom.roomPos + 1
-        if(front):
-            emptyRoom.connectedRooms[2] = emptyRoom.roomPos - self.roomsperx
-        if(back):
-            emptyRoom.connectedRooms[3] = emptyRoom.roomPos + self.roomsperx
+    def connectPools(self,mc):
+        for room in self.rooms:
+            if room.roomType == 'pool':
+                room.createPoolConnections(mc)
 
-
-    def checkAvailableRooms(self,currentRoom):
+    def checkAvailableRooms(self,currentRoom): #Used when adding a new floor. Makes sure that rooms are only built over a pre existing room (but not an unbuilable type e.g. pool)
         arrayLocationX = currentRoom.gridCoord[0]
         arrayLocationZ = currentRoom.gridCoord[1]
         availableRooms = []
@@ -322,8 +334,8 @@ class floor: #new class for floors
                 room.scanRoom(mc)
 
 class room:
-    def __init__(self,xstart,ystart,zstart,xend,yend,zend,roomPos,gridX,gridZ,type=0):
-        self.color = random.randint(1,15) #choose a random color wool
+    def __init__(self,xstart,ystart,zstart,xend,yend,zend,roomPos,gridX,gridZ,roomColor):
+        self.color = roomColor #choose a random color wool
         self.xstart = xstart
         self.ystart = ystart
         self.zstart = zstart
@@ -356,6 +368,7 @@ class room:
         self.avaialble_space = None
 
     def createRoom(self,mc,roomtype):
+        print('The connected rooms are', self.connectedRooms)
         print('Created a room of type',roomtype,'at location',self.roomPos)
         if(roomtype=='basic'):
             self.roomType = 'basic'
@@ -365,11 +378,14 @@ class room:
             self.full = True #There is now something in the room
             self.buildUpAvaliablity = True
         if(roomtype=='pool'):
+            # Check if this pool is next to another pool.
             self.roomType = 'pool'
             self.createPool(mc)
             self.full = True #There is now something in the room
             self.buildUpAvaliablity = False
+
             
+
     def createBox(self,mc): #Creates a box of blocks used in createRoom Func
         mc.setBlocks(
                     self.xstart,
@@ -392,7 +408,7 @@ class room:
                     0
                     )
 
-    # creates a light in the middle of the room (helps with dark rooms)
+    # Creates a light in the middle of the room (helps with dark rooms)
     def lightenBox(self, mc):
         center_block = 209 
         torch = 50
@@ -434,17 +450,20 @@ class room:
         if(prevRoom is None): #Do nothing
             pass
         else: #Previous room exists, 
-            doorTypesAll = ['fullwidth','single'] #Add new door types here to insert them into random selector 
-            doorTypesPool = ['single']
+            doorTypesAll = ['fullwidthDoor','singleDoor'] #Add new door types here to insert them into random selector 
+            doorTypesPool = ['singleDoor']
+            randomDoorType = 'singleDoor' #Default
             if(self.roomType == 'pool'):
                 randomDoorType = doorTypesPool[random.randint(0,len(doorTypesPool)-1)]
             else:
                 randomDoorType = doorTypesAll[random.randint(0,len(doorTypesAll)-1)]
 
-            currentLocation = self.connectedRooms.index(prevRoom.roomPos) #find index of prevRoom room in the current room connectedRooms array
-            self.walls[currentLocation] = currentLocation #Remember there is a door here
-            doorLocationPrev = prevRoom.connectedRooms.index(self.roomPos) #find index of current room in the prevRoom room connectedRooms array
-            prevRoom.walls[doorLocationPrev] = doorLocationPrev #Remember there is a door here
+            currentLocation = self.connectedRooms.index(prevRoom) #find index of prevRoom room in the current room connectedRooms array
+            self.walls[currentLocation] = randomDoorType #Remember there is a door here
+
+            doorLocationPrev = prevRoom.connectedRooms.index(self) #find index of current room in the prevRoom room connectedRooms array
+
+            prevRoom.walls[doorLocationPrev] = randomDoorType #Remember there is a door here
             self.drawDoor(mc,currentLocation, randomDoorType)
     
     # Start implementation of staircase
@@ -547,8 +566,8 @@ class room:
                         0
                         )
 
-        belowRoom.walls[randSpace] = randSpace #Set the doors array to the new space
-        self.walls[randSpace] = randSpace
+        belowRoom.walls[randSpace] = 'stairsLower' #Set the doors array to the new space
+        self.walls[randSpace] = 'stairsUpper'
     
     
     def drawDoor(self,mc,doordirection,doortype):
@@ -558,7 +577,7 @@ class room:
         doorWidth = 1 #Width of the door
         doorDepth = 1 #How far the door sticks out from the wall (this is to prevent other objects from blocking the doors entry)
         doorHeight = 3
-        if doortype == 'fullwidth':
+        if doortype == 'fullwidthDoor':
             doorHeight = roomHeight - 1
             if(doordirection == 0): #door is on bot
                 doorWidth = roomDepth - 1
@@ -604,7 +623,7 @@ class room:
                             self.zend+doorDepth,
                             0
                             )
-        if doortype == 'single':
+        if doortype == 'singleDoor':
             doorWidth = 1
             doorHeight = 3
             if(doordirection == 0): #door is on bot
@@ -662,9 +681,10 @@ class room:
                         )    
 
     # MUST IMPLEMENT CHANGES TO PREVENT POOL CREATION ON ANYTHING OTHER THAN GROUND LEVEL
-    def createPool(self,mc):
+    def createPool(self, mc):
         pooldepth = 4
         boundrywidth = 2
+        #First create the basic pool
         mc.setBlocks(
                     self.xstart+boundrywidth,
                     self.ystart,
@@ -684,6 +704,110 @@ class room:
                     self.zend-boundrywidth-1,
                     9
                     ) #create water
+        #Now connect to nearby pools:
+
+    def createPoolConnections(self, mc):
+        pooldepth = 4
+        boundrywidth = 2
+        for index, conRoom in enumerate(self.connectedRooms):
+            if conRoom == None: #Do nothing
+                pass
+            else:
+                if conRoom.roomType == 'pool':
+                    #set the walls array
+                    self.walls[index] = 'poolJoin'
+                    if(index) == 0: #Its on the bot side
+                        conRoom.walls[1] = 'poolJoin'
+                        mc.setBlocks(
+                                    conRoom.xend-1, #fixed
+                                    self.ystart, #fixed
+                                    self.zstart+boundrywidth,
+                                    self.xstart+1,
+                                    self.ystart-pooldepth-1, #fixed
+                                    self.zend-boundrywidth,
+                                    1,
+                                    2
+                                    ) #create pool shell
+                        mc.setBlocks(
+                                    conRoom.xend-boundrywidth, #fixed
+                                    self.ystart, #fixed
+                                    self.zstart+boundrywidth+1,
+                                    self.xstart+boundrywidth,
+                                    self.ystart-pooldepth-1, #fixed
+                                    self.zend-boundrywidth-1,
+                                    9
+                                    ) #create pool shell
+
+
+                    if(index) == 1: #It's on the top side
+                        conRoom.walls[0] = 'poolJoin'
+                        mc.setBlocks(
+                                    self.xend-1, #fixed
+                                    self.ystart, #fixed
+                                    self.zstart+boundrywidth,
+                                    conRoom.xstart+1,
+                                    self.ystart-pooldepth-1, #fixed
+                                    self.zend-boundrywidth,
+                                    1,
+                                    2
+                                    ) #create pool shell
+
+                        mc.setBlocks(
+                                    self.xend-boundrywidth, #fixed
+                                    self.ystart, #fixed
+                                    self.zstart+boundrywidth+1,
+                                    conRoom.xstart+boundrywidth,
+                                    self.ystart-pooldepth-1, #fixed
+                                    self.zend-boundrywidth-1,
+                                    9
+                                    ) #create pool shell
+
+                    if(index) == 2: #It's on the left side
+                        conRoom.walls[3] = 'poolJoin'
+                        mc.setBlocks(
+                                    self.xstart+boundrywidth, #fixed
+                                    self.ystart, #fixed
+                                    conRoom.zend-1,
+                                    self.xend-boundrywidth,
+                                    self.ystart-pooldepth-1, #fixed
+                                    self.zstart+1,
+                                    1,
+                                    2
+                                    ) #create pool shell
+
+                        mc.setBlocks(
+                                    self.xstart+boundrywidth+1, #fixed
+                                    self.ystart, #fixed
+                                    conRoom.zend-boundrywidth,
+                                    self.xend-boundrywidth-1,
+                                    self.ystart-pooldepth-1, #fixed
+                                    self.zstart+boundrywidth,
+                                    9
+                                    ) #create pool shell
+
+                    if(index) == 3: #It's on the right side
+                        conRoom.walls[2] = 'poolJoin'
+                        mc.setBlocks(
+                                    self.xstart+boundrywidth, #fixed
+                                    self.ystart, #fixed
+                                    self.zend-1,
+                                    self.xend-boundrywidth,
+                                    self.ystart-pooldepth-1, #fixed
+                                    conRoom.zstart+1,
+                                    1,
+                                    2
+                                    ) #create pool shell
+                        mc.setBlocks(
+                                    self.xstart+boundrywidth+1, #fixed
+                                    self.ystart, #fixed
+                                    self.zend-1,
+                                    self.xend-boundrywidth-1,
+                                    self.ystart-pooldepth-1, #fixed
+                                    conRoom.zstart+boundrywidth,
+                                    9
+                                    ) #create pool shell
+
+
 
     def findStairSpaceOnRoomWalls(self,belowRoom):
         #Check if the below room has space for a staircase:
@@ -822,44 +946,43 @@ if __name__ == '__main__':
     prop.drawProperty(mc)
     roomSize = 10
     floorHeight = 5
-
+    floorColor = random.randint(0, 15) #Uses wool block to draw House, wool block has 15 possible Colors
     myHouse = house(prop)
 
-    myHouse.createFloor() # specify the room size, currently only squares
+    myHouse.createFloor(floorColor) # specify the room size, currently only squares
     FirstFloorRoomNumber = 6
 
     myHouse.floors[0].addRoom(mc)
     myHouse.floors[0].addRoom(mc)
-    myHouse.floors[0].addRoom(mc)
-    myHouse.floors[0].addRoom(mc)
-    myHouse.floors[0].addRoom(mc)
     myHouse.floors[0].addRoom(mc,'pool')
-    myHouse.floors[0].addDoors(mc)
+    myHouse.floors[0].addRoom(mc,'pool')
+    myHouse.floors[0].addRoom(mc,'pool')
+    myHouse.floors[0].addRoom(mc)
+    myHouse.floors[0].addRoom(mc)
+
+    myHouse.floors[0].addRoom(mc,'pool')
+    myHouse.floors[0].addRoom(mc,'pool')
+    myHouse.floors[0].addRoom(mc,'pool')
     print('---------')
 
-
-    myHouse.createFloor()
-
+    floorColor = random.randint(0, 15)
+    myHouse.createFloor(floorColor) 
     myHouse.floors[1].addRoom(mc)
     myHouse.floors[1].addRoom(mc)
-    myHouse.floors[1].addRoom(mc)
-    myHouse.floors[1].addDoors(mc)
 
-    myHouse.createFloor()
+    floorColor = random.randint(0, 15)
+    myHouse.createFloor(floorColor)
     myHouse.floors[2].addRoom(mc)
     myHouse.floors[2].addRoom(mc)
-    myHouse.floors[2].addDoors(mc)
 
-    myHouse.createFloor()
+    floorColor = random.randint(0, 15)
+    myHouse.createFloor(floorColor)
     myHouse.floors[3].addRoom(mc)
-    myHouse.floors[3].addDoors(mc)
 
-    myHouse.createFloor()
-    myHouse.floors[4].addRoom(mc)
-    myHouse.floors[4].addDoors(mc)
-
+    myHouse.addAllDoors(mc)
     myHouse.floors[0].addFrontDoor(mc)
     myHouse.addAllStairs(mc)
     myHouse.addAllWindows(mc)
-    myHouse.addFurniture(mc)
+    # myHouse.addFurniture(mc)
     myHouse.addAllRoofs(mc)
+    myHouse.connectAllPools(mc)
