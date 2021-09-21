@@ -1,8 +1,6 @@
 # gamerule doDaylightCycle false
 # time set 6000
 
-# Uncomment 208 to 220 to generate foundations   only
-
 
 from mcpi.minecraft import Minecraft
 import random
@@ -52,7 +50,7 @@ class Village():
         self.player_pos = mc.player.getTilePos()        
         self.player_dir = mc.player.getRotation()
         self.vectors = self.set_vectors()
-        self.foundation_max_size = 21
+        self.foundation_max_size = 30
         self.buffer_east_west_min = self.foundation_max_size // 5
         self.buffer_east_west_max = 3 * self.buffer_east_west_min
         self.buffer_south_north_min = 0
@@ -313,18 +311,19 @@ class Village():
                         current_foundation = current_foundation_wrapper.foundation
         
                         if idx == len(column) - 1:
-                            previous_foundation_wrapper = column[idx - 1]
-                            previous_foundation = previous_foundation_wrapper.foundation 
-                            
-                            road_mid_point_between_current_and_previous = Vec3(
-                                (current_foundation.start_vector.x + previous_foundation.end_vector.x) // 2,
-                                (current_foundation.start_vector.y + previous_foundation.end_vector.y) // 2,
-                                (current_foundation.start_vector.z + previous_foundation.end_vector.z) // 2
-                            )
-        
-                            road = Road(mc, current_foundation.start_vector, road_mid_point_between_current_and_previous, "towards_previous")
-                            road.test(mc, direction)
-                            print(f"INDEX IS {idx}, for this foundation mid point's CURRENT_AND_PREVIOUS y value is: {(current_foundation.start_vector.y + previous_foundation.end_vector.y) // 2}")
+                            if column[idx- 1] != None:
+                                previous_foundation_wrapper = column[idx - 1]
+                                previous_foundation = previous_foundation_wrapper.foundation 
+                                
+                                road_mid_point_between_current_and_previous = Vec3(
+                                    (current_foundation.start_vector.x + previous_foundation.end_vector.x) // 2,
+                                    (current_foundation.start_vector.y + previous_foundation.end_vector.y) // 2,
+                                    (current_foundation.start_vector.z + previous_foundation.end_vector.z) // 2
+                                )
+            
+                                road = Road(mc, current_foundation.start_vector, road_mid_point_between_current_and_previous, "towards_previous")
+                                road.test(mc, direction)
+                        
                         elif idx == 0:
                             if column[idx+ 1] != None:
                                 next_foundation_wrapper = column[idx+ 1]
@@ -340,17 +339,18 @@ class Village():
                                 road.test(mc, direction)
                         else:
                             # The first foundation in a row
-                            previous_foundation_wrapper = column[idx - 1]
-                            previous_foundation = previous_foundation_wrapper.foundation 
-                            # The destination point should be a mid point between foundations
-                            road_mid_point_between_current_and_previous = Vec3(
-                                (current_foundation.start_vector.x + previous_foundation.end_vector.x) // 2,
-                                (current_foundation.start_vector.y + previous_foundation.end_vector.y) // 2,
-                                (current_foundation.start_vector.z + previous_foundation.end_vector.z) // 2
-                            )
-
-                            road = Road(mc, current_foundation.start_vector, road_mid_point_between_current_and_previous, "towards_previous")
-                            road.test(mc, direction)
+                            if column[idx- 1] != None:
+                                previous_foundation_wrapper = column[idx - 1]
+                                previous_foundation = previous_foundation_wrapper.foundation 
+                                # The destination point should be a mid point between foundations
+                                road_mid_point_between_current_and_previous = Vec3(
+                                    (current_foundation.start_vector.x + previous_foundation.end_vector.x) // 2,
+                                    (current_foundation.start_vector.y + previous_foundation.end_vector.y) // 2,
+                                    (current_foundation.start_vector.z + previous_foundation.end_vector.z) // 2
+                                )
+    
+                                road = Road(mc, current_foundation.start_vector, road_mid_point_between_current_and_previous, "towards_previous")
+                                road.test(mc, direction)
 
                             if column[idx+ 1] != None:
                                 next_foundation_wrapper = column[idx+ 1]
@@ -426,8 +426,8 @@ class Foundation_wrapper():
 class Foundation():
     # half the blocks > AIR = Stop layering
     def __init__(self, x, y, z):
-        self.width_east_west = random.randrange(12, 20, 2) 
-        self.width_south_north = random.randrange(12, 20, 2) 
+        self.width_east_west = random.randrange(16, 30, 2) 
+        self.width_south_north = random.randrange(16, 30, 2) 
         # vectors stores random vector and west, northwest, north relative to the random vector
         self.vectors = {'southeast': Vec3(x, get_height_actual_block(x,z), z), 'southwest': Vec3(x + self.width_east_west, get_height_actual_block(x + self.width_east_west ,z), z), 'northwest': Vec3(x + self.width_east_west, get_height_actual_block(x + self.width_east_west, z + self.width_south_north), z + self.width_south_north), 'northeast': Vec3(x, get_height_actual_block(x, z + self.width_south_north), z + self.width_south_north)}
         self.start_vector = None
@@ -459,13 +459,6 @@ class Foundation():
 
     def clear_the_foundation(self):
         mc.setBlocks(self.start_vector.x, self.start_vector.y + 1, self.start_vector.z, self.end_vector.x, self.end_vector.y + 100 , self.end_vector.z, 0)
-
-    # def get_most_common_block(start_vector, end_vector):
-    #     # FIX ME when you need this method
-    #     blocks = list(mc.getBlocks(start_vector, end_vector))
-    #     blocks_counter = Counter(blocks)
-    #     most_common_block = blocks_counter.most_common()[0][0]
-    #     num_most_common_blocks = blocks_counter.most_common()[0][1]
         
     def lay_foundation(self):
         self.position_vectors()
@@ -507,11 +500,7 @@ class Road():
                             x_to_extend += 1
                         else:
                             x_to_extend -= 1
-                        
-    
-                        # Descend
-                        # if self.origin_point.z < self.destination_point.z:
-                        #     self.
+
                         y_to_extend -= 1
     
                         mc.setBlocks(
@@ -533,14 +522,7 @@ class Road():
                             z,
                             0
                         )
-                        
                     
-                        # if self.direction == "towards_next":
-                        #     self.origin_point.x += 1
-                        #     self.destination_point.x += 1
-                        # else:
-                        #     self.origin_point.x -= 1
-                        #     self.destination_point.x -= 1
                 
                 elif self.origin_point.y < self.destination_point.y:
                     while self.origin_point.y + y_to_extend < self.destination_point.y:
@@ -569,14 +551,7 @@ class Road():
                             z,
                             0
                         )
-                        
-    
-                        # if self.direction == "towards_next":
-                        #     self.origin_point.x += 1
-                        #     self.destination_point.x += 1
-                        # else:
-                        #     self.origin_point.x -= 1
-                        #     self.destination_point.x -= 1
+                
                     
                     
     
@@ -781,7 +756,7 @@ class Road():
 
 
 if __name__ == '__main__':
-    village = Village(150, 150)
+    village = Village(250, 250)
     village.foundation_generator()
     village.road_generator('row')
     village.road_generator('column')

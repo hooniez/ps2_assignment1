@@ -151,7 +151,9 @@ Please, report your key activities in each week this assignment is running.
 
     Change of a plan. I'm building roads
 
-    Find a center point between foundations and extend roads to the point from each foundation so that its roads can meet at half point. Each instance of road class should have this center point as an attribute as well as its original start point. w
+    Find a center point between foundations and extend roads to the point from each foundation so that its roads can meet at half point. Each instance of road class should have this center point as an attribute as well as its original start point. 
+
+    I've completed building roads. Let's mount houses on foundations.
 
 
 
