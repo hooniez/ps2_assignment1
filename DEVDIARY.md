@@ -135,10 +135,25 @@ Please, report your key activities in each week this assignment is running.
       7. My public IP address:
       8. What is the IP address of www.rmit.edu.au?
          54.79.75.6131.170.77.128
+         
+    ## Week 3
+
+    ### Generate Furniture
+
+    This is the last week before we need to submit our project. There are a few things we need to concentrate on to achieve the most ideal outcome.
+
+    1. Connect the roads to foundations 
+    2. Make a fenced-off swimming pool  
+    3. Make sure a house's main door is visible from the road it is connected to
+    4. Add some furniture in each room 
+
+    I'm currently working on the number 4 task. We should be able to put some furniture in some of the rooms by early this week. 
+
+    Change of a plan. I'm building roads
+
+    Find a center point between foundations and extend roads to the point from each foundation so that its roads can meet at half point. Each instance of road class should have this center point as an attribute as well as its original start point. w
 
 
-
-**Week 3**
 
 .....
 .....

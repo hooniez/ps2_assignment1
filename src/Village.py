@@ -180,7 +180,7 @@ class Village():
 
             house_.floors[0].addFrontDoor(mc)
             house_.addAllStairs(mc)
-            hourse_.addAllWindows(mc)
+            house_.addAllWindows(mc)
             house_.addAllRoofs(mc)
 
             
