@@ -4,9 +4,9 @@ import mcpi.block as block
 
 class Foundation():
     # half the blocks > AIR = Stop layering
-    def __init__(self,mc, x, y, z):
-        self.width_x = random.randrange(8, 20, 2) 
-        self.width_z = random.randrange(8, 20, 2) 
+    def __init__(self,mc, width_x, width_z, x, y, z):
+        self.width_x = width_x
+        self.width_z = width_z
         # vectors stores random vector and west, northwest, north relative to the random vector
         self.vectors = {
             'southeast': Vec3(x, mc.getHeight(x,z), z),

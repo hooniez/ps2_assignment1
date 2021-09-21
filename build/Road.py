@@ -7,12 +7,9 @@ class Road():
         self.direction = direction
 
     def lay_road(self, mc, slot):
-
-
-
         if slot == "row":
-            if abs(self.origin_point.x - self.destination_point.x) < abs(self.origin_point.y - self.destination_point.y):
-                pass
+            if abs(self.origin_point.x - self.destination_point.x) <= abs(self.origin_point.y - self.destination_point.y):
+                return
             else:
 
                 road_width = 3
@@ -82,10 +79,7 @@ class Road():
                             z,
                             0
                         )
-                
-                    
-                    
-    
+        
                 # Straight line
                 mc.setBlocks(
                     self.origin_point.x + x_to_extend,
@@ -134,7 +128,7 @@ class Road():
 
         elif slot == 'column':
             
-            if abs(self.origin_point.z - self.destination_point.z) < abs(self.origin_point.y - self.destination_point.y):
+            if abs(self.origin_point.z - self.destination_point.z) <= abs(self.origin_point.y - self.destination_point.y):
                 pass
             else:
 
@@ -229,7 +223,7 @@ class Road():
     
                 # Straight line
                 mc.setBlocks(
-                    self.origin_point.x,
+                    self.origin_point.x + 1,
                     self.destination_point.y,
                     self.origin_point.z + z_to_extend,
                     x,
@@ -238,7 +232,7 @@ class Road():
                     block.COBBLESTONE.id
                 )
                 mc.setBlocks(
-                    self.origin_point.x,
+                    self.origin_point.x + 1,
                     self.destination_point.y + 1,
                     self.origin_point.z + z_to_extend,
                     x,
