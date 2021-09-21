@@ -12,21 +12,6 @@ import time
 
 mc = Minecraft.create()
 
-def clear_the_foundation(start_vector, end_vector):
-        mc.setBlocks(start_vector.x, start_vector.y + 1, start_vector.z, end_vector.x, end_vector.y + 100 , end_vector.z, 0)
-
-    # def get_most_common_block(start_vector, end_vector):
-    #     # FIX ME when you need this method
-    #     blocks = list(mc.getBlocks(start_vector, end_vector))
-    #     blocks_counter = Counter(blocks)
-    #     most_common_block = blocks_counter.most_common()[0][0]
-    #     num_most_common_blocks = blocks_counter.most_common()[0][1]
-        
-def lay_foundation(start_vector, end_vector, building_block):
-    mc.setBlocks(start_vector, end_vector, building_block)
-    clear_the_foundation(start_vector, end_vector)
-
-
 def get_height_actual_block(x, z):
     ''' Ensure blocks like LEAVES are excluded from the method mc.getHeight'''
     blocks_to_avoid = [block.LEAVES.id]
@@ -49,7 +34,6 @@ class Village():
         self.width_east_west = width_east_west
         self.player_pos = mc.player.getTilePos()        
         self.player_dir = mc.player.getRotation()
-        self.vectors = self.set_vectors()
         self.foundation_max_size = 30
         self.buffer_east_west_min = self.foundation_max_size // 5
         self.buffer_east_west_max = 3 * self.buffer_east_west_min
@@ -60,33 +44,6 @@ class Village():
         self.foundation_length_spaces_between = []
         self.foundation_longest_lengths = [0]
 
-    def set_vectors(self):
-        ''' Set vectors according to the player's rotation so that a village is generated right in front of him '''
-
-        vectors = {'northwest': None, 'northeast': None, 'southeast': None, 'southwest': None}
-        
-        if 0 <= self.player_dir < 90:
-            vectors['northwest'] = Vec3(self.player_pos.x, 0, self.player_pos.z - self.width_south_north)
-            vectors['northeast'] = Vec3(self.player_pos.x + self.width_east_west, 0, self.player_pos.z - self.width_south_north)
-            vectors['southeast'] = Vec3(self.player_pos.x + self.width_east_west, 0, self.player_pos.z)
-            vectors['southwest'] = Vec3(self.player_pos.x, 0, self.player_pos.z)
-        elif 90 <= self.player_dir < 180:
-            vectors['northwest'] = Vec3(self.player_pos.x, 0, self.player_pos.z)
-            vectors['northeast'] = Vec3(self.player_pos.x + self.width_east_west, 0, self.player_pos.z)
-            vectors['southeast'] = Vec3(self.player_pos.x + self.width_east_west, 0, self.player_pos.z + self.width_south_north)
-            vectors['southwest'] = Vec3(self.player_pos.x, 0, self.player_pos.z + self.width_south_north)
-        elif 180 <= self.player_dir < 270:
-            vectors['northwest'] = Vec3(self.player_pos.x - self.width_east_west, 0, self.player_pos.z)
-            vectors['northeast'] = Vec3(self.player_pos.x, 0, self.player_pos.z)
-            vectors['southeast'] = Vec3(self.player_pos.x, 0, self.player_pos.z + self.width_south_north)
-            vectors['southwest'] = Vec3(self.player_pos.x - self.width_east_west, 0, self.player_pos.z + self.width_south_north)
-        else:
-            vectors['northwest'] = Vec3(self.player_pos.x - self.width_east_west, 0, self.player_pos.z - self.width_south_north)
-            vectors['northeast'] = Vec3(self.player_pos.x, 0, self.player_pos.z - self.width_south_north)
-            vectors['southeast'] = Vec3(self.player_pos.x, 0, self.player_pos.z)
-            vectors['southwest'] = Vec3(self.player_pos.x - self.width_east_west, 0, self.player_pos.z)
-
-        return vectors
 
     def random_grid_calculator(self):
         row = 0
@@ -138,52 +95,6 @@ class Village():
                     remaining_length -= random_space
                     self.foundation_length_spaces_between[random_space_slot] += random_space
 
-            
-
-
-
-            
-
-
-
-        
-        
-    # def add_house(self, new_house):
-    #     self.adjacency_list[new_house] = []
-        
-    # def add_directed_road(self, from_house, to_house, road_distance):
-    #     self.road_distances[(from_house, to_house)] = road_distance
-    #     self.adjacency_list[from_house].append(to_house)
-        
-    # def add_undirected_road(self, house_a, house_b, road_distance):
-    #     self.add_directed_road(house_a, house_b, road_distance)
-    #     self.add_directed_road(house_b, house_a, road_distance)
-
-#     def generate_x_y_and_z(self, player_range_minus, player_range_plus, foundation_width_S_N, foundation_width_E_W, boundary_coordinates=[]):
-#         '''Generate random x and z coordinates'''
-#         random_binary = random.randint(0, 1)
-#         if random_binary == 0:
-#             rand_x = random.randint(self.village_range_minus, player_range_minus)
-#         else:
-#             rand_x = random.randint(player_range_plus, self.village_range_plus)
-#         random_binary = random.randint(0, 1)
-#         if random_binary == 0:
-#             rand_z = random.randint(self.village_range_minus, player_range_minus)
-#         else:
-#             rand_z = random.randint(player_range_plus, self.village_range_plus)
-#         ground_height = get_height_actual_block(self.player_pos_x + rand_x, self.player_pos_z + rand_z)
-    
-#         # Make sure the next rand_x and rand_z don't fall near the previous. 
-#         # The same amount of space taken up by a house  will be padded all around the house, forming a square boundary.
-#         for i in range(len(boundary_coordinates)):
-#             if (boundary_coordinates[i][0][0]<= rand_x <= boundary_coordinates[i][1][0] and boundary_coordinates[i][0][1] <= rand_z <= boundary_coordinates[i][1][1]) or (boundary_coordinates[i][0][0]<= rand_x + foundation_width_E_W <= boundary_coordinates[i][1][0] and boundary_coordinates[i][0][1] <= rand_z + foundation_width_S_N <= boundary_coordinates[i][1][1]):
-#                 rand_x, ground_height, rand_z = self.generate_x_y_and_z(player_range_minus, player_range_plus, foundation_width_S_N, foundation_width_E_W)
-    
-#         boundary_coordinates.append(( (rand_x - foundation_width_E_W, rand_z - foundation_width_S_N), (rand_x + (2 * foundation_width_E_W), rand_z + (2 * foundation_width_S_N)) ))
-
-#         print("randomly generated x, y, and z are: {}, {}, {}".format(rand_x, ground_height, rand_z))        
-    
-#         return rand_x, ground_height, rand_z
     
     def foundation_generator(self):
         ''' Inside a square excluding 3 x 3 square near the player, plant a foundation. Exclude the area taken up by the first foundation from the initial square and plant another; In the same way, plant many more. '''
