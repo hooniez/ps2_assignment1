@@ -60,3 +60,10 @@ Project Work:
 Working on improved pool implementation:
 Found bug with how roofs, windows and doors are interacting with pools.
 Solved roofs and window bug easy. Working on solution for doors (problem is less trivial as has to do witrh the way doors are selecting their type)
+1:18pm 21-09-2021:
+Fixed the pool related bugs by changing the position that pool types are calculated. Also improve code efficiency slightly.
+Beginning work on more advanced pools
+2:37pm 21-09-2021:
+Change the way that the room.connectedRooms array was working, rather than hold the indexs of the rooms I have changed it to instead hold pointers to its neighbors, this simplifys the code and is more obvious
+3:33pm 21-09-2021:
+Finished first step in connected pools together, my coding skills have really improved during the project and the code is starting to look much simpler
