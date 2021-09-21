@@ -1,0 +1,56 @@
+RAM
+
+ECC Ram:
+More expensive and slower
+Does automatic erro correction (corrects for errors causes by background radiation)
+Mostly used in deviceds where reliability is critical.
+
+Non-ECC Ram:
+Cheaper and faster
+Much more used than ECC Ram
+No auto correction
+
+DDR Ram:
+DDR: Can do read/write opperations at twice the speed of orginal ram.
+Operation twice for each clock, 1 per rise 1 per fall
+DDR2. 2 Accesses per rise fall of clock
+DDR3: Twice the transfer rate as DDR2
+
+Pins:
+Connect the ram to motherboard.
+More pins is better.
+SIMM single line memory. Older version
+DIMM Two rows of Pins
+
+Static RAM vs Dynamic RAM:
+
+Static Ram:
+Does not need to refresh the storage,
+better performance,
+More expensive
+Not as scalable
+Dynamic Ram:
+Requires refresh
+slower than static
+cheaper than static
+More scalable.
+
+Motherboard channels slots:
+Multiple channels between motherboard and ram.
+Duel channel RAM has two 64bit data channels.
+Requires Motherboard functionality.
+The channels normally alternate
+
+01 ch1
+02 ch2
+03 ch1
+04 ch2
+
+Depending on what you have changes how to combine the channels
+
+Memory timing:
+Measures Ram performance.
+CAS Latency - Time to access memory column if row is already open
+Row Address to column address delay - Time to read fiirst bit without an active row
+Row precharge time: Time to access column if wrong row is open
+Row active time: Time required to internally refresh row
