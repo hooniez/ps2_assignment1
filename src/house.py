@@ -156,12 +156,12 @@ class floor: #new class for floors
             
     def addDoors(self, mc):
         doorTypes = ['fullwidth','single'] #Add new door types here to insert them into random selector
+
         for index in range(len(self.roomOrder)): #the position of the first room in rooms list
-            randomDoorType = doorTypes[random.randint(0,len(doorTypes)-1)]
             if(self.roomOrder[index][1]!=None): #if its not the first room
-                self.rooms[self.roomOrder[index][0]].createDoor(mc,self.rooms[self.roomOrder[index][1]],randomDoorType) #create a door between this room
+                self.rooms[self.roomOrder[index][0]].createDoor(mc,self.rooms[self.roomOrder[index][1]]) #create a door between this room
             else: #its the first room, send in None
-                self.rooms[self.roomOrder[index][0]].createDoor(mc,None,randomDoorType)
+                self.rooms[self.roomOrder[index][0]].createDoor(mc,None)
 
     def addFrontDoor(self, mc):
         for room in self.rooms: #search through all the rooms, add a door to the first full room
@@ -200,7 +200,7 @@ class floor: #new class for floors
 
     def addWindows(self,mc):
         for currentRoom in self.rooms: #Search through all the rooms
-            if currentRoom.full == True: #The room is filled
+            if (currentRoom.full == True) and currentRoom.buildUpAvaliablity == True : #The room is filled
                 print(f'{currentRoom.roomPos=}')
                 print(f'{currentRoom.roomPos} has empty wall space at {currentRoom.walls}')
                 for index, conRoom in enumerate(currentRoom.connectedRooms): #look at the connected rooms:
@@ -215,7 +215,7 @@ class floor: #new class for floors
     def addRoof(self,mc):
         infoArrays = ([0,0,0,0],[0,0,0,0])
         for currentRoom in self.rooms: #Search through all the rooms
-            if currentRoom.full == True: #The room is filled
+            if (currentRoom.full == True) and currentRoom.buildUpAvaliablity == True: #The room is filled, and its a build up type (not a pool)
                 #Look above
                 above = self.aboveFloor
                 if self.aboveFloor == None: #if there is no above floor
@@ -430,15 +430,22 @@ class room:
         mc.setBlock(center_point_minus_z, torch, 4)
         
 
-    def createDoor(self,mc,prevRoom,doortype='single'):
+    def createDoor(self,mc,prevRoom):
         if(prevRoom is None): #Do nothing
             pass
         else: #Previous room exists, 
-            currentLocation = self.connectedRooms.index(prevRoom.roomPos) #find index of prevRoom room in the prevRoom room connectedRooms array
-            self.walls[currentLocation] = currentLocation
+            doorTypesAll = ['fullwidth','single'] #Add new door types here to insert them into random selector 
+            doorTypesPool = ['single']
+            if(self.roomType == 'pool'):
+                randomDoorType = doorTypesPool[random.randint(0,len(doorTypesPool)-1)]
+            else:
+                randomDoorType = doorTypesAll[random.randint(0,len(doorTypesAll)-1)]
+
+            currentLocation = self.connectedRooms.index(prevRoom.roomPos) #find index of prevRoom room in the current room connectedRooms array
+            self.walls[currentLocation] = currentLocation #Remember there is a door here
             doorLocationPrev = prevRoom.connectedRooms.index(self.roomPos) #find index of current room in the prevRoom room connectedRooms array
-            prevRoom.walls[doorLocationPrev] = doorLocationPrev
-            self.drawDoor(mc,currentLocation, doortype)
+            prevRoom.walls[doorLocationPrev] = doorLocationPrev #Remember there is a door here
+            self.drawDoor(mc,currentLocation, randomDoorType)
     
     # Start implementation of staircase
     def createStaircase(self,mc,belowRoom,randSpace): #belowroom holds the room below
@@ -826,7 +833,7 @@ if __name__ == '__main__':
     myHouse.floors[0].addRoom(mc)
     myHouse.floors[0].addRoom(mc)
     myHouse.floors[0].addRoom(mc)
-    myHouse.floors[0].addRoom(mc)
+    myHouse.floors[0].addRoom(mc,'pool')
     myHouse.floors[0].addDoors(mc)
     print('---------')
 
@@ -855,3 +862,4 @@ if __name__ == '__main__':
     myHouse.addAllStairs(mc)
     myHouse.addAllWindows(mc)
     myHouse.addFurniture(mc)
+    myHouse.addAllRoofs(mc)
