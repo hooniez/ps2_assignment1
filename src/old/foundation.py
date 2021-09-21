@@ -3,20 +3,8 @@ from direction import Direction
 from mcpi.vec3 import Vec3
 import mcpi.block as block
 
-
-# def get_height_actual_block(mc, x, z):
-#     ''' Ensure blocks like LEAVES are excluded from the method mc.getHeight'''
-#     blocks_to_avoid = [block.LEAVES.id]
-#     height = mc.getHeight(x,z)
-#     random_block = mc.getBlock(x, height, z)
-#     while random_block in blocks_to_avoid:
-#         height -= 1
-#         random_block = mc.getBlock(x, height, z)
-#     return height
-
-
 class Foundation():
-    def __init__(self, mc, centerPoint, size, fId):
+    def __init__(self, centerPoint, size, fId):
         self.id = fId
         self.boundingBox = {
                 "northEast": Vec3(centerPoint.x + (size // 2), centerPoint.y, centerPoint.z - (size // 2)),
@@ -25,16 +13,7 @@ class Foundation():
                 "northWest": Vec3(centerPoint.x - (size // 2), centerPoint.y, centerPoint.z - (size // 2)),
                "centerPoint": centerPoint
             }
-
-        # creates attributes that work with Cal's house class
         self.neighbours = []
-        self.xstart = self.boundingBox['northWest'].x 
-        self.base = None
-        self.zstart = self.boundingBox['northWest'].z 
-        self.xend = self.boundingBox['southEast'].x 
-        self.zend = self.boundingBox['southEast'].z 
-        self.width = size
-        self.depth = size
 
     #calculates length of the vector from self to compare
     def getDistance(self, compare):
@@ -55,7 +34,9 @@ class Foundation():
         return Direction.getCardinalDirection(unitVector)
 
 
-    def getPathPoint(self, direction):
+    def getPathPoint(self, destination):
+        direction = self.getDirection(destination)
+
         if direction == Direction.NORTH:
             return Vec3(
                 self.boundingBox["northEast"].x - ((self.boundingBox["northEast"].x - self.boundingBox["northWest"].x) // 2),
@@ -127,14 +108,7 @@ class Foundation():
             self.boundingBox["southWest"].z,
             block.BEDROCK.id
         )
-        print(f'foundation placed at: {self.boundingBox["centerPoint"].x}, {self.boundingBox["centerPoint"].y}, {self.boundingBox["centerPoint"].z}')
+        print(f'foundation {self.id} placed at: {self.boundingBox["centerPoint"].x}, {self.boundingBox["centerPoint"].y}, {self.boundingBox["centerPoint"].z}')
         self._clearFoundationSpace(mc)
         self._addFoundationSupports(mc)
-
-    # because Cal's house needs the y-axis of a foundation itself, not that of the randomly generated x and z coordiante, this method is necessary to find out the y-axis of a foundation 
-    # setBase() is called before generating the house
-    def setBase(self, mc):
-        self.base = mc.getHeight(self.boundingBox['centerPoint'].x, self.boundingBox['centerPoint'].z)
-
-
 

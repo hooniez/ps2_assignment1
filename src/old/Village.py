@@ -7,16 +7,13 @@ import mcpi.block as block
 from mcpi.minecraft import Minecraft
 from mcpi.vec3 import Vec3
 from foundation import Foundation
-from house import house
+
 
 SPAWN_DISTANCE_FROM_PLAYER = 10
-
-
 
 class Village():
     def __init__(self, playerPos, playerDirection, foundationSize=10, villageAreaSize=100, numHouses=8):
         self.foundations = []
-        self.houses = []
         self.paths = []
         self.villageAreaSize = villageAreaSize
         self.foundationSize = foundationSize
@@ -100,7 +97,7 @@ class Village():
             if point not in closestFoundation.neighbours:
                 closestFoundation.neighbours.append(point)
 
-            remaining.remove(point)
+            remaining.remove(closestFoundation)
 
 
     def layFoundations(self):
@@ -137,66 +134,23 @@ class Village():
         # if every second foundation is too close, move it to the minimum distance based on the foundation size
         # foundations with adjacent x vals are dealt with later
         for i in range(2, len(xVals) - 1):
-            xDiff = (xVals[i] - xVals[i - 2])
+            xDiff = abs(xVals[i] - xVals[i - 2])
             if xDiff < minDist:
+                print(f"{xVals[i]} & {xVals[i - 2]} too close")
                 xVals[i] += minDist - xDiff
+                print(f"new val:{xVals[i]}")
 
         previousVals = None
         count = 1
         for x, z in zip(xVals, zVals):
             # if the foundations are too close together, pick a new z val that isn't already taken
-            if previousVals is not None and (x - previousVals[0]) < minDist and (z - previousVals[1]) < minDist:
+            if previousVals is not None and abs(x - previousVals[0]) < minDist and abs(z - previousVals[1]) < minDist:
                 possibleZVals = [n for n in ZRange if n not in range(previousVals[1] - minDist, previousVals[1] + minDist)]
                 z = random.choice(possibleZVals)
 
-            self.foundations.append(Foundation(mc, Vec3(x, 0, z), self.foundationSize, count))
+            self.foundations.append(Foundation(Vec3(x, 0, z), self.foundationSize, count))
             count += 1
             previousVals = (x, z)
-
-    def generateHouses(self):
-        for foundation in self.foundations:
-            foundation.setBase(mc)
-            house_ = house(foundation)
-            self.houses.append(house_)
-
-            #Zain create a for loop that randomises the amount of floors generated. 
-
-            print('Create Floor 0')
-            house_.createFloor()
-            house_.floors[0].addRoom(mc)
-            house_.floors[0].addRoom(mc)
-            house_.floors[0].addRoom(mc)
-            house_.floors[0].addRoom(mc)
-            house_.floors[0].addRoom(mc)
-            house_.floors[0].addDoors(mc)
-
-            print('Create Floor 1')
-            house_.createFloor()
-            house_.floors[1].addRoom(mc)
-            house_.floors[1].addRoom(mc)
-            house_.floors[1].addRoom(mc)
-            house_.floors[1].addDoors(mc)
-            
-            print('Create Floor 2')
-            house_.createFloor()
-            house_.floors[2].addRoom(mc)
-            house_.floors[2].addRoom(mc)
-            house_.floors[2].addDoors(mc)
-
-
-            #These functions are added at the end as their scope is the entire house / must be done after all rooms have been created
-            
-            # Best to use this order, changing the order of calls may effect the workings of the functions
-            print('Implement global hourse styles')
-            house_.floors[0].addFrontDoor(mc)
-            house_.addAllStairs(mc)
-            house_.addAllWindows(mc)
-            house_.addAllRoofs(mc)
-
-            
-            
-            
-
 
 
 if __name__ == '__main__':
@@ -206,18 +160,22 @@ if __name__ == '__main__':
     # village.displayBoundingBox()
     village.generateFoundations()
     village.layFoundations()
-    village.generateHouses()
     village.groupProximalFoundations()
+    print()
+    for foundation in village.foundations:
+        print(f"foundation {foundation.id} - closest: {[f.id for f in foundation.neighbours]}")
+
+    print()
     for foundation in village.foundations:
         print(f"foundation {foundation.id}:")
         for neighbour in foundation.neighbours:
             print(f"    - to foundation {neighbour.id}:")
             if (foundation.id, neighbour.id) not in village.paths:
-                print(f"        -- path point start at {foundation.getPathPoint(foundation.getDirection(neighbour))}")
+                print(f"        -- path point start at {foundation.getPathPoint(neighbour)}")
+                print(f"        -- path point end at {neighbour.getPathPoint(foundation)}")
                 path.generatePath(
-                    foundation.getPathPoint(foundation.getDirection(neighbour)),
-                    neighbour.getPathPoint(neighbour.getDirection(foundation)),
-                    foundation.getDirection(neighbour),
+                    foundation,
+                    neighbour,
                     mc
                 )
                 village.paths.append((foundation.id, neighbour.id))
@@ -226,9 +184,6 @@ if __name__ == '__main__':
                 print("         -- path already exists")
 
     endTime = datetime.datetime.now()
-
-    for foundation in village.foundations:
-        print(f"foundation {foundation.id} - closest: {[f.id for f in foundation.neighbours]}")
 
     time_diff = (endTime - startTime)
     execution_time = time_diff.total_seconds()
