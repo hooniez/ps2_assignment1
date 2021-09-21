@@ -85,8 +85,6 @@ if __name__ == '__main__':
     myHouse.floors[0].addRoom(mc)
     myHouse.floors[0].addRoom(mc)
 
-
-
     myHouse.floors[0].addRoom(mc,'pool')
     myHouse.floors[0].addRoom(mc,'pool')
     myHouse.floors[0].addRoom(mc,'pool')
