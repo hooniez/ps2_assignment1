@@ -555,17 +555,23 @@ class pool:
         self.findEdge(30,30,mc)
 
         if self.poolRefRight == True: # if the pool is on the back right, it will build back and to the right
+            #mc.setBlocks(self.x,self.y,self.z,self.x,self.y+1,self.z,0)
             self.x -=1
             self.z +=3
             self.y -=1
-            mc.setBlocks(self.x,self.y,self.z,self.x-6,self.y-5,self.z+10,1)
-            mc.setBlocks(self.x-1,self.y,self.z+1,self.x-5,self.y-4,self.z+9,9)
+            mc.setBlocks(self.x,self.y,self.z,self.x-6,self.y-5,self.z+10,1)#stone outline
+            mc.setBlocks(self.x,self.y+1,self.z,self.x-6,self.y+1,self.z+10,85)#fences
+            mc.setBlocks(self.x-1,self.y+1,self.z,self.x-5,self.y+1,self.z+9,0)#air
+            mc.setBlocks(self.x-1,self.y,self.z+1,self.x-5,self.y-4,self.z+9,9)#water
         elif self.poolRefRight == False: # if the pool is on the back right, it will build back and to the left
+            #mc.setBlocks(self.x-1,self.y,self.z,self.x-1,self.y+1,self.z,0)
             self.x +=1
             self.z +=2
             self.y -=1
-            mc.setBlocks(self.x,self.y,self.z,self.x+6,self.y-5,self.z+10,1)
-            mc.setBlocks(self.x+1,self.y,self.z+1,self.x+5,self.y-4,self.z+9,9)
+            mc.setBlocks(self.x,self.y,self.z,self.x+6,self.y-5,self.z+10,1)#stone outline
+            mc.setBlocks(self.x,self.y+1,self.z,self.x+6,self.y+1,self.z+10,85)#fences
+            mc.setBlocks(self.x+1,self.y+1,self.z,self.x+5,self.y+1,self.z+9,0)#air
+            mc.setBlocks(self.x+1,self.y,self.z+1,self.x+5,self.y-4,self.z+9,9)#water
         
 
     def findEdge(self,plotDimX,plotDimZ,mc,poolRefRight = True):#draws a lien from a corner and finds the point of intersection with the house(post house generation)
