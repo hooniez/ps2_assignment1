@@ -434,8 +434,6 @@ class room:
         if(prevRoom is None): #Do nothing
             pass
         else: #Previous room exists, 
-
-
             doorTypesAll = ['fullwidth','single'] #Add new door types here to insert them into random selector 
             doorTypesPool = ['single']
             if(self.roomType == 'pool'):
