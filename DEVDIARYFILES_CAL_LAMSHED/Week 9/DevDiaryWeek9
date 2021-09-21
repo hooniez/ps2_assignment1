@@ -54,3 +54,9 @@ CAS Latency - Time to access memory column if row is already open
 Row Address to column address delay - Time to read fiirst bit without an active row
 Row precharge time: Time to access column if wrong row is open
 Row active time: Time required to internally refresh row
+
+Project Work:
+12:30pm 21-09-2021:
+Working on improved pool implementation:
+Found bug with how roofs, windows and doors are interacting with pools.
+Solved roofs and window bug easy. Working on solution for doors (problem is less trivial as has to do witrh the way doors are selecting their type)
