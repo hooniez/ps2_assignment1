@@ -30,6 +30,11 @@ def HouseScript():
     myHouse.floors[0].addRoom(mc)
     myHouse.floors[0].addRoom(mc)
     myHouse.floors[0].addRoom(mc)
+    myHouse.floors[0].addRoom(mc)
+    myHouse.floors[0].addRoom(mc)
+    myHouse.floors[0].addRoom(mc)
+    myHouse.floors[0].addRoom(mc)
+    myHouse.floors[0].addRoom(mc)
     myHouse.floors[0].addDoors(mc)
     print('---------')
 

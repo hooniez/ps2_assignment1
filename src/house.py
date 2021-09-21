@@ -67,10 +67,8 @@ if __name__ == '__main__':
     p = mc.player.getTilePos()
 
     houseLocation = p
-    prop = Property(p,34,34)
+    prop = Property(p,50,50) #boarder is 2 on each side so total of 4
     prop.drawProperty(mc)
-    roomSize = 10
-    floorHeight = 5
     floorColor = random.randint(0, 15) #Uses wool block to draw House, wool block has 15 possible Colors
     myHouse = House(prop)
 
@@ -79,12 +77,17 @@ if __name__ == '__main__':
 
     myHouse.floors[0].addRoom(mc)
     myHouse.floors[0].addRoom(mc)
-    myHouse.floors[0].addRoom(mc,'pool')
-    myHouse.floors[0].addRoom(mc,'pool')
-    myHouse.floors[0].addRoom(mc,'pool')
+
+
     myHouse.floors[0].addRoom(mc)
     myHouse.floors[0].addRoom(mc)
 
+    myHouse.floors[0].addRoom(mc)
+    myHouse.floors[0].addRoom(mc)
+
+
+
+    myHouse.floors[0].addRoom(mc,'pool')
     myHouse.floors[0].addRoom(mc,'pool')
     myHouse.floors[0].addRoom(mc,'pool')
     myHouse.floors[0].addRoom(mc,'pool')
@@ -95,14 +98,38 @@ if __name__ == '__main__':
     myHouse.floors[1].addRoom(mc)
     myHouse.floors[1].addRoom(mc)
 
+    myHouse.floors[1].addRoom(mc)
+    myHouse.floors[1].addRoom(mc)
+
+    myHouse.floors[1].addRoom(mc,'pool')
+
     floorColor = random.randint(0, 15)
     myHouse.createFloor(floorColor)
+    myHouse.floors[2].addRoom(mc)
+    myHouse.floors[2].addRoom(mc)
+    myHouse.floors[2].addRoom(mc)
+
+
+    floorColor = random.randint(0, 15)
+    myHouse.createFloor(floorColor)
+    myHouse.floors[3].addRoom(mc)
+    myHouse.floors[3].addRoom(mc)
+    myHouse.floors[3].addRoom(mc)
+
     myHouse.floors[2].addRoom(mc)
     myHouse.floors[2].addRoom(mc)
 
     floorColor = random.randint(0, 15)
     myHouse.createFloor(floorColor)
-    myHouse.floors[3].addRoom(mc)
+    myHouse.floors[4].addRoom(mc)
+    myHouse.floors[4].addRoom(mc)
+    myHouse.floors[1].addRoom(mc)
+    myHouse.floors[1].addRoom(mc)
+
+    floorColor = random.randint(0, 15)
+    myHouse.createFloor(floorColor)
+    myHouse.floors[5].addRoom(mc)
+    myHouse.floors[5].addRoom(mc)
 
     myHouse.addAllDoors(mc)
     myHouse.floors[0].addFrontDoor(mc)
