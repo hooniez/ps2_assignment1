@@ -15,15 +15,18 @@ class Floor: #new class for floors
         ################
         self.floorColor = floorColor
 
-    def createEmptyFloor(self,propertyEdge,belowFloor,floorLevel,floorHeight,roomsize):
+    def createEmptyFloor(self,propertyEdge,belowFloor,floorLevel,floorHeight,roomsizeX,roomsizeZ):
         self.floorLevel = floorLevel
         self.belowFloor = belowFloor
         self.aboveFloor = None
         self.floorHeight = floorHeight
-        self.roomsperx = (self.prop.width - propertyEdge*2)//roomsize #calculates the number of rooms that will be created along the X direction
-        self.roomsperz = (self.prop.depth - propertyEdge*2)//roomsize #calculates the number of rooms that will be created along the Z direction
-        roomsizewidth = roomsize 
-        roomsizedepth = roomsize
+        self.roomsperx = (self.prop.width - propertyEdge*2)//roomsizeX #calculates the number of rooms that will be created along the X direction
+        self.roomsperz = (self.prop.depth - propertyEdge*2)//roomsizeZ #calculates the number of rooms that will be created along the Z direction
+        roomsizewidth = roomsizeX
+        print('Roomserz is:', self.roomsperz)
+        print('Roomsperx is:',self.roomsperx)
+        roomsizedepth = roomsizeZ
+        count = 0
         for z in range(0,self.roomsperz): #following initalised empty rooms in an array. The rooms can later be filled with different types by calling functions in room class
             for x in range(0,self.roomsperx):
                 newSpace = Room(
@@ -33,20 +36,20 @@ class Floor: #new class for floors
                                 self.prop.xstart+(roomsizewidth*(x+1))+propertyEdge,
                                 self.prop.base+self.floorHeight+(floorHeight*floorLevel),
                                 self.prop.zstart+(roomsizedepth*(z+1))+propertyEdge,
-                                x+(z*self.roomsperz), #Position of room in array room.roomPos
+                                count, #Position of room in array room.roomPos
                                 x,z,
                                 self.floorColor #floor Color
                                 ) #coordinates in the grid
                 self.rooms.append(newSpace) #Coordinates of location in grid
+                count+=1
+                #x+(z*self.roomsperz)
         self.setConnectedRooms(self.rooms) #new connected rooms setup
         if(self.belowFloor == None): #Base case, ground floor
             pass
         else:
-            print('self is',self)
             self.belowFloor.aboveFloor = self
-                
+        print(f'At level {self.floorLevel} Rooms array has {len(self.rooms)}')
     def addRoom(self,mc,roomtype='basic'):
-        print('called addRoom')
         empty = True
         builtRooms = []
         avaliableRooms = []
@@ -114,7 +117,6 @@ class Floor: #new class for floors
             #don't build any stairs
             pass
         else: #We at a level 1->
-            print('Enter addStairs else statement')
             avaliableRooms = []
             for room in self.rooms:
                 if room.full==True: #The room is full
@@ -140,8 +142,6 @@ class Floor: #new class for floors
     def addWindows(self,mc):
         for currentRoom in self.rooms: #Search through all the rooms
             if (currentRoom.full == True) and currentRoom.buildUpAvaliablity == True : #The room is filled
-                print(f'{currentRoom.roomPos=}')
-                print(f'{currentRoom.roomPos} has empty wall space at {currentRoom.walls}')
                 for index, conRoom in enumerate(currentRoom.connectedRooms): #look at the connected rooms:
                     if conRoom != None: #If there is no room there potential window Location
                         if (conRoom.full == False) or (conRoom.roomType == 'pool'):
@@ -184,28 +184,33 @@ class Floor: #new class for floors
 
     #################
     def setConnectedRooms(self,roomArray):
+        print('room array is',len(roomArray))
         for emptyRoom in roomArray:
+            print('-----------------')
+            print('empty room pos is:',emptyRoom.roomPos)
+            print('emptyroom X is:',emptyRoom.gridCoord[0])
+            print('emptyroom Z is:',emptyRoom.gridCoord[1])
             arrayLocationX = emptyRoom.gridCoord[0]
             arrayLocationZ = emptyRoom.gridCoord[1]
+            bot = True
+            top = True
             left = True
             right = True
-            back = True
-            front = True
             if(arrayLocationX == 0): #On bot edge
-                left = False
+                bot = False
             if(arrayLocationX == self.roomsperx-1): #On top edge
-                right = False
+                top = False
             if(arrayLocationZ == 0): #On the left edge
-                front = False
+                left = False
             if(arrayLocationZ == self.roomsperz-1): #On right edge
-                back = False
-            if(left):
+                right = False
+            if(bot):
                 emptyRoom.connectedRooms[0] = roomArray[emptyRoom.roomPos - 1]
-            if(right):
+            if(top):
                 emptyRoom.connectedRooms[1] = roomArray[emptyRoom.roomPos + 1]
-            if(front):
+            if(left):
                 emptyRoom.connectedRooms[2] = roomArray[emptyRoom.roomPos - self.roomsperx]
-            if(back):
+            if(right):
                 emptyRoom.connectedRooms[3] = roomArray[emptyRoom.roomPos + self.roomsperx]
 
     def connectPools(self,mc):
