@@ -497,6 +497,7 @@ class Room:
                 #create a piece of furniture
                 furn = Furniture(startCorner,endCorner,index,self.walls).createCouch(mc)
                 self.walls[index] = 'couch'
+        Furniture(startCorner,endCorner,index,self.walls).drawCenterTable(mc)
 
 
     def findStairSpaceOnRoomWalls(self,belowRoom):

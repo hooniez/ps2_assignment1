@@ -10,24 +10,44 @@ class Furniture:
         self.endCorner = endCorner
 
     def drawCenterTable(self,mc):
-        #43
-        mc,setBlocks(
-                    self.startCorner['x'],
-                    self.startCorner['y'],
-                    self.startCorner['z'],
-                    self.startCorner['x'],
-                    self.startCorner['y'],
-                    self.endCorner['z'],
-                    )
+        roomWidth = abs(self.startCorner['x'] - self.endCorner['x'])
+        roomHeight = abs(self.startCorner['y'] - self.endCorner['y'])
+        roomDepth = abs(self.startCorner['z'] - self.endCorner['z'])
+        if random.randint(0, 1) == 0:
+            mc.setBlocks(
+                        self.startCorner['x']+roomWidth//2-1,
+                        self.startCorner['y']+1,
+                        self.startCorner['z']+roomDepth//2-1,
+                        self.startCorner['x']+roomWidth//2+1,
+                        self.startCorner['y']+1,
+                        self.startCorner['z']+roomDepth//2+1,
+                        43
+                        )
+            mc.setBlocks(
+                        self.startCorner['x']+roomWidth//2,
+                        self.startCorner['y']+1,
+                        self.startCorner['z']+roomDepth//2,
+                        self.startCorner['x']+roomWidth//2,
+                        self.startCorner['y']+1,
+                        self.startCorner['z']+roomDepth//2,
+                        162
+                        )
+        else:
+            mc.setBlocks(
+                        self.startCorner['x']+roomWidth//2-1,
+                        self.startCorner['y']+1,
+                        self.startCorner['z']+roomDepth//2-1,
+                        self.startCorner['x']+roomWidth//2+1,
+                        self.startCorner['y']+1,
+                        self.startCorner['z']+roomDepth//2+1,
+                        126
+                        )
+
+
         pass
 
 
     def createCouch(self,mc): #Couches stick to the side of the room,
-        roomWidth = abs(self.startCorner['x'] - self.endCorner['x'])
-        roomHeight = abs(self.startCorner['y'] - self.endCorner['y'])
-        roomDepth = abs(self.startCorner['z'] - self.endCorner['z'])
-        chairWidth01 = roomDepth-6
-        chairWidth23 = roomWidth-6
         adjustment = [0,0,0,0] #top bot left right
         for i, wall in enumerate(self.walls):
             if wall == None:
