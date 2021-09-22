@@ -409,7 +409,7 @@ class Room:
                                     self.ystart, #fixed
                                     self.zstart+boundrywidth+1,
                                     self.xstart+boundrywidth,
-                                    self.ystart-pooldepth-1, #fixed
+                                    self.ystart-pooldepth, #fixed
                                     self.zend-boundrywidth-1,
                                     9
                                     ) #create pool shell
@@ -433,7 +433,7 @@ class Room:
                                     self.ystart, #fixed
                                     self.zstart+boundrywidth+1,
                                     conRoom.xstart+boundrywidth,
-                                    self.ystart-pooldepth-1, #fixed
+                                    self.ystart-pooldepth, #fixed
                                     self.zend-boundrywidth-1,
                                     9
                                     ) #create pool shell
@@ -456,7 +456,7 @@ class Room:
                                     self.ystart, #fixed
                                     conRoom.zend-boundrywidth,
                                     self.xend-boundrywidth-1,
-                                    self.ystart-pooldepth-1, #fixed
+                                    self.ystart-pooldepth, #fixed
                                     self.zstart+boundrywidth,
                                     9
                                     ) #create pool shell
@@ -478,7 +478,7 @@ class Room:
                                     self.ystart, #fixed
                                     self.zend-1,
                                     self.xend-boundrywidth-1,
-                                    self.ystart-pooldepth-1, #fixed
+                                    self.ystart-pooldepth, #fixed
                                     conRoom.zstart+boundrywidth,
                                     9
                                     ) #create pool shell
