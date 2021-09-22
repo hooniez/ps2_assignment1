@@ -13,15 +13,37 @@ class Furniture:
         roomWidth = abs(self.startCorner['x'] - self.endCorner['x'])
         roomHeight = abs(self.startCorner['y'] - self.endCorner['y'])
         roomDepth = abs(self.startCorner['z'] - self.endCorner['z'])
-        mc,setBlocks(
-                    self.startCorner['x']+roomWidth//2,
-                    self.startCorner['y'],
-                    self.startCorner['z']+roomWidth//2,
-                    self.startCorner['x']+roomWidth//2+1,
-                    self.startCorner['y'],
-                    self.endCorner['z']+roomWidth//2+1,
-                    43
-                    )
+        if random.randint(0, 1) == 0:
+            mc.setBlocks(
+                        self.startCorner['x']+roomWidth//2-1,
+                        self.startCorner['y']+1,
+                        self.startCorner['z']+roomDepth//2-1,
+                        self.startCorner['x']+roomWidth//2+1,
+                        self.startCorner['y']+1,
+                        self.startCorner['z']+roomDepth//2+1,
+                        43
+                        )
+            mc.setBlocks(
+                        self.startCorner['x']+roomWidth//2,
+                        self.startCorner['y']+1,
+                        self.startCorner['z']+roomDepth//2,
+                        self.startCorner['x']+roomWidth//2,
+                        self.startCorner['y']+1,
+                        self.startCorner['z']+roomDepth//2,
+                        162
+                        )
+        else:
+            mc.setBlocks(
+                        self.startCorner['x']+roomWidth//2-1,
+                        self.startCorner['y']+1,
+                        self.startCorner['z']+roomDepth//2-1,
+                        self.startCorner['x']+roomWidth//2+1,
+                        self.startCorner['y']+1,
+                        self.startCorner['z']+roomDepth//2+1,
+                        126
+                        )
+
+
         pass
 
 
