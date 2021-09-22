@@ -10,24 +10,22 @@ class Furniture:
         self.endCorner = endCorner
 
     def drawCenterTable(self,mc):
-        #43
+        roomWidth = abs(self.startCorner['x'] - self.endCorner['x'])
+        roomHeight = abs(self.startCorner['y'] - self.endCorner['y'])
+        roomDepth = abs(self.startCorner['z'] - self.endCorner['z'])
         mc,setBlocks(
-                    self.startCorner['x'],
+                    self.startCorner['x']+roomWidth//2,
                     self.startCorner['y'],
-                    self.startCorner['z'],
-                    self.startCorner['x'],
+                    self.startCorner['z']+roomWidth//2,
+                    self.startCorner['x']+roomWidth//2+1,
                     self.startCorner['y'],
-                    self.endCorner['z'],
+                    self.endCorner['z']+roomWidth//2+1,
+                    43
                     )
         pass
 
 
     def createCouch(self,mc): #Couches stick to the side of the room,
-        roomWidth = abs(self.startCorner['x'] - self.endCorner['x'])
-        roomHeight = abs(self.startCorner['y'] - self.endCorner['y'])
-        roomDepth = abs(self.startCorner['z'] - self.endCorner['z'])
-        chairWidth01 = roomDepth-6
-        chairWidth23 = roomWidth-6
         adjustment = [0,0,0,0] #top bot left right
         for i, wall in enumerate(self.walls):
             if wall == None:
