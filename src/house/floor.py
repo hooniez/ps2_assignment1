@@ -20,7 +20,7 @@ class Floor: #new class for floors
         self.belowFloor = belowFloor
         self.aboveFloor = None
         self.floorHeight = floorHeight
-        self.roomsperx = (self.prop.width - propertyEdge*2)//roomsize #calculates the number of rooms that will be created along the X direction
+        self.roomsperx = (self.prop.width - propertyEdge*2)//roomsize  #calculates the number of rooms that will be created along the X direction
         self.roomsperz = (self.prop.depth - propertyEdge*2)//roomsize #calculates the number of rooms that will be created along the Z direction
         roomsizewidth = roomsize 
         roomsizedepth = roomsize
