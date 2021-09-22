@@ -71,3 +71,13 @@ Finished first step in connected pools together, my coding skills have really im
 Finished connecting pools, found a bug which can be easily fixed in the way that a room was deciding what type of door to build.
 8:40 21-09-2021:
 Fixed bug with implementation of pool, the room will now check what room type created it when it is created
+
+CPU
+Every CPU has a different instruction set
+This creates different incompatibilities between systems, making coding at a low level very difficult
+This is the reason that different higher level programming languages emerged
+CPU executes simple instructions quickly
+
+3:55pm 22-09-2021:
+Working on fixing issue with rooms when there is a different width and height.
+Creating furniture for rooms, current implementation is to put a piece wherever their is free wall space. Working on long chair
