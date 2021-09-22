@@ -381,6 +381,25 @@ class Room:
                     9
                     ) #create water
         #Now connect to nearby pools:
+        mc.setBlocks(
+                    self.xstart+boundrywidth,
+                    self.ystart+1,
+                    self.zstart+boundrywidth,
+                    self.xend-boundrywidth,
+                    self.ystart+1,
+                    self.zend-boundrywidth,
+                    85
+                    )#creates fences above granite outline layer
+        mc.setBlocks(
+                    self.xstart+boundrywidth+1,
+                    self.ystart+1,
+                    self.zstart+boundrywidth+1,
+                    self.xend-boundrywidth-1,
+                    self.ystart+1,
+                    self.zend-boundrywidth-1,
+                    0
+                    )#hollows out the fences created
+ 
 
     def createPoolConnections(self, mc):
         pooldepth = 4
@@ -405,6 +424,24 @@ class Room:
                                     2
                                     ) #create pool shell
                         mc.setBlocks(
+                                    conRoom.xend-1, #fixed
+                                    self.ystart+1, #fixed
+                                    self.zstart+boundrywidth,
+                                    self.xstart+1,
+                                    self.ystart+1, #fixed
+                                    self.zend-boundrywidth,
+                                    85
+                                    )#creates fences
+                        mc.setBlocks(
+                                    conRoom.xend-boundrywidth, #fixed
+                                    self.ystart+1, #fixed
+                                    self.zstart+boundrywidth+1,
+                                    self.xstart+boundrywidth,
+                                    self.ystart+1, #fixed
+                                    self.zend-boundrywidth-1,
+                                    0
+                                    )#hollows fence                                       
+                        mc.setBlocks(
                                     conRoom.xend-boundrywidth, #fixed
                                     self.ystart, #fixed
                                     self.zstart+boundrywidth+1,
@@ -427,7 +464,24 @@ class Room:
                                     1,
                                     2
                                     ) #create pool shell
-
+                        mc.setBlocks(
+                                    conRoom.xend-1, #fixed
+                                    self.ystart+1, #fixed
+                                    self.zstart+boundrywidth,
+                                    self.xstart+1,
+                                    self.ystart+1, #fixed
+                                    self.zend-boundrywidth,
+                                    85
+                                    )#creates fences
+                        mc.setBlocks(
+                                    conRoom.xend-boundrywidth, #fixed
+                                    self.ystart+1, #fixed
+                                    self.zstart+boundrywidth+1,
+                                    self.xstart+boundrywidth,
+                                    self.ystart+1, #fixed
+                                    self.zend-boundrywidth-1,
+                                    0
+                                    )#hollows fence                                    
                         mc.setBlocks(
                                     self.xend-boundrywidth, #fixed
                                     self.ystart, #fixed
@@ -450,7 +504,24 @@ class Room:
                                     1,
                                     2
                                     ) #create pool shell
-
+                        mc.setBlocks(
+                                    conRoom.xend-1, #fixed
+                                    self.ystart+1, #fixed
+                                    self.zstart+boundrywidth,
+                                    self.xstart+1,
+                                    self.ystart+1, #fixed
+                                    self.zend-boundrywidth,
+                                    85
+                                    )#creates fences
+                        mc.setBlocks(
+                                    conRoom.xend-boundrywidth, #fixed
+                                    self.ystart+1, #fixed
+                                    self.zstart+boundrywidth+1,
+                                    self.xstart+boundrywidth,
+                                    self.ystart+1, #fixed
+                                    self.zend-boundrywidth-1,
+                                    0
+                                    )#hollows fence   
                         mc.setBlocks(
                                     self.xstart+boundrywidth+1, #fixed
                                     self.ystart, #fixed
@@ -473,6 +544,24 @@ class Room:
                                     1,
                                     2
                                     ) #create pool shell
+                        mc.setBlocks(
+                                    conRoom.xend-1, #fixed
+                                    self.ystart+1, #fixed
+                                    self.zstart+boundrywidth,
+                                    self.xstart+1,
+                                    self.ystart+1, #fixed
+                                    self.zend-boundrywidth,
+                                    85
+                                    )#creates fences
+                        mc.setBlocks(
+                                    conRoom.xend-boundrywidth, #fixed
+                                    self.ystart+1, #fixed
+                                    self.zstart+boundrywidth+1,
+                                    self.xstart+boundrywidth,
+                                    self.ystart+1, #fixed
+                                    self.zend-boundrywidth-1,
+                                    0
+                                    )#hollows fence                                                                           
                         mc.setBlocks(
                                     self.xstart+boundrywidth+1, #fixed
                                     self.ystart, #fixed
@@ -497,7 +586,7 @@ class Room:
                 #create a piece of furniture
                 furn = Furniture(startCorner,endCorner,index,self.walls).createCouch(mc)
                 self.walls[index] = 'couch'
-        Furniture(tartCorner,endCorner,index,self.walls).drawCenterTable(mc)
+        Furniture(startCorner,endCorner,index,self.walls).drawCenterTable(mc)
 
 
     def findStairSpaceOnRoomWalls(self,belowRoom):

@@ -13,7 +13,7 @@ class Furniture:
         roomWidth = abs(self.startCorner['x'] - self.endCorner['x'])
         roomHeight = abs(self.startCorner['y'] - self.endCorner['y'])
         roomDepth = abs(self.startCorner['z'] - self.endCorner['z'])
-        mc,setBlocks(
+        mc.setBlocks(
                     self.startCorner['x']+roomWidth//2,
                     self.startCorner['y'],
                     self.startCorner['z']+roomWidth//2,
