@@ -6,6 +6,8 @@ from mcpi.vec3 import Vec3
 from Foundation_wrapper import Foundation_wrapper
 from Foundation import Foundation
 from Road import Road
+from house.house import House
+from house.land import Property
 
 ''' 
     Let's get some terminology out of the way. 
@@ -292,9 +294,15 @@ class Village():
         mc.setBlocks(start_vector.x, start_vector.y + 1, start_vector.z, end_vector.x, end_vector.y + 100 , end_vector.z, 0)
 
 
+    def spawn_houses(self):
+        for wrapper in self.Foundation_wrappers:
+            wrapper.foundation.house = House(Property(wrapper.foundation))
+
+
 if __name__ == '__main__':
     mc = Minecraft.create()
     village = Village(mc)
     village.foundation_generator()
     village.road_generator('row')
     village.road_generator('column')
+    village.spawn_houses()

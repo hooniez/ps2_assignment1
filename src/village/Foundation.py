@@ -19,6 +19,7 @@ class Foundation():
         self.center_vector = None
         self.highest_vector = None
         self.building_block = block.GLOWSTONE_BLOCK.id
+        self.house = None
     
     def position_vectors(self):
         ''' Find the vector with the highest y-axis and set every vector's height to it 
