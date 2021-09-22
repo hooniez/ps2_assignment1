@@ -1,4 +1,5 @@
 from mcpi.vec3 import Vec3
+from furniture import Furniture
 import random
 import pandas as pd
 import numpy as np
@@ -39,8 +40,6 @@ class Room:
         self.avaialble_space = None
 
     def createRoom(self,mc,roomtype):
-        print('The connected rooms are', self.connectedRooms)
-        print('Created a room of type',roomtype,'at location',self.roomPos)
         if(roomtype=='basic'):
             self.roomType = 'basic'
             self.createBox(mc)
@@ -485,6 +484,19 @@ class Room:
                                     ) #create pool shell
 
 
+    def calsAddfurn(self,mc):
+        #look for a spair wall space
+        #draw a piece of furniture there
+        startCorner = {'x':self.xstart,'y':self.ystart,'z':self.zstart}
+        endCorner = {'x':self.xend,'y':self.yend,'z':self.zend}
+        for index,space in enumerate(self.walls):
+            if space == None: # its empty
+                #create a piece of furniture
+                furn = Furniture(startCorner,endCorner).createChair(mc,index)
+                self.walls[index] = furn
+
+
+
 
     def findStairSpaceOnRoomWalls(self,belowRoom):
         #Check if the below room has space for a staircase:
@@ -497,8 +509,6 @@ class Room:
         return avaliableSpace
 
     def createWindow(self,mc,windowLoc):
-        print('In create Window')
-        print('windowLoc is',windowLoc)
         wallWidth = 1
         roomWidth = abs(self.xstart-self.xend)
         roomDepth = abs(self.zstart-self.zend)
@@ -594,5 +604,5 @@ class Room:
             
 
         df = df.unstack(level=1)
-        print(df)
-        print(df.isna().sum())
+        # print(df)
+        # print(df.isna().sum())
