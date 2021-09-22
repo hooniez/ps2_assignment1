@@ -489,13 +489,14 @@ class Room:
         #draw a piece of furniture there
         startCorner = {'x':self.xstart,'y':self.ystart,'z':self.zstart}
         endCorner = {'x':self.xend,'y':self.yend,'z':self.zend}
+        print('walls array is',self.walls)
+        if self.roomType == 'pool': #don't draw if its a pool
+            return
         for index,space in enumerate(self.walls):
             if space == None: # its empty
                 #create a piece of furniture
-                furn = Furniture(startCorner,endCorner).createChair(mc,index)
+                furn = Furniture(startCorner,endCorner,index,self.walls).createCouch(mc)
                 self.walls[index] = furn
-
-
 
 
     def findStairSpaceOnRoomWalls(self,belowRoom):
