@@ -17,7 +17,7 @@ class Furniture:
             if wall == None:
                 pass
             else:
-                if wall == 'stairsUpper' or wall == 'stairsLower':
+                if wall == 'stairsUpper' or wall == 'stairsLower' or wall=='couch':
                     adjustment[i] = 2
         if self.index == 0: #on the bot side
             mc.setBlocks(
@@ -60,15 +60,41 @@ class Furniture:
                 self.endCorner['z']-3-adjustment[3],
                 182
             )
-        # if(self.index == 2):
-        #     mc.setBlocks(
-        #         self.endCorner['x']-2,
-        #         self.startCorner['y']+1,
-        #         self.startCorner['z']+3,
-        #         self.endCorner['x']-2,
-        #         self.startCorner['y']+1,
-        #         self.endCorner['z']-3,
-        #         182
-        #     )
-        # if(self.index == 3):
-        #     mc.setBlocks()
+        if(self.index == 2):
+            mc.setBlocks(
+                self.startCorner['x']+2+adjustment[0],
+                self.startCorner['y']+1,
+                self.startCorner['z']+1,
+                self.endCorner['x']-2-adjustment[1],
+                self.startCorner['y']+1,
+                self.startCorner['z']+2,
+                133
+            )
+            mc.setBlocks(
+                self.startCorner['x']+3+adjustment[0],
+                self.startCorner['y']+1,
+                self.startCorner['z']+2,
+                self.endCorner['x']-3-adjustment[1],
+                self.startCorner['y']+1,
+                self.startCorner['z']+2,
+                182
+            )
+        if(self.index == 3):
+            mc.setBlocks(
+                self.startCorner['x']+2+adjustment[0],
+                self.startCorner['y']+1,
+                self.endCorner['z']-2,
+                self.endCorner['x']-2-adjustment[1],
+                self.startCorner['y']+1,
+                self.endCorner['z']-1,
+                133
+            )
+            mc.setBlocks(
+                self.startCorner['x']+3+adjustment[0],
+                self.startCorner['y']+1,
+                self.endCorner['z']-2,
+                self.endCorner['x']-3-adjustment[1],
+                self.startCorner['y']+1,
+                self.endCorner['z']-2,
+                182
+            )

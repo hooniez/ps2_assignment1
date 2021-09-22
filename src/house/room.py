@@ -496,7 +496,7 @@ class Room:
             if space == None: # its empty
                 #create a piece of furniture
                 furn = Furniture(startCorner,endCorner,index,self.walls).createCouch(mc)
-                self.walls[index] = furn
+                self.walls[index] = 'couch'
 
 
     def findStairSpaceOnRoomWalls(self,belowRoom):
