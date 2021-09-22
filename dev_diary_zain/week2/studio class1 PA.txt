@@ -1,0 +1,10 @@
+Participation activity: Select a company and perform the risk assessment.
+
+company - rmit
+
+Identify threat sources - hackers
+Identify threat events - being hacked
+Identify vulnerabilities and the conditions needed to exploit them - a new virus or a security weakness with data encryption.
+Identify the likelihood such attacks would succeed - not likely(again)
+Identify the potential impact - the entire company being a lot slower to react to necessary events
+Determine the risk posed - financial and reputational risks

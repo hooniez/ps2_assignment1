@@ -1,0 +1,18 @@
+Studio class 2
+
+Read through chapters one and two covering:
+
+John von Neumann's insight: Programs are data.
+Memory addressing.
+Registers.
+The System Bus.
+Instruction Sets.
+Decimal vs Binary vs Hexadecimal notation.
+
+PA - converting between binary, hexidecimal and decimal:
+
+>Convert the binary number 10101 to decimal = 21
+>Convert the hexadecimal number 3E to decimal = 62
+>Convert the binary number 1101001010111111 to hexadecimal = D2BF
+>Convert the decimal number 39 to binary = 100111
+>Convert the decimal number 63 to hexadecimal = 3F

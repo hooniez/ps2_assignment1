@@ -1,0 +1,43 @@
+Find the IP address of your machine:
+use the ipconfig /all command in cmd
+
+What is the IP address of www.rmit.edu.au? 
+type:ping rmit.com in cmd
+ip: "131.170.0.100"
+
+Try to use IP to find the physical location and other information(for rmit):
+city: "Melbourne"
+ region: "Victoria"
+ country: "AU"
+ loc: "-37.8140,144.9633"
+postal: "3000"
+ timezone: "Australia/Melbourne"
+ asn: Object
+ asn: "AS7575"
+route: "131.170.0.0/24"
+ type: "education"
+ company: Object
+ name: "Royal Melbourne Institute of Technology"
+ domain: "rmit.edu.au"
+ type: "education"
+ privacy: Object
+ vpn: false
+proxy: false
+ tor: false
+ hosting: false
+ abuse: Object
+ address: "Royal Melbourne Institute of Technology, GPO Box 2476V, Melbourne, 3001"
+ country: "AU"
+ email: "its-secops-alerts@rmit.edu.au"
+ name: "Keyur Lavingia"
+ network: "131.170.0.0/16"
+ phone: "+61 3 9925 8859"
+ domains: Object
+ ip: "131.170.0.100"
+ total: 10
+ domains: Array
+ 0: "rmituniversity.com"
+ 1: "rmituniversity.biz"
+ 2: "rmituniversity.mobi"
+ 3: "rmit.biz"
+ 4: "rmit.mobi"
