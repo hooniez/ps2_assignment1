@@ -1,12 +1,28 @@
+import random
+
 class Furniture:
     def __init__(self,startCorner,endCorner,index,allWalls): #y will hold the floor height
         self.type = 'none'
-        self.color = 'red'
+        self.color = random.randint(1, 15)
         self.index = index
         self.walls = allWalls
         self.startCorner = startCorner
         self.endCorner = endCorner
-    def createCouch(self,mc):
+
+    def drawCenterTable(self,mc):
+        #43
+        mc,setBlocks(
+                    self.startCorner['x'],
+                    self.startCorner['y'],
+                    self.startCorner['z'],
+                    self.startCorner['x'],
+                    self.startCorner['y'],
+                    self.endCorner['z'],
+                    )
+        pass
+
+
+    def createCouch(self,mc): #Couches stick to the side of the room,
         roomWidth = abs(self.startCorner['x'] - self.endCorner['x'])
         roomHeight = abs(self.startCorner['y'] - self.endCorner['y'])
         roomDepth = abs(self.startCorner['z'] - self.endCorner['z'])
@@ -27,7 +43,8 @@ class Furniture:
                 self.startCorner['x']+2,
                 self.startCorner['y']+1,
                 self.endCorner['z']-2-adjustment[3],
-                133
+                159,
+                self.color
             )
 
             mc.setBlocks(
@@ -48,7 +65,8 @@ class Furniture:
                 self.endCorner['x']-1,
                 self.startCorner['y']+1,
                 self.endCorner['z']-2-adjustment[3],
-                133
+                159,
+                self.color
             )
 
             mc.setBlocks(
@@ -68,7 +86,8 @@ class Furniture:
                 self.endCorner['x']-2-adjustment[1],
                 self.startCorner['y']+1,
                 self.startCorner['z']+2,
-                133
+                159,
+                self.color
             )
             mc.setBlocks(
                 self.startCorner['x']+3+adjustment[0],
@@ -87,7 +106,8 @@ class Furniture:
                 self.endCorner['x']-2-adjustment[1],
                 self.startCorner['y']+1,
                 self.endCorner['z']-1,
-                133
+                159,
+                self.color
             )
             mc.setBlocks(
                 self.startCorner['x']+3+adjustment[0],
