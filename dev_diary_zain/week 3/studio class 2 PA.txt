@@ -1,0 +1,6 @@
+Build your own pc
+
+$300 - i5-10600KF: 6 cores, 12 threads, 4.1GHz base clock 12mb chache
+$600 - i9-109000L 10 cores, 20 threads, 2.8GHz base clock
+$900 - ryzen 9
+$1200 - core i9-7900x

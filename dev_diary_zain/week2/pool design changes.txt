@@ -1,0 +1,7 @@
+potential pool design(need to implement):
+
+1)pick an arbitrary room
+2)use the connected rooms array to determine where there is empty space(where value is None)
+3)check to see if there is enough pool space(coords will differ based on the index of connected rooms:bot,top,left,right)
+4)if check fails, move on to another room and repeat steps 2 and 3
+5)build pool
