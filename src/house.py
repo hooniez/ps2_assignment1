@@ -10,13 +10,14 @@ class House: #this is a house class has an array of floors
         self.floors = [] #all the house levels
         self.floorHeight = 5
         self.roomSize = 10
+        self.roomX = 14
+        self.roomZ = 10
         self.propertyEdge = 2
 
     def createFloor(self, floorColor):
-        print('self.floors length is: ',len(self.floors))
         if len(self.floors) == 0: #this is the first floor, so use default
             newFloor = Floor(self.prop,floorColor)
-            newFloor.createEmptyFloor(self.propertyEdge,None,0,self.floorHeight,self.roomSize) #There is no below floor
+            newFloor.createEmptyFloor(self.propertyEdge,None,0,self.floorHeight,self.roomX,self.roomZ) #There is no below floor
             self.floors.append(newFloor)
         else: # their is already a previous floor
             belowFloor = self.floors[-1] #select the last floor in floors array
@@ -30,7 +31,7 @@ class House: #this is a house class has an array of floors
                         #at least one room can be built off
                         break
             newFloor = Floor(self.prop, floorColor)
-            newFloor.createEmptyFloor(self.propertyEdge,belowFloor,len(self.floors),self.floorHeight,self.roomSize)
+            newFloor.createEmptyFloor(self.propertyEdge,belowFloor,len(self.floors),self.floorHeight,self.roomX,self.roomZ)
             self.floors.append(newFloor)
 
     def addAllStairs(self,mc):
@@ -67,26 +68,16 @@ if __name__ == '__main__':
     p = mc.player.getTilePos()
 
     houseLocation = p
-    prop = Property(p,50,50) #boarder is 2 on each side so total of 4
+    prop = Property(p,40,40) #boarder is 2 on each side so total of 4
     prop.drawProperty(mc)
     floorColor = random.randint(0, 15) #Uses wool block to draw House, wool block has 15 possible Colors
     myHouse = House(prop)
 
     myHouse.createFloor(floorColor) # specify the room size, currently only squares
-    FirstFloorRoomNumber = 6
-
     myHouse.floors[0].addRoom(mc)
     myHouse.floors[0].addRoom(mc)
-
-
     myHouse.floors[0].addRoom(mc)
     myHouse.floors[0].addRoom(mc)
-
-    myHouse.floors[0].addRoom(mc)
-    myHouse.floors[0].addRoom(mc)
-
-    myHouse.floors[0].addRoom(mc,'pool')
-    myHouse.floors[0].addRoom(mc,'pool')
     myHouse.floors[0].addRoom(mc,'pool')
     myHouse.floors[0].addRoom(mc,'pool')
     print('---------')
@@ -97,37 +88,29 @@ if __name__ == '__main__':
     myHouse.floors[1].addRoom(mc)
 
     myHouse.floors[1].addRoom(mc)
-    myHouse.floors[1].addRoom(mc)
-
-    myHouse.floors[1].addRoom(mc,'pool')
 
     floorColor = random.randint(0, 15)
     myHouse.createFloor(floorColor)
     myHouse.floors[2].addRoom(mc)
-    myHouse.floors[2].addRoom(mc)
-    myHouse.floors[2].addRoom(mc)
+    # myHouse.floors[2].addRoom(mc)
+    # myHouse.floors[2].addRoom(mc)
+    myHouse.floors[0].rooms[0].calsAddfurn(mc)
 
+    # floorColor = random.randint(0, 15)
+    # myHouse.createFloor(floorColor)
+    # myHouse.floors[3].addRoom(mc)
+    # myHouse.floors[3].addRoom(mc)
+    # myHouse.floors[3].addRoom(mc)
 
-    floorColor = random.randint(0, 15)
-    myHouse.createFloor(floorColor)
-    myHouse.floors[3].addRoom(mc)
-    myHouse.floors[3].addRoom(mc)
-    myHouse.floors[3].addRoom(mc)
+    # floorColor = random.randint(0, 15)
+    # myHouse.createFloor(floorColor)
+    # myHouse.floors[4].addRoom(mc)
+    # myHouse.floors[4].addRoom(mc)
 
-    myHouse.floors[2].addRoom(mc)
-    myHouse.floors[2].addRoom(mc)
-
-    floorColor = random.randint(0, 15)
-    myHouse.createFloor(floorColor)
-    myHouse.floors[4].addRoom(mc)
-    myHouse.floors[4].addRoom(mc)
-    myHouse.floors[1].addRoom(mc)
-    myHouse.floors[1].addRoom(mc)
-
-    floorColor = random.randint(0, 15)
-    myHouse.createFloor(floorColor)
-    myHouse.floors[5].addRoom(mc)
-    myHouse.floors[5].addRoom(mc)
+    # floorColor = random.randint(0, 15)
+    # myHouse.createFloor(floorColor)
+    # myHouse.floors[5].addRoom(mc)
+    # myHouse.floors[5].addRoom(mc)
 
     myHouse.addAllDoors(mc)
     myHouse.floors[0].addFrontDoor(mc)
