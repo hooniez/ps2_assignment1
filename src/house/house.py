@@ -58,6 +58,10 @@ class House: #this is a house class has an array of floors
         if len(self.floors) > 0:
             self.floors[0].connectPools(mc)
 
+    def addAllFurniture(self,mc):
+        for floor in self.floors:
+            floor.addFurnitureCal(mc)
+
 
 # Used for testing 
 if __name__ == '__main__':
@@ -94,7 +98,6 @@ if __name__ == '__main__':
     myHouse.floors[2].addRoom(mc)
     # myHouse.floors[2].addRoom(mc)
     # myHouse.floors[2].addRoom(mc)
-    myHouse.floors[0].rooms[0].calsAddfurn(mc)
 
     # floorColor = random.randint(0, 15)
     # myHouse.createFloor(floorColor)
@@ -119,3 +122,4 @@ if __name__ == '__main__':
     # myHouse.addFurniture(mc)
     myHouse.addAllRoofs(mc)
     myHouse.connectAllPools(mc)
+    myHouse.addAllFurniture(mc)

@@ -81,3 +81,6 @@ CPU executes simple instructions quickly
 3:55pm 22-09-2021:
 Working on fixing issue with rooms when there is a different width and height.
 Creating furniture for rooms, current implementation is to put a piece wherever their is free wall space. Working on long chair
+
+6:39pm 22-09-2021:
+Finished creating first couch. Found error when staircase intesects with the couch, will need to have the length of the couch be effected by the location of the staircase

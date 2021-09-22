@@ -269,3 +269,9 @@ class Floor: #new class for floors
         for room in self.rooms:
             if room.full:
                 room.scanRoom(mc)
+
+    def addFurnitureCal(self,mc):
+        for room in self.rooms:
+            if room.full:
+                room.calsAddfurn(mc)
+                
