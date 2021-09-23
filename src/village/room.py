@@ -28,7 +28,7 @@ class Room:
         self.full = False #Room does not exist by default
         self.roomType = 'none'
         self.buildUpAvaliablity = False
-        self.walls = [None,None,None,None] #bot,top,left,right (walls array now contains eveything that sticks to a wall, e.g stairs)
+        self.walls = [None,None,None,None] #bot,top,left,right (walls array now contains eveything that sticks to a wall, e.g stairs,chairs etc)
         
         self.x_to_center = abs(self.xstart - self.xend) // 2 
         self.z_to_center = abs(self.zstart - self.zend) // 2

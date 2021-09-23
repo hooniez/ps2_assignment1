@@ -13,15 +13,34 @@ class Furniture:
         roomWidth = abs(self.startCorner['x'] - self.endCorner['x'])
         roomHeight = abs(self.startCorner['y'] - self.endCorner['y'])
         roomDepth = abs(self.startCorner['z'] - self.endCorner['z'])
-        mc.setBlocks(
-                    self.startCorner['x']+roomWidth//2-1,
-                    self.startCorner['y']+1,
-                    self.startCorner['z']+roomDepth//2-1,
-                    self.startCorner['x']+roomWidth//2+1,
-                    self.startCorner['y']+1,
-                    self.startCorner['z']+roomDepth//2+1,
-                    43
-                    )
+        if random.randint(0, 1) == 0:
+            mc.setBlocks(
+                        self.startCorner['x']+roomWidth//2-1,
+                        self.startCorner['y']+1,
+                        self.startCorner['z']+roomDepth//2-1,
+                        self.startCorner['x']+roomWidth//2+1,
+                        self.startCorner['y']+1,
+                        self.startCorner['z']+roomDepth//2+1,
+                        43
+                        )
+            mc.setBlock   (
+                        self.startCorner['x']+roomWidth//2,
+                        self.startCorner['y']+1,
+                        self.startCorner['z']+roomDepth//2,
+                        118
+                        )
+        else:
+            mc.setBlocks(
+                        self.startCorner['x']+roomWidth//2-1,
+                        self.startCorner['y']+1,
+                        self.startCorner['z']+roomDepth//2-1,
+                        self.startCorner['x']+roomWidth//2+1,
+                        self.startCorner['y']+1,
+                        self.startCorner['z']+roomDepth//2+1,
+                        44,
+                        1	
+                        )
+            
 
     def createCouch(self,mc): #Couches stick to the side of the room,
         adjustment = [0,0,0,0] #top bot left right
