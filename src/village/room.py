@@ -524,19 +524,19 @@ class Room:
                                     2
                                     ) #create pool shell
                         mc.setBlocks(
-                                    conRoom.xend-1, #fixed
+                                    self.xend-1, #fixed
                                     self.ystart+1, #fixed
                                     self.zstart+boundrywidth,
-                                    self.xstart+1,
+                                    conRoom.xstart+1,
                                     self.ystart+1, #fixed
                                     self.zend-boundrywidth,
                                     85
                                     )#creates fences
                         mc.setBlocks(
-                                    conRoom.xend-boundrywidth, #fixed
+                                    self.xend-boundrywidth, #fixed
                                     self.ystart+1, #fixed
                                     self.zstart+boundrywidth+1,
-                                    self.xstart+boundrywidth,
+                                    conRoom.xstart+boundrywidth,
                                     self.ystart+1, #fixed
                                     self.zend-boundrywidth-1,
                                     0
@@ -564,21 +564,21 @@ class Room:
                                     2
                                     ) #create pool shell
                         mc.setBlocks(
-                                    conRoom.xend-1, #fixed
+                                    self.xstart+boundrywidth, #fixed
                                     self.ystart+1, #fixed
-                                    self.zstart+boundrywidth,
-                                    self.xstart+1,
+                                    conRoom.zend-1,
+                                    self.xend-boundrywidth,
                                     self.ystart+1, #fixed
-                                    self.zend-boundrywidth,
+                                    self.zstart+1,
                                     85
                                     )#creates fences
                         mc.setBlocks(
-                                    conRoom.xend-boundrywidth, #fixed
+                                    self.xstart+boundrywidth+1, #fixed
                                     self.ystart+1, #fixed
-                                    self.zstart+boundrywidth+1,
-                                    self.xstart+boundrywidth,
+                                    conRoom.zend-boundrywidth,
+                                    self.xend-boundrywidth-1,
                                     self.ystart+1, #fixed
-                                    self.zend-boundrywidth-1,
+                                    self.zstart+boundrywidth,
                                     0
                                     )#hollows fence   
                         mc.setBlocks(
@@ -604,22 +604,22 @@ class Room:
                                     2
                                     ) #create pool shell
                         mc.setBlocks(
-                                    conRoom.xend-1, #fixed
+                                    self.xstart+boundrywidth, #fixed
                                     self.ystart+1, #fixed
-                                    self.zstart+boundrywidth,
-                                    self.xstart+1,
+                                    self.zend-1,
+                                    self.xend-boundrywidth,
                                     self.ystart+1, #fixed
-                                    self.zend-boundrywidth,
+                                    conRoom.zstart+1,
                                     85
                                     )#creates fences
                         mc.setBlocks(
-                                    conRoom.xend-boundrywidth, #fixed
+                                    self.xstart+boundrywidth+1, #fixed
                                     self.ystart+1, #fixed
-                                    self.zstart+boundrywidth+1,
-                                    self.xstart+boundrywidth,
+                                    self.zend-1,
+                                    self.xend-boundrywidth-1,
                                     self.ystart+1, #fixed
-                                    self.zend-boundrywidth-1,
-                                    0
+                                    conRoom.zstart+boundrywidth,
+                                    9
                                     )#hollows fence                                                                           
                         mc.setBlocks(
                                     self.xstart+boundrywidth+1, #fixed
