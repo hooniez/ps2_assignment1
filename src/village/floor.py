@@ -110,7 +110,7 @@ class Floor: #new class for floors
             if room.full: #this room is a full room
                 room.walls[2] = 'singleDoor' #There is a door in the left position (2). Store it in the walls array
                 room.drawDoor(mc,2,'singleDoor')
-                break 
+                break
     
     def addStairs(self,mc):
         if(self.belowFloor == None): #If we are at the ground level

@@ -294,13 +294,13 @@ class Village():
         mc.setBlocks(start_vector.x, start_vector.y + 1, start_vector.z, end_vector.x, end_vector.y + 100 , end_vector.z, 0)
 
 
-    def spawn_houses(self):
-        print(self.foundation_wrappers)
+    def spawn_houses(self, mc):
         for wrapperList in self.foundation_wrappers:
-            print(wrapperList)
-            # for wrapper in wrapperList:
-            #     print(wrapper.foundation)
-            #     # wrapper.foundation.house = House(Property(wrapper.foundation))
+            for wrapper in wrapperList:
+                print(wrapper.foundation)
+                if wrapper is not None:
+                    wrapper.foundation.house = House(Property(wrapper.foundation))
+                    wrapper.foundation.house.generateHouse(mc)
 
 
 if __name__ == '__main__':
@@ -309,4 +309,4 @@ if __name__ == '__main__':
     village.foundation_generator()
     village.road_generator('row')
     village.road_generator('column')
-    village.spawn_houses()
+    village.spawn_houses(mc)
