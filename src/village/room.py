@@ -10,10 +10,10 @@ class Room:
     def __init__(self,xstart,ystart,zstart,xend,yend,zend,roomPos,gridX,gridZ,roomColor):
         self.color = roomColor #choose a random color wool
         self.xstart = xstart
-        self.ystart = ystart
+        self.ystart = ystart-1
         self.zstart = zstart
         self.xend = xend
-        self.yend = yend
+        self.yend = yend-1
         self.zend = zend
         self.roomPos = roomPos #position in the rooms Array (rooms array is a property of the floor class, holds every room on the floor)
         ## Add list of rooms that are connected bot,top,left,right

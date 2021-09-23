@@ -68,8 +68,6 @@ class House: #this is a house class has an array of floors
 
     
     def generateHouse(self, mc):
-        print('width:',self.prop.width)
-        print('depth',self.prop.depth)
         Ztotal = 1
         Xtotal = 1
         if (self.prop.width-self.propertyEdge*2)//4 >= 10:
@@ -98,11 +96,6 @@ class House: #this is a house class has an array of floors
             Ztotal = 1
             self.roomZ = 10
             print('X*1 house')
-
-        print('-----')
-        print('X',self.roomX)
-        print('Z',self.roomZ)
-        print('-----')
         maxHeight = 3
         total = Ztotal * Xtotal
         for m in range(0,maxHeight):
@@ -114,22 +107,8 @@ class House: #this is a house class has an array of floors
                 counter+=1
             if m == 0:
                 for i in range(1,1+total//4): #total-counter
-                    print('built a pool')
                     self.floors[m].addRoom(mc,'pool')
             total = counter
-            # total = counter
-            # counter = 0
-            # floorColor = random.randint(0, 15)
-            # self.createFloor(floorColor)
-            # for i in range(total//2,total):
-            #     self.floors[1].addRoom(mc)
-            #     counter+=1
-            # total = counter
-            # counter = 0
-            # floorColor = random.randint(0, 15)
-            # self.createFloor(floorColor)
-            # for i in range(total//2,total):
-            #     self.floors[2].addRoom(mc)
         self.addAllDoors(mc)
         self.floors[0].addFrontDoor(mc)
         self.addAllStairs(mc)
