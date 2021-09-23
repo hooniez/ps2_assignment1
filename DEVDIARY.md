@@ -31,7 +31,7 @@ Please, report your key activities in each week this assignment is running.
     ## Week 1
 
     ### Foudnation Generator
-    [Image of Foundations](s3774430/foundations.png) 
+    [Image of Foundations](s3774430/foundations.jpg) 
     
     I've finished writing my version of a foundation generator which randomly chooses from a limited range of values to pad a foundation with buffers all around the foundation. Buffers ensure against another buffer piling up on pre-existing ones. This process gets repeated until the maximum number of foundations is generated in all rows. It also adds to the element of randomness by spacing out the foundations in each row with random x values avaialble. The result of this algorithm is metropolitan grids where foundations are never too far away from each other, but never predictably placed. 
 
