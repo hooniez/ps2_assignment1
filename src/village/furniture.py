@@ -9,7 +9,7 @@ class Furniture:
         self.startCorner = startCorner
         self.endCorner = endCorner
 
-    def drawCarpet(self,mc):
+    def createCarpet(self,mc):
         self.type = 'carpet'
         roomWidth = abs(self.startCorner['x'] - self.endCorner['x'])
         roomHeight = abs(self.startCorner['y'] - self.endCorner['y'])
@@ -27,7 +27,7 @@ class Furniture:
                     )
 
 
-    def drawCenterTable(self,mc):
+    def createCenterTable(self,mc):
         self.type = 'center-table'
         roomWidth = abs(self.startCorner['x'] - self.endCorner['x'])
         roomHeight = abs(self.startCorner['y'] - self.endCorner['y'])

@@ -641,6 +641,7 @@ class Room:
         if self.roomType == 'pool': #don't draw if its a pool
             return
         for index,space in enumerate(self.walls):
+            Furniture(startCorner, endCorner, index, self.walls).createCarpet(mc)
             if space == None: # its empty
                 #create a piece of furniture
                 if random.randint(0, 2) <= 1:
@@ -649,7 +650,7 @@ class Room:
                 else:
                     furn = Furniture(startCorner,endCorner,index,self.walls).createDesk(mc)
                     self.walls[index] = 'desk'
-        Furniture(startCorner,endCorner,index,self.walls).drawCenterTable(mc)
+        Furniture(startCorner,endCorner,index,self.walls).createCenterTable(mc)
 
 
     def findStairSpaceOnRoomWalls(self,belowRoom):
