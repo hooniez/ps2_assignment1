@@ -64,26 +64,63 @@ class House: #this is a house class has an array of floors
 
     
     def generateHouse(self, mc):
-        floorColor = random.randint(0, 15)
-        self.createFloor(floorColor) # specify the room size, currently only squares
-        self.floors[0].addRoom(mc)
-        self.floors[0].addRoom(mc)
-        self.floors[0].addRoom(mc)
-        self.floors[0].addRoom(mc)
-        self.floors[0].addRoom(mc,'pool')
-        self.floors[0].addRoom(mc,'pool')
-        print('---------')
+        Ztotal = 1
+        Xtotal = 1
+        if (self.prop.width-self.propertyEdge*2)//4 >= 10:
+            Xtotal = 4
+            self.roomX = (self.prop.width-self.propertyEdge*2)//4
+        elif (self.prop.width-self.propertyEdge*2)//3 >= 10:
+            Xtotal = 3
+            self.roomX = (self.prop.width-self.propertyEdge*2)//3
+        elif (self.prop.width-self.propertyEdge*2)//2 >= 10:
+            Xtotal = 2
+            self.roomX = (self.prop.width-self.propertyEdge*2)//2
+        else:
+            Xtotal = 1
+            self.roomX = 10
+            print('1*Z house')
+        if (self.prop.depth-self.propertyEdge*2)//4 >= 10:
+            Ztotal = 4
+            self.roomZ = (self.prop.depth-self.propertyEdge*2)//4
+        if (self.prop.depth-self.propertyEdge*2)//3 >= 10:
+            Ztotal = 3
+            self.roomZ = (self.prop.depth-self.propertyEdge*2)//3
+        if (self.prop.depth-self.propertyEdge*2)//2 >= 10:
+            Ztotal = 2
+            self.roomZ = (self.prop.depth-self.propertyEdge*2)//2
+        else:
+            Ztotal = 1
+            self.roomZ = 10
+            print('X*1 house')
+            
+        maxHeight = 3
+        total = Ztotal * Xtotal
+        for m in range(0,maxHeight):
+            counter = 0
+            floorColor = random.randint(0, 15)
+            self.createFloor(floorColor) # specify the room size, currently only squares
+            for i in range(total//2,total):
+                self.floors[m].addRoom(mc)
+                counter+=1
+            if m == 0:
+                for i in range(1,total):
+                    self.floors[m].addRoom(mc,'pool')
+            total = counter
+            # total = counter
+            # counter = 0
+            # floorColor = random.randint(0, 15)
+            # self.createFloor(floorColor)
+            # for i in range(total//2,total):
+            #     self.floors[1].addRoom(mc)
+            #     counter+=1
+            # total = counter
+            # counter = 0
+            # floorColor = random.randint(0, 15)
+            # self.createFloor(floorColor)
+            # for i in range(total//2,total):
+            #     self.floors[2].addRoom(mc)
 
-        floorColor = random.randint(0, 15)
-        self.createFloor(floorColor) 
-        self.floors[1].addRoom(mc)
-        self.floors[1].addRoom(mc)
 
-        self.floors[1].addRoom(mc)
-
-        floorColor = random.randint(0, 15)
-        self.createFloor(floorColor)
-        self.floors[2].addRoom(mc)
 
         self.addAllDoors(mc)
         self.floors[0].addFrontDoor(mc)
@@ -108,6 +145,7 @@ if __name__ == '__main__':
     prop.drawProperty(mc)
     floorColor = random.randint(0, 15) #Uses wool block to draw House, wool block has 15 possible Colors
     myHouse = House(prop)
+
 
     myHouse.createFloor(floorColor) # specify the room size, currently only squares
     myHouse.floors[0].addRoom(mc)
