@@ -4,6 +4,8 @@ import random
 import pandas as pd
 import numpy as np
 
+
+# ROOM HAS A MINIMUM WALLLENGTH OF 10
 class Room:
     def __init__(self,xstart,ystart,zstart,xend,yend,zend,roomPos,gridX,gridZ,roomColor):
         self.color = roomColor #choose a random color wool
@@ -271,6 +273,7 @@ class Room:
                         belowRoom.xend-2,
                         belowRoom.yend,
                         belowRoom.zstart+stairWidth,
+                        72
                         )
         #door is on right
         if(randSpace == 3): #Correct
@@ -375,49 +378,28 @@ class Room:
             doorWidth = 1
             doorHeight = 3
             if(doordirection == 0): #door is on bot
-                mc.setBlocks(
-                            self.xstart-doorDepth,
-                            self.ystart+1,
-                            self.zstart+roomDepth//2,
-                            self.xstart+doorDepth,
-                            self.ystart+doorHeight,
-                            self.zstart+roomDepth//2+doorWidth,
-                            0
-                            )
-            if(doordirection == 1): #door is on top
-                mc.setBlocks(
-                            self.xend+doorWidth,
-                            self.ystart+1,
-                            self.zstart+roomDepth//2,
-                            self.xend-doorWidth,
-                            self.ystart+doorHeight,
-                            self.zstart+roomDepth//2+doorWidth,
-                            0
-                            )
-            if(doordirection == 2): #door is on left
-                mc.setBlocks(
-                            self.xstart+roomDepth//2,
-                            self.ystart+1,
-                            self.zstart-doorWidth,
-                            self.xstart+roomDepth//2+doorWidth,
-                            self.ystart+doorHeight,
-                            self.zstart+doorWidth,
-                            0,
-                            )
+                mc.setBlock(self.xstart,self.ystart+2,self.zstart+roomDepth//2, 64,9) #64,9)
+                mc.setBlock(self.xstart,self.ystart+1,self.zstart+roomDepth//2, 64,1) #64,1)
+                mc.setBlock(self.xstart,self.ystart+2,self.zstart+roomDepth//2+1, 64,12)
+                mc.setBlock(self.xstart,self.ystart+1,self.zstart+roomDepth//2+1, 64,4)
 
-                # can't draw door
-                # mc.setBlocks(self.xstart+roomDepth//2, self.ystart+1,self.zstart,self.xstart+roomDepth//2, self.ystart+2,self.zstart, 3, 193)
+            if(doordirection == 1): #door is on top
+                mc.setBlock(self.xend,self.ystart+2,self.zstart+roomDepth//2, 64,9) #64,9)
+                mc.setBlock(self.xend,self.ystart+1,self.zstart+roomDepth//2, 64,1) #64,1)
+                mc.setBlock(self.xend,self.ystart+2,self.zstart+roomDepth//2+1, 64,12)
+                mc.setBlock(self.xend,self.ystart+1,self.zstart+roomDepth//2+1, 64,4)
+
+            if(doordirection == 2): #door is on left
+                mc.setBlock(self.xstart+roomWidth//2, self.ystart+2, self.zstart, 64, 8)
+                mc.setBlock(self.xstart+roomWidth//2, self.ystart+1, self.zstart, 64, 0)
+                mc.setBlock(self.xstart+roomWidth//2+1, self.ystart+2, self.zstart, 64, 15)
+                mc.setBlock(self.xstart+roomWidth//2+1, self.ystart+1, self.zstart, 64, 7)
 
             if(doordirection == 3): #door is on right
-                mc.setBlocks(
-                            self.xstart+roomDepth//2,
-                            self.ystart+1,
-                            self.zend-doorWidth,
-                            self.xstart+roomDepth//2+doorWidth,
-                            self.ystart+doorHeight,
-                            self.zend+doorWidth,
-                            0
-                            )
+                mc.setBlock(self.xstart+roomWidth//2, self.ystart+2, self.zend, 64, 8)
+                mc.setBlock(self.xstart+roomWidth//2, self.ystart+1, self.zend, 64, 0)
+                mc.setBlock(self.xstart+roomWidth//2+1, self.ystart+2, self.zend, 64, 15)
+                mc.setBlock(self.xstart+roomWidth//2+1, self.ystart+1, self.zend, 64, 7)
 
     def createRoof(self,mc, adjustmentsArray,overlapArray):
         roomWidth = abs(self.xstart-self.xend)

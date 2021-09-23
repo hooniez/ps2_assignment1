@@ -9,7 +9,14 @@ class Furniture:
         self.startCorner = startCorner
         self.endCorner = endCorner
 
+    def drawCarpet(self,mc):
+        self.type = 'carpet'
+        
+        pass
+
+
     def drawCenterTable(self,mc):
+        self.type = 'center-table'
         roomWidth = abs(self.startCorner['x'] - self.endCorner['x'])
         roomHeight = abs(self.startCorner['y'] - self.endCorner['y'])
         roomDepth = abs(self.startCorner['z'] - self.endCorner['z'])
@@ -43,6 +50,7 @@ class Furniture:
             
 
     def createDesk(self,mc):
+        self.type = 'desk'
         adjustment = [0,0,0,0] #top bot left right
         for i, wall in enumerate(self.walls):
             if wall == None:
@@ -179,6 +187,7 @@ class Furniture:
             )
 
     def createCouch(self,mc): #Couches stick to the side of the room,
+        self.type = 'couch'
         adjustment = [0,0,0,0] #top bot left right
         for i, wall in enumerate(self.walls):
             if wall == None:

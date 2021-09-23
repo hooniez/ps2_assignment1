@@ -10,7 +10,7 @@ class House: #this is a house class has an array of floors
         self.floors = [] #all the house levels
         self.floorHeight = 5
         self.roomSize = 10
-        self.roomX = 14 ##Random
+        self.roomX = 12 ##Random
         self.roomZ = 10 #Random
         self.propertyEdge = 2
 
@@ -104,7 +104,7 @@ if __name__ == '__main__':
     p = mc.player.getTilePos()
 
     houseLocation = p
-    prop = Property(p,30,40) #boarder is 2 on each side so total of 4
+    prop = Property(p,48,48) #boarder is 2 on each side so total of 4
     prop.drawProperty(mc)
     floorColor = random.randint(0, 15) #Uses wool block to draw House, wool block has 15 possible Colors
     myHouse = House(prop)
@@ -115,8 +115,10 @@ if __name__ == '__main__':
     myHouse.floors[0].addRoom(mc)
     myHouse.floors[0].addRoom(mc)
     myHouse.floors[0].addRoom(mc)
-    myHouse.floors[0].addRoom(mc,'pool')
-    myHouse.floors[0].addRoom(mc,'pool')
+    myHouse.floors[0].addRoom(mc)
+    myHouse.floors[0].addRoom(mc)
+    myHouse.floors[0].addRoom(mc)
+    myHouse.floors[0].addRoom(mc)
     print('---------')
 
     floorColor = random.randint(0, 15)
