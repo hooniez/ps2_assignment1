@@ -64,6 +64,8 @@ class House: #this is a house class has an array of floors
 
     
     def generateHouse(self, mc):
+        print('width:',self.prop.width)
+        print('depth',self.prop.depth)
         Ztotal = 1
         Xtotal = 1
         if (self.prop.width-self.propertyEdge*2)//4 >= 10:
@@ -82,10 +84,10 @@ class House: #this is a house class has an array of floors
         if (self.prop.depth-self.propertyEdge*2)//4 >= 10:
             Ztotal = 4
             self.roomZ = (self.prop.depth-self.propertyEdge*2)//4
-        if (self.prop.depth-self.propertyEdge*2)//3 >= 10:
+        elif (self.prop.depth-self.propertyEdge*2)//3 >= 10:
             Ztotal = 3
             self.roomZ = (self.prop.depth-self.propertyEdge*2)//3
-        if (self.prop.depth-self.propertyEdge*2)//2 >= 10:
+        elif (self.prop.depth-self.propertyEdge*2)//2 >= 10:
             Ztotal = 2
             self.roomZ = (self.prop.depth-self.propertyEdge*2)//2
         else:
@@ -93,6 +95,10 @@ class House: #this is a house class has an array of floors
             self.roomZ = 10
             print('X*1 house')
 
+        print('-----')
+        print('X',self.roomX)
+        print('Z',self.roomZ)
+        print('-----')
         maxHeight = 3
         total = Ztotal * Xtotal
         for m in range(0,maxHeight):
@@ -103,7 +109,7 @@ class House: #this is a house class has an array of floors
                 self.floors[m].addRoom(mc)
                 counter+=1
             if m == 0:
-                for i in range(1,total//2):
+                for i in range(1,total//4):
                     self.floors[m].addRoom(mc,'pool')
             total = counter
             # total = counter
@@ -143,51 +149,52 @@ if __name__ == '__main__':
     floorColor = random.randint(0, 15) #Uses wool block to draw House, wool block has 15 possible Colors
     myHouse = House(prop)
 
+    myHouse.generateHouse(mc)
 
-    myHouse.createFloor(floorColor) # specify the room size, currently only squares
-    myHouse.floors[0].addRoom(mc)
-    myHouse.floors[0].addRoom(mc)
-    myHouse.floors[0].addRoom(mc)
-    myHouse.floors[0].addRoom(mc,'pool')
-    myHouse.floors[0].addRoom(mc,'pool')
-    myHouse.floors[0].addRoom(mc,'pool')
-    myHouse.floors[0].addRoom(mc,'pool')
-    print('---------')
+    # myHouse.createFloor(floorColor) # specify the room size, currently only squares
+    # myHouse.floors[0].addRoom(mc)
+    # myHouse.floors[0].addRoom(mc)
+    # myHouse.floors[0].addRoom(mc)
+    # myHouse.floors[0].addRoom(mc,'pool')
+    # myHouse.floors[0].addRoom(mc,'pool')
+    # myHouse.floors[0].addRoom(mc,'pool')
+    # myHouse.floors[0].addRoom(mc,'pool')
+    # print('---------')
 
-    floorColor = random.randint(0, 15)
-    myHouse.createFloor(floorColor) 
-    myHouse.floors[1].addRoom(mc)
-    myHouse.floors[1].addRoom(mc)
+    # floorColor = random.randint(0, 15)
+    # myHouse.createFloor(floorColor) 
+    # myHouse.floors[1].addRoom(mc)
+    # myHouse.floors[1].addRoom(mc)
 
-    myHouse.floors[1].addRoom(mc)
+    # myHouse.floors[1].addRoom(mc)
 
-    floorColor = random.randint(0, 15)
-    myHouse.createFloor(floorColor)
-    myHouse.floors[2].addRoom(mc)
+    # floorColor = random.randint(0, 15)
+    # myHouse.createFloor(floorColor)
     # myHouse.floors[2].addRoom(mc)
-    # myHouse.floors[2].addRoom(mc)
+    # # myHouse.floors[2].addRoom(mc)
+    # # myHouse.floors[2].addRoom(mc)
 
-    # floorColor = random.randint(0, 15)
-    # myHouse.createFloor(floorColor)
-    # myHouse.floors[3].addRoom(mc)
-    # myHouse.floors[3].addRoom(mc)
-    # myHouse.floors[3].addRoom(mc)
+    # # floorColor = random.randint(0, 15)
+    # # myHouse.createFloor(floorColor)
+    # # myHouse.floors[3].addRoom(mc)
+    # # myHouse.floors[3].addRoom(mc)
+    # # myHouse.floors[3].addRoom(mc)
 
-    # floorColor = random.randint(0, 15)
-    # myHouse.createFloor(floorColor)
-    # myHouse.floors[4].addRoom(mc)
-    # myHouse.floors[4].addRoom(mc)
+    # # floorColor = random.randint(0, 15)
+    # # myHouse.createFloor(floorColor)
+    # # myHouse.floors[4].addRoom(mc)
+    # # myHouse.floors[4].addRoom(mc)
 
-    # floorColor = random.randint(0, 15)
-    # myHouse.createFloor(floorColor)
-    # myHouse.floors[5].addRoom(mc)
-    # myHouse.floors[5].addRoom(mc)
+    # # floorColor = random.randint(0, 15)
+    # # myHouse.createFloor(floorColor)
+    # # myHouse.floors[5].addRoom(mc)
+    # # myHouse.floors[5].addRoom(mc)
 
-    myHouse.addAllDoors(mc)
-    myHouse.floors[0].addFrontDoor(mc)
-    myHouse.addAllStairs(mc)
-    myHouse.addAllWindows(mc)
-    # myHouse.addFurniture(mc)
-    myHouse.addAllRoofs(mc)
-    myHouse.connectAllPools(mc)
-    myHouse.addAllFurniture(mc)
+    # myHouse.addAllDoors(mc)
+    # myHouse.floors[0].addFrontDoor(mc)
+    # myHouse.addAllStairs(mc)
+    # myHouse.addAllWindows(mc)
+    # # myHouse.addFurniture(mc)
+    # myHouse.addAllRoofs(mc)
+    # myHouse.connectAllPools(mc)
+    # myHouse.addAllFurniture(mc)

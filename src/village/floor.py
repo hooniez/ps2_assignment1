@@ -23,7 +23,7 @@ class Floor: #new class for floors
         self.roomsperx = (self.prop.width - propertyEdge*2)//roomsizeX #calculates the number of rooms that will be created along the X direction
         self.roomsperz = (self.prop.depth - propertyEdge*2)//roomsizeZ #calculates the number of rooms that will be created along the Z direction
         roomsizewidth = roomsizeX
-        print('Roomserz is:', self.roomsperz)
+        print('Roomsperz is:', self.roomsperz)
         print('Roomsperx is:',self.roomsperx)
         roomsizedepth = roomsizeZ
         count = 0
@@ -187,12 +187,7 @@ class Floor: #new class for floors
 
     #################
     def setConnectedRooms(self,roomArray):
-        print('room array is',len(roomArray))
         for emptyRoom in roomArray:
-            print('-----------------')
-            print('empty room pos is:',emptyRoom.roomPos)
-            print('emptyroom X is:',emptyRoom.gridCoord[0])
-            print('emptyroom Z is:',emptyRoom.gridCoord[1])
             arrayLocationX = emptyRoom.gridCoord[0]
             arrayLocationZ = emptyRoom.gridCoord[1]
             bot = True
