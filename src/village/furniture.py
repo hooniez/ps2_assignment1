@@ -23,7 +23,7 @@ class Furniture:
                     self.startCorner['y']+1,
                     self.startCorner['z']+roomDepth//2+2,
                     171,
-                    1	
+                    self.color	
                     )
 
 
