@@ -309,4 +309,4 @@ if __name__ == '__main__':
     village.foundation_generator()
     village.road_generator('row')
     village.road_generator('column')
-    village.spawn_houses(mc)
+    # village.spawn_houses(mc)
