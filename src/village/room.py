@@ -28,7 +28,7 @@ class Room:
         self.connectedRooms = [None,None,None,None] #bot,top,left,right #room !self.connectedRooms[0].roomType == pool
         self.gridCoord = (gridX,gridZ)
         self.full = False #Room does not exist by default
-        self.roomType = 'none'
+        self.roomType = None
         self.buildUpAvaliablity = False
         self.walls = [None,None,None,None] #bot,top,left,right (walls array now contains eveything that sticks to a wall, e.g stairs,chairs etc)
         
@@ -56,14 +56,27 @@ class Room:
             self.full = True #There is now something in the room
             self.buildUpAvaliablity = False
 
-        # if(roomtype=='garden'):
-        #     self.buildUpAvaliablity = False
-        #     self.full = True #There is now something in the room
-        #     self.roomType = 'garden'
-        # if(roomtype=='roomwithcouch'):
-            
-            #self.create Garden
+        if(roomtype=='garden'):
+            self.roomType = 'garden'
+            self.buildUpAvaliablity = False
+            self.full = True #There is now something in the room
+            self.createGarden(mc)
 
+
+    def createGarden(self,mc):
+        flowerNumber = random.randint(10, 20)
+        gardenWidth = abs(self.xstart - self.xend)
+        gardenDepth = abs(self.zstart - self.zend)
+        for i in range(0,flowerNumber):
+            flowerType = random.randint(1, 5)
+            if random.randint(0, 4) < 3:
+                #flower
+                plantType = 175
+            else:
+                #tree
+                plantType = 6
+            mc.setBlock(self.xstart+random.randint(1,gardenWidth),self.ystart+1,self.zstart+random.randint(1,gardenDepth),plantType,flowerType)
+    
     def createBox(self,mc): #Creates a box of blocks used in createRoom Func
         mc.setBlocks(
                     self.xstart,
@@ -129,10 +142,10 @@ class Room:
             pass
         else: #Previous room exists, 
             doorTypesAll = ['fullwidthDoor','singleDoor'] #Add new door types here to insert them into random selector 
-            doorTypesPool = ['singleDoor']
+            doorTypesOutdoor = ['singleDoor']
             randomDoorType = 'singleDoor' #Default
-            if(self.roomType == 'pool') or prevRoom.roomType == 'pool':
-                randomDoorType = doorTypesPool[random.randint(0,len(doorTypesPool)-1)]
+            if(self.roomType == 'pool') or (prevRoom.roomType == 'pool') or (self.roomType == 'garden') or (prevRoom.roomType == 'garden'):
+                randomDoorType = doorTypesOutdoor[random.randint(0,len(doorTypesOutdoor)-1)]
             else:
                 randomDoorType = doorTypesAll[random.randint(0,len(doorTypesAll)-1)]
 
@@ -652,7 +665,7 @@ class Room:
         #draw a piece of furniture there
         startCorner = {'x':self.xstart,'y':self.ystart,'z':self.zstart}
         endCorner = {'x':self.xend,'y':self.yend,'z':self.zend}
-        if self.roomType == 'pool': #don't draw if its a pool
+        if self.roomType == 'pool' or self.roomType == 'garden': #don't draw if its a pool
             return
         for index,space in enumerate(self.walls):
             Furniture(startCorner, endCorner, index, self.walls).createCarpet(mc)

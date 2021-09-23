@@ -95,3 +95,6 @@ Looking at how to add a gate to the pool fences.
 Working on carpets, finished implementation
 Creating forloops for house creation. Had problem with the length of rooms being longer than expected.
 Error caused by small bug, found and fix (if -> elif)
+
+10:14 23-09-2021:
+Creating a garden class to fill empty space
