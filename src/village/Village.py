@@ -23,8 +23,8 @@ class Village():
         self.foundation_size_max = 40
         
         # Village size
-        self.width_z = self.foundation_size_max * 5
-        self.width_x = self.foundation_size_max * 5
+        self.width_z = self.foundation_size_max * 10
+        self.width_x = self.foundation_size_max * 10
 
         self.buffer_x_min = self.foundation_size_min // 5
         self.buffer_x_max = self.buffer_x_min * 2
@@ -133,7 +133,7 @@ class Village():
          Vec3(current_x + foundation_wrapper.width, mc.getHeight(current_x + foundation_wrapper.width, current_z + foundation_wrapper.length), current_z + foundation_wrapper.length), block.LAPIS_LAZULI_BLOCK)
 
 
-    def foundation_generator(self):
+    def foundation_generator(self, mc):
         ''' After calculating where to place foundations with random_grid_calculator(), set blocks in Mincraft '''
         self.random_grid_calculator()
         
@@ -162,7 +162,7 @@ class Village():
                     current_x += (foundation_wrapper.width + self.foundation_width_spaces_between[idx_r][idx_f] + 1)
 
 
-    def road_generator(self, section):
+    def road_generator(self, mc, section):
         if section == "row":
             pass
         elif section == 'column':
