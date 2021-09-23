@@ -109,7 +109,8 @@ class House: #this is a house class has an array of floors
                 self.floors[m].addRoom(mc)
                 counter+=1
             if m == 0:
-                for i in range(1,total//4):
+                for i in range(1,1+total//4):
+                    print('built a pool')
                     self.floors[m].addRoom(mc,'pool')
             total = counter
             # total = counter

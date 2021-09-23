@@ -23,8 +23,6 @@ class Floor: #new class for floors
         self.roomsperx = (self.prop.width - propertyEdge*2)//roomsizeX #calculates the number of rooms that will be created along the X direction
         self.roomsperz = (self.prop.depth - propertyEdge*2)//roomsizeZ #calculates the number of rooms that will be created along the Z direction
         roomsizewidth = roomsizeX
-        print('Roomsperz is:', self.roomsperz)
-        print('Roomsperx is:',self.roomsperx)
         roomsizedepth = roomsizeZ
         count = 0
         for z in range(0,self.roomsperz): #following initalised empty rooms in an array. The rooms can later be filled with different types by calling functions in room class
