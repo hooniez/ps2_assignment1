@@ -11,8 +11,20 @@ class Furniture:
 
     def drawCarpet(self,mc):
         self.type = 'carpet'
-        
-        pass
+        roomWidth = abs(self.startCorner['x'] - self.endCorner['x'])
+        roomHeight = abs(self.startCorner['y'] - self.endCorner['y'])
+        roomDepth = abs(self.startCorner['z'] - self.endCorner['z'])
+
+        mc.setBlocks(
+                    self.startCorner['x']+roomWidth//2-2,
+                    self.startCorner['y']+1,
+                    self.startCorner['z']+roomDepth//2-2,
+                    self.startCorner['x']+roomWidth//2+2,
+                    self.startCorner['y']+1,
+                    self.startCorner['z']+roomDepth//2+2,
+                    171,
+                    1	
+                    )
 
 
     def drawCenterTable(self,mc):
