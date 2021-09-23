@@ -1,6 +1,6 @@
 import random
 from floor import Floor
-from property import Property
+from land import Property
 from mcpi.vec3 import Vec3
 
 

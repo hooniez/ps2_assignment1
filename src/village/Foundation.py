@@ -21,6 +21,10 @@ class Foundation():
         self.building_block = block.GLOWSTONE_BLOCK.id
         self.house = None
     
+    def toString(self):
+        return f"vectors = {self.vectors}"
+
+            
     def position_vectors(self):
         ''' Find the vector with the highest y-axis and set every vector's height to it 
             Assign start_vector, end_vector, and center_vector with values.
