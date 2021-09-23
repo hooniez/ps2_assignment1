@@ -31,7 +31,7 @@ Please, report your key activities in each week this assignment is running.
     ## Week 1
 
     ### Foudnation Generator
-    ![Image of Foundations](https://imgur.com/a/hy9ehZm) 
+    [Image of Foundations](s3774430/foundations.png) 
     
     I've finished writing my version of a foundation generator which randomly chooses from a limited range of values to pad a foundation with buffers all around the foundation. Buffers ensure against another buffer piling up on pre-existing ones. This process gets repeated until the maximum number of foundations is generated in all rows. It also adds to the element of randomness by spacing out the foundations in each row with random x values avaialble. The result of this algorithm is metropolitan grids where foundations are never too far away from each other, but never predictably placed. 
 
@@ -154,7 +154,7 @@ Please, report your key activities in each week this assignment is running.
 
     ### Change of a Plan: Build Roads
 
-    ![Image of Roads](https://imgur.com/a/ae3L54i)
+    [Image of Roads](s3774430/roads.png)
 
     Find a center point (in all three axes) between foundations and extend roads to the point from each foundation so that its roads can meet at half point. Each instance of road class should have this center point (it is named `destination_point`) as an attribute as well as its original start point (named `origin_point`). 
 
