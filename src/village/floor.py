@@ -23,8 +23,6 @@ class Floor: #new class for floors
         self.roomsperx = (self.prop.width - propertyEdge*2)//roomsizeX #calculates the number of rooms that will be created along the X direction
         self.roomsperz = (self.prop.depth - propertyEdge*2)//roomsizeZ #calculates the number of rooms that will be created along the Z direction
         roomsizewidth = roomsizeX
-        print('Roomsperz is:', self.roomsperz)
-        print('Roomsperx is:',self.roomsperx)
         roomsizedepth = roomsizeZ
         count = 0
         for z in range(0,self.roomsperz): #following initalised empty rooms in an array. The rooms can later be filled with different types by calling functions in room class
@@ -56,7 +54,7 @@ class Floor: #new class for floors
         if len(self.roomOrder)>len(self.rooms):
             print('Already Max rooms at this level, room not added')
             return
-        if roomtype == 'pool' and self.floorLevel != 0:
+        if (roomtype == 'pool' or roomtype == 'garden') and self.floorLevel != 0:
             print('Can only add pool to ground floor, room not added')
             return
         #first check if we are the ground Floor
@@ -108,7 +106,7 @@ class Floor: #new class for floors
     def addFrontDoor(self, mc):
         for room in self.rooms: #search through all the rooms, add a door to the first full room
             if room.full: #this room is a full room
-                if room.roomType == 'pool':
+                if room.roomType == 'pool' or room.roomType == 'garden':
                     break
                 else:
                     room.walls[2] = 'singleDoor' #There is a door in the left position (2). Store it in the walls array
@@ -147,7 +145,7 @@ class Floor: #new class for floors
             if (currentRoom.full == True) and currentRoom.buildUpAvaliablity == True : #The room is filled
                 for index, conRoom in enumerate(currentRoom.connectedRooms): #look at the connected rooms:
                     if conRoom != None: #If there is no room there potential window Location
-                        if (conRoom.full == False) or (conRoom.roomType == 'pool'):
+                        if (conRoom.full == False) or (conRoom.roomType == 'pool') or (conRoom.roomType == 'garden'):
                             if(currentRoom.walls[index] == None) or (currentRoom.walls[index] == 'stairsUpper'):
                                 currentRoom.createWindow(mc,index)
                     else: # Its a None room, so on the edge.
@@ -215,6 +213,11 @@ class Floor: #new class for floors
         for room in self.rooms:
             if room.roomType == 'pool':
                 room.createPoolConnections(mc)
+
+    def fillGardens(self,mc):
+        for room in self.rooms:
+            if room.roomType == None: #Finally add gardens to all lower level emptys
+                room.createGarden(mc)
 
     def checkAvailableRooms(self,currentRoom): #Used when adding a new floor. Makes sure that rooms are only built over a pre existing room (but not an unbuilable type e.g. pool)
         arrayLocationX = currentRoom.gridCoord[0]

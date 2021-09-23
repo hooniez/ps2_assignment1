@@ -62,10 +62,12 @@ class House: #this is a house class has an array of floors
         for floor in self.floors:
             floor.addFurnitureCal(mc)
 
+    def addAllGarden(self,mc):
+        if len(self.floors) > 0:
+            self.floors[0].fillGardens(mc)
+
     
     def generateHouse(self, mc):
-        print('width:',self.prop.width)
-        print('depth',self.prop.depth)
         Ztotal = 1
         Xtotal = 1
         if (self.prop.width-self.propertyEdge*2)//4 >= 10:
@@ -94,11 +96,6 @@ class House: #this is a house class has an array of floors
             Ztotal = 1
             self.roomZ = 10
             print('X*1 house')
-
-        print('-----')
-        print('X',self.roomX)
-        print('Z',self.roomZ)
-        print('-----')
         maxHeight = 3
         total = Ztotal * Xtotal
         for m in range(0,maxHeight):
@@ -109,22 +106,9 @@ class House: #this is a house class has an array of floors
                 self.floors[m].addRoom(mc)
                 counter+=1
             if m == 0:
-                for i in range(1,total//4):
+                for i in range(1,1+total//4): #total-counter
                     self.floors[m].addRoom(mc,'pool')
             total = counter
-            # total = counter
-            # counter = 0
-            # floorColor = random.randint(0, 15)
-            # self.createFloor(floorColor)
-            # for i in range(total//2,total):
-            #     self.floors[1].addRoom(mc)
-            #     counter+=1
-            # total = counter
-            # counter = 0
-            # floorColor = random.randint(0, 15)
-            # self.createFloor(floorColor)
-            # for i in range(total//2,total):
-            #     self.floors[2].addRoom(mc)
         self.addAllDoors(mc)
         self.floors[0].addFrontDoor(mc)
         self.addAllStairs(mc)
@@ -133,6 +117,7 @@ class House: #this is a house class has an array of floors
         self.addAllRoofs(mc)
         self.connectAllPools(mc)
         self.addAllFurniture(mc)
+        self.addAllGarden(mc)
 
 
 # Used for testing 
@@ -150,51 +135,3 @@ if __name__ == '__main__':
     myHouse = House(prop)
 
     myHouse.generateHouse(mc)
-
-    # myHouse.createFloor(floorColor) # specify the room size, currently only squares
-    # myHouse.floors[0].addRoom(mc)
-    # myHouse.floors[0].addRoom(mc)
-    # myHouse.floors[0].addRoom(mc)
-    # myHouse.floors[0].addRoom(mc,'pool')
-    # myHouse.floors[0].addRoom(mc,'pool')
-    # myHouse.floors[0].addRoom(mc,'pool')
-    # myHouse.floors[0].addRoom(mc,'pool')
-    # print('---------')
-
-    # floorColor = random.randint(0, 15)
-    # myHouse.createFloor(floorColor) 
-    # myHouse.floors[1].addRoom(mc)
-    # myHouse.floors[1].addRoom(mc)
-
-    # myHouse.floors[1].addRoom(mc)
-
-    # floorColor = random.randint(0, 15)
-    # myHouse.createFloor(floorColor)
-    # myHouse.floors[2].addRoom(mc)
-    # # myHouse.floors[2].addRoom(mc)
-    # # myHouse.floors[2].addRoom(mc)
-
-    # # floorColor = random.randint(0, 15)
-    # # myHouse.createFloor(floorColor)
-    # # myHouse.floors[3].addRoom(mc)
-    # # myHouse.floors[3].addRoom(mc)
-    # # myHouse.floors[3].addRoom(mc)
-
-    # # floorColor = random.randint(0, 15)
-    # # myHouse.createFloor(floorColor)
-    # # myHouse.floors[4].addRoom(mc)
-    # # myHouse.floors[4].addRoom(mc)
-
-    # # floorColor = random.randint(0, 15)
-    # # myHouse.createFloor(floorColor)
-    # # myHouse.floors[5].addRoom(mc)
-    # # myHouse.floors[5].addRoom(mc)
-
-    # myHouse.addAllDoors(mc)
-    # myHouse.floors[0].addFrontDoor(mc)
-    # myHouse.addAllStairs(mc)
-    # myHouse.addAllWindows(mc)
-    # # myHouse.addFurniture(mc)
-    # myHouse.addAllRoofs(mc)
-    # myHouse.connectAllPools(mc)
-    # myHouse.addAllFurniture(mc)

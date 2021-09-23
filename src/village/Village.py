@@ -19,12 +19,12 @@ from land import Property
 class Village():
     def __init__(self, mc):
         ''' Cells generated from num_rows and num_columns make empty plots into which foundations can be generated one per each '''
-        self.foundation_size_min = 26
-        self.foundation_size_max = 46
+        self.foundation_size_min = 20
+        self.foundation_size_max = 40
         
         # Village size
-        self.width_z = self.foundation_size_max * 7
-        self.width_x = self.foundation_size_max * 7
+        self.width_z = self.foundation_size_max * 10
+        self.width_x = self.foundation_size_max * 10
 
         self.buffer_x_min = self.foundation_size_min // 5
         self.buffer_x_max = self.buffer_x_min * 2
@@ -172,7 +172,7 @@ class Village():
                             (current_foundation.start_vector.x + previous_foundation.end_vector.x) // 2,
                             (current_foundation.start_vector.y + previous_foundation.end_vector.y) // 2,
                             (current_foundation.start_vector.z + previous_foundation.end_vector.z) // 2
-                        )
+                        )   
     
                         road = Road(mc, current_foundation.start_vector, road_mid_point_between_current_and_previous, "towards_previous")
                         road.lay_road(mc, direction)
@@ -309,4 +309,4 @@ if __name__ == '__main__':
     village.foundation_generator()
     village.road_generator('row')
     village.road_generator('column')
-    village.spawn_houses(mc)
+    # village.spawn_houses(mc)
