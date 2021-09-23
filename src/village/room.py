@@ -162,6 +162,16 @@ class Room:
                             35, #wool brick type
                             self.color
                             ) #brick
+
+                mc.setBlocks(
+                            belowRoom.xstart+1,
+                            belowRoom.ystart+i+1,
+                            belowRoom.zstart+1,
+                            belowRoom.xstart+stairWidth,
+                            belowRoom.ystart+i+1,
+                            belowRoom.zstart+roomHeight+1-i,
+                            72
+                            ) #brick
             #then create a hole in the floor
             mc.setBlocks(
                         belowRoom.xstart+1,
@@ -171,6 +181,15 @@ class Room:
                         belowRoom.yend, #Dont change
                         belowRoom.zstart+roomHeight,
                         0 #air
+                        )
+            mc.setBlocks(
+                        belowRoom.xstart+1,
+                        belowRoom.yend, #Dont change
+                        belowRoom.zstart+2,
+                        belowRoom.xstart+2,
+                        belowRoom.yend, #Dont change
+                        belowRoom.zstart+2,
+                        72 #air
                         )
         #door is on top
         if(randSpace == 1): #Correct
@@ -185,6 +204,15 @@ class Room:
                             35, #wool brick type
                             self.color
                             ) #brick
+                mc.setBlocks(
+                            belowRoom.xend-1,
+                            belowRoom.ystart+i+1,
+                            belowRoom.zend-roomHeight+i-1,
+                            belowRoom.xend-stairWidth,
+                            belowRoom.ystart+i+1,
+                            belowRoom.zend-1,
+                            72
+                            ) #brick
             #then create a hole in the floor
             mc.setBlocks(
                         belowRoom.xend-1,
@@ -194,6 +222,15 @@ class Room:
                         belowRoom.yend,
                         belowRoom.zend-2,
                         0 #air
+                        )
+            mc.setBlocks(
+                        belowRoom.xend-1,
+                        belowRoom.yend,
+                        belowRoom.zend-2,
+                        belowRoom.xend-stairWidth,
+                        belowRoom.yend,
+                        belowRoom.zend-2,
+                        72 #air
                         )
         #door is on left
         if(randSpace == 2): #Correct
@@ -208,6 +245,15 @@ class Room:
                             35, #wool brick type
                             self.color
                             ) #brick
+                mc.setBlocks(
+                            belowRoom.xend+i-roomHeight-1,
+                            belowRoom.ystart+i+1,
+                            belowRoom.zstart+1,
+                            belowRoom.xend-1,
+                            belowRoom.ystart+i+1,
+                            belowRoom.zstart+stairWidth,
+                            72
+                            ) #brick
             #then create a hole in the floor
             mc.setBlocks(
                         belowRoom.xend-roomHeight,
@@ -217,6 +263,14 @@ class Room:
                         belowRoom.yend,
                         belowRoom.zstart+stairWidth,
                         0
+                        )
+            mc.setBlocks(
+                        belowRoom.xend-2,
+                        belowRoom.yend,
+                        belowRoom.zstart+1,
+                        belowRoom.xend-2,
+                        belowRoom.yend,
+                        belowRoom.zstart+stairWidth,
                         )
         #door is on right
         if(randSpace == 3): #Correct
@@ -231,6 +285,15 @@ class Room:
                             35, #wool brick type
                             self.color
                             ) #brick
+                mc.setBlocks(
+                            belowRoom.xstart+1,
+                            belowRoom.ystart+i+1,
+                            belowRoom.zend-1,
+                            belowRoom.xstart+roomHeight+1-i,
+                            belowRoom.ystart+i+1,
+                            belowRoom.zend-stairWidth,
+                            72
+                            ) #brick
             #then create a hole in the floor
             mc.setBlocks(
                         belowRoom.xstart+2,
@@ -240,6 +303,15 @@ class Room:
                         belowRoom.yend,
                         belowRoom.zend-stairWidth,
                         0
+                        )
+            mc.setBlocks(
+                        belowRoom.xstart+2,
+                        belowRoom.yend,
+                        belowRoom.zend-1,
+                        belowRoom.xstart+2,
+                        belowRoom.yend,
+                        belowRoom.zend-2,
+                        72
                         )
 
         belowRoom.walls[randSpace] = 'stairsLower' #Set the doors array to the new space
@@ -589,7 +661,7 @@ class Room:
         for index,space in enumerate(self.walls):
             if space == None: # its empty
                 #create a piece of furniture
-                if random.randint(0, 1) == 1:
+                if random.randint(0, 2) <= 1:
                     furn = Furniture(startCorner,endCorner,index,self.walls).createCouch(mc)
                     self.walls[index] = 'couch'
                 else:
