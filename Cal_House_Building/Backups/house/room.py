@@ -4,8 +4,6 @@ import random
 import pandas as pd
 import numpy as np
 
-
-# ROOM HAS A MINIMUM WALLLENGTH OF 10
 class Room:
     def __init__(self,xstart,ystart,zstart,xend,yend,zend,roomPos,gridX,gridZ,roomColor):
         self.color = roomColor #choose a random color wool
@@ -30,7 +28,7 @@ class Room:
         self.full = False #Room does not exist by default
         self.roomType = 'none'
         self.buildUpAvaliablity = False
-        self.walls = [None,None,None,None] #bot,top,left,right (walls array now contains eveything that sticks to a wall, e.g stairs,chairs etc)
+        self.walls = [None,None,None,None] #bot,top,left,right (walls array now contains eveything that sticks to a wall, e.g stairs)
         
         self.x_to_center = abs(self.xstart - self.xend) // 2 
         self.z_to_center = abs(self.zstart - self.zend) // 2
@@ -164,16 +162,6 @@ class Room:
                             35, #wool brick type
                             self.color
                             ) #brick
-
-                mc.setBlocks(
-                            belowRoom.xstart+1,
-                            belowRoom.ystart+i+1,
-                            belowRoom.zstart+1,
-                            belowRoom.xstart+stairWidth,
-                            belowRoom.ystart+i+1,
-                            belowRoom.zstart+roomHeight+1-i,
-                            72
-                            ) #brick
             #then create a hole in the floor
             mc.setBlocks(
                         belowRoom.xstart+1,
@@ -183,15 +171,6 @@ class Room:
                         belowRoom.yend, #Dont change
                         belowRoom.zstart+roomHeight,
                         0 #air
-                        )
-            mc.setBlocks(
-                        belowRoom.xstart+1,
-                        belowRoom.yend, #Dont change
-                        belowRoom.zstart+2,
-                        belowRoom.xstart+2,
-                        belowRoom.yend, #Dont change
-                        belowRoom.zstart+2,
-                        72 #air
                         )
         #door is on top
         if(randSpace == 1): #Correct
@@ -206,15 +185,6 @@ class Room:
                             35, #wool brick type
                             self.color
                             ) #brick
-                mc.setBlocks(
-                            belowRoom.xend-1,
-                            belowRoom.ystart+i+1,
-                            belowRoom.zend-roomHeight+i-1,
-                            belowRoom.xend-stairWidth,
-                            belowRoom.ystart+i+1,
-                            belowRoom.zend-1,
-                            72
-                            ) #brick
             #then create a hole in the floor
             mc.setBlocks(
                         belowRoom.xend-1,
@@ -224,15 +194,6 @@ class Room:
                         belowRoom.yend,
                         belowRoom.zend-2,
                         0 #air
-                        )
-            mc.setBlocks(
-                        belowRoom.xend-1,
-                        belowRoom.yend,
-                        belowRoom.zend-2,
-                        belowRoom.xend-stairWidth,
-                        belowRoom.yend,
-                        belowRoom.zend-2,
-                        72 #air
                         )
         #door is on left
         if(randSpace == 2): #Correct
@@ -247,15 +208,6 @@ class Room:
                             35, #wool brick type
                             self.color
                             ) #brick
-                mc.setBlocks(
-                            belowRoom.xend+i-roomHeight-1,
-                            belowRoom.ystart+i+1,
-                            belowRoom.zstart+1,
-                            belowRoom.xend-1,
-                            belowRoom.ystart+i+1,
-                            belowRoom.zstart+stairWidth,
-                            72
-                            ) #brick
             #then create a hole in the floor
             mc.setBlocks(
                         belowRoom.xend-roomHeight,
@@ -265,15 +217,6 @@ class Room:
                         belowRoom.yend,
                         belowRoom.zstart+stairWidth,
                         0
-                        )
-            mc.setBlocks(
-                        belowRoom.xend-2,
-                        belowRoom.yend,
-                        belowRoom.zstart+1,
-                        belowRoom.xend-2,
-                        belowRoom.yend,
-                        belowRoom.zstart+stairWidth,
-                        72
                         )
         #door is on right
         if(randSpace == 3): #Correct
@@ -288,15 +231,6 @@ class Room:
                             35, #wool brick type
                             self.color
                             ) #brick
-                mc.setBlocks(
-                            belowRoom.xstart+1,
-                            belowRoom.ystart+i+1,
-                            belowRoom.zend-1,
-                            belowRoom.xstart+roomHeight+1-i,
-                            belowRoom.ystart+i+1,
-                            belowRoom.zend-stairWidth,
-                            72
-                            ) #brick
             #then create a hole in the floor
             mc.setBlocks(
                         belowRoom.xstart+2,
@@ -306,15 +240,6 @@ class Room:
                         belowRoom.yend,
                         belowRoom.zend-stairWidth,
                         0
-                        )
-            mc.setBlocks(
-                        belowRoom.xstart+2,
-                        belowRoom.yend,
-                        belowRoom.zend-1,
-                        belowRoom.xstart+2,
-                        belowRoom.yend,
-                        belowRoom.zend-2,
-                        72
                         )
 
         belowRoom.walls[randSpace] = 'stairsLower' #Set the doors array to the new space
@@ -378,28 +303,44 @@ class Room:
             doorWidth = 1
             doorHeight = 3
             if(doordirection == 0): #door is on bot
-                mc.setBlock(self.xstart,self.ystart+2,self.zstart+roomDepth//2, 64,9) #64,9)
-                mc.setBlock(self.xstart,self.ystart+1,self.zstart+roomDepth//2, 64,1) #64,1)
-                mc.setBlock(self.xstart,self.ystart+2,self.zstart+roomDepth//2+1, 64,12)
-                mc.setBlock(self.xstart,self.ystart+1,self.zstart+roomDepth//2+1, 64,4)
-
+                mc.setBlocks(
+                    self.xstart-doorDepth,
+                    self.ystart+1,
+                    self.zstart+roomDepth//2,
+                    self.xstart+doorDepth,
+                    self.ystart+doorHeight,
+                    self.zstart+roomDepth//2+doorWidth,
+                    0)
             if(doordirection == 1): #door is on top
-                mc.setBlock(self.xend,self.ystart+2,self.zstart+roomDepth//2, 64,9) #64,9)
-                mc.setBlock(self.xend,self.ystart+1,self.zstart+roomDepth//2, 64,1) #64,1)
-                mc.setBlock(self.xend,self.ystart+2,self.zstart+roomDepth//2+1, 64,12)
-                mc.setBlock(self.xend,self.ystart+1,self.zstart+roomDepth//2+1, 64,4)
-
+                mc.setBlocks(
+                            self.xend+doorWidth,
+                            self.ystart+1,
+                            self.zstart+roomDepth//2,
+                            self.xend-doorWidth,
+                            self.ystart+doorHeight,
+                            self.zstart+roomDepth//2+doorWidth,
+                            0
+                            )
             if(doordirection == 2): #door is on left
-                mc.setBlock(self.xstart+roomWidth//2, self.ystart+2, self.zstart, 64, 8)
-                mc.setBlock(self.xstart+roomWidth//2, self.ystart+1, self.zstart, 64, 0)
-                mc.setBlock(self.xstart+roomWidth//2+1, self.ystart+2, self.zstart, 64, 15)
-                mc.setBlock(self.xstart+roomWidth//2+1, self.ystart+1, self.zstart, 64, 7)
-
+                mc.setBlocks(
+                            self.xstart+roomDepth//2,
+                            self.ystart+1,
+                            self.zstart-doorWidth,
+                            self.xstart+roomDepth//2+doorWidth,
+                            self.ystart+doorHeight,
+                            self.zstart+doorWidth,
+                            0
+                            )
             if(doordirection == 3): #door is on right
-                mc.setBlock(self.xstart+roomWidth//2, self.ystart+2, self.zend, 64, 8)
-                mc.setBlock(self.xstart+roomWidth//2, self.ystart+1, self.zend, 64, 0)
-                mc.setBlock(self.xstart+roomWidth//2+1, self.ystart+2, self.zend, 64, 15)
-                mc.setBlock(self.xstart+roomWidth//2+1, self.ystart+1, self.zend, 64, 7)
+                mc.setBlocks(
+                            self.xstart+roomDepth//2,
+                            self.ystart+1,
+                            self.zend-doorWidth,
+                            self.xstart+roomDepth//2+doorWidth,
+                            self.ystart+doorHeight,
+                            self.zend+doorWidth,
+                            0
+                            )
 
     def createRoof(self,mc, adjustmentsArray,overlapArray):
         roomWidth = abs(self.xstart-self.xend)
@@ -643,12 +584,8 @@ class Room:
         for index,space in enumerate(self.walls):
             if space == None: # its empty
                 #create a piece of furniture
-                if random.randint(0, 2) <= 1:
-                    furn = Furniture(startCorner,endCorner,index,self.walls).createCouch(mc)
-                    self.walls[index] = 'couch'
-                else:
-                    furn = Furniture(startCorner,endCorner,index,self.walls).createDesk(mc)
-                    self.walls[index] = 'desk'
+                furn = Furniture(startCorner,endCorner,index,self.walls).createCouch(mc)
+                self.walls[index] = 'couch'
         Furniture(startCorner,endCorner,index,self.walls).drawCenterTable(mc)
 
 

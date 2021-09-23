@@ -29,12 +29,11 @@ Please, report your key activities in each week this assignment is running.
 
 * Myeonghoon Sun
     ## Week 1
-    - [x] Read chapter 1 & 2 on textbook 📖 
-    - [x] Setup VS Code, and Minecraft on my Mac 🆚
-    - [x] Implemented Hello Minecraft! [Hello Minecraft](Myeonghoon%20Sun's%20PAs/hello_world.py)
-    - [x] I've finished writing my version of a foundation generator which randomly chooses from a limited range of values to pad a foundation with buffers. Buffers ensure against another buffer piling up on pre-existing ones. This process gets repeated until the maximum number of foundations is generated in all rows. It also adds to the element of randomness by spacing out these grids. The result of this algorithm is metropolitan grids where buildings are never far away from each other, but never predictably placed to take the fun away from a potential wanderer. You could find more about it through this link: [link](foundation_generator/foundation_grid.py)
 
-    On a side note, my code will never see the light of day in the implementation of our code, as another teammate has taken it upon himself to build his own version to accomodate his roads. 
+    ### Foudnation Generator
+    [Image of Foundations](s3774430/foundations.jpg) 
+    
+    I've finished writing my version of a foundation generator which randomly chooses from a limited range of values to pad a foundation with buffers all around the foundation. Buffers ensure against another buffer piling up on pre-existing ones. This process gets repeated until the maximum number of foundations is generated in all rows. It also adds to the element of randomness by spacing out the foundations in each row with random x values avaialble. The result of this algorithm is metropolitan grids where foundations are never too far away from each other, but never predictably placed. 
 
     * PAs
       - Convert the binary number 10101 to decimal: 21
@@ -42,18 +41,18 @@ Please, report your key activities in each week this assignment is running.
       - Convert the binary number 1101001010111111 to hexadecimal: d2bf
       - Convert the decimal number 39 to binary: 100111
       - Convert the decimal number 63 to hexadecimal: 3f
-      - [Stairway](Myeonghoon%20Sun's%20PAs/staircase.py)    
+      - [Stairway](s3774430/staircase.py)    
 
     ---
 
     ## Week 2
     
-    ### Integration of teammate's works
+    ### Integration of Teammate's Works
     
-    Cal's house class needs to be integrated into Max's foundation class. Cal's house_property class equals Max's foundaion class. As Max's Village class contains a list for foundations, we can build a method inside it to generate houses on each foundation. 
+    Cal's house class needs to be integrated into Max's foundation class. Cal's house_property class corresponds to Max's foundaion class. As Max's Village class contains a list for foundations, we can build a method inside it to generate houses on each foundation. 
 
     Cal's foundation class:
-    - Arguments 
+    - Parameters
         1. location
         2. width
         3. depth (which is the same thing as width at the moment)
@@ -67,7 +66,7 @@ Please, report your key activities in each week this assignment is running.
         7. depth ( == foundationSize found in Max's class)
 
     Max's foudnation class:
-    - Arguments
+    - Parameters
         1. centerPoint
         2. size
         3. fId
@@ -103,42 +102,46 @@ Please, report your key activities in each week this assignment is running.
        
        myHouse.addAllStairs(mc)
     ``` 
-    creates rooms, another floor, more rooms, and stairs.
+    This code creates rooms, another floor, more rooms, and stairs.
 
-    Cal's y-axis doesn't match up with Max's. Where is Cal's pointing to? player.pos.y - 1 Where is Max's pointing to? centerPoint.y. Cal's house doesn't populate with varying y-axes. His houses are all position at the same y-axis whereas Max's foundations vary in heights. 
+    Cal's y-axis doesn't match up with Max's. Where is Cal's pointing to? `player.pos.y - 1`; Where is Max's pointing to? `centerPoint.y`. Cal's house doesn't populate with varying y-axes.
 
     Cal's
-    self.base refers to centerPoint.y. createEmptyFloor uses it to build a floor. Max's centerPoint.y axis gets set to the proper value not at the initialisation, but along the way. 
+    `self.base` refers to `centerPoint.y`.`createEmptyFloor()` uses it to build a floor. Max's `centerPoint.y` axis gets set to the proper value not at the initialisation of the class, but in the middle of other function.  
 
-    Foundation() class picks a random x, z coordinate and assign it with centerPoint 
+    `Foundation()` class picks a random x, z coordinate and assign it with centerPoint 
 
     The integration is now complete.
 
     ## Save and Load Blocks to build a dictionary of furniture
 
-    Inspired by some students from our cohort, I've created scripts to write to a csv file information about the composition of any gob of blocks, in this case furniture. [save_blocks.py](foundation_generator/save_blocks.py) As a way to find out whether I can translate this information with Minecraft blocks, I have also written a script to place furniture saved in the form of rows in a csv file. You could try this script: [load_blocks.py](foundation_generator/load_blocks.py). My next job is to generate a random piece of furniture in a randomly selected room. 
+    Inspired by some students from our cohort, I've created scripts to write to a csv file information about the composition of any chunk of blocks, in this case furniture. [save_blocks.py](s3774430/save_blocks.py) As a way to find out whether I can translate this information with Minecraft blocks, I have also written a script to place furniture saved in the form of rows in a csv file. You could try this script: [load_blocks.py](s3774430/load_blocks.py). My next job is to generate a random piece of furniture in a randomly selected room.
+
+    I could now load the saved blocks by running load_blocks.py.
 
     * PAs
       1. Identify threat sources
-        * Cyber attack
-	  2. Identify threat sources
-	    * Power outage due to cyber attacks
-	  3. Identify vulnerabilities and the conditions needed to exploit them
-	    * No back up infrastructure in the case of power outage; lack of staff members to deal with the issue efficiently
-	  4. Identify the likelihood such attacks would succeed
-	    * Probably the assessed likelihood by the organisation is lower than it actually is in reality, and then only it falls victim to the attack, it realises the likelihood was a lot higher. How would you accurately access the likelihood in the case of a cyber attack?
-	  5. Identify the potential impact
-	    * The besmirched reputation of the organisation, and client dissatisfaction
-	  6. Determine the risk posed
-	    * Discontinuation of service
-        
+          * Cyber attack
+	    2. Identify threat sources
+	      * Power outage due to cyber attacks
+	    3. Identify vulnerabilities and the conditions needed to exploit them
+	      * No back up infrastructure in the case of power outage; lack of staff members to   deal with the issue efficiently
+	    4. Identify the likelihood such attacks would succeed
+	      * Probably the assessed likelihood by the organisation is lower than it actually   is in reality, and then only it falls victim to the attack, it realises the   likelihood was a lot higher. How would you accurately access the likelihood in   the case of a cyber attack?
+	    5. Identify the potential impact
+	      * The besmirched reputation of the organisation, and client dissatisfaction
+	    6. Determine the risk posed
+	      * Discontinuation of service
+          
       7. My public IP address:
       8. What is the IP address of www.rmit.edu.au?
          54.79.75.6131.170.77.128
-         
+
+    ---
+           
     ## Week 3
 
-    ### Generate Furniture
+    ### Finish-up
 
     This is the last week before we need to submit our project. There are a few things we need to concentrate on to achieve the most ideal outcome.
 
@@ -149,11 +152,40 @@ Please, report your key activities in each week this assignment is running.
 
     I'm currently working on the number 4 task. We should be able to put some furniture in some of the rooms by early this week. 
 
-    Change of a plan. I'm building roads
+    ### Change of a Plan: Build Roads
 
-    Find a center point between foundations and extend roads to the point from each foundation so that its roads can meet at half point. Each instance of road class should have this center point as an attribute as well as its original start point. 
+    [Image of Roads](s3774430/roads.png)
 
-    I've completed building roads. Let's mount houses on foundations.
+    Find a center point (in all three axes) between foundations and extend roads to the point from each foundation so that its roads can meet at half point. Each instance of road class should have this center point (it is named `destination_point`) as an attribute as well as its original start point (named `origin_point`). 
+
+    * PAs
+      1. 2. What kind of memory can you buy? With 300 dollars, I could buy 2 16GB DDR4 RAMs. With an additional 200 dollars, I can get 2 32GB DDR4 RAMs. With year another 200, I could buy 64GB DDR4 ECC RAM.
+      3. What are the trade-offs in amount of memory vs memory type? You could get DDR3  with a larger amount of memory at the cost of slower transfer speeds. However, the latest generation of SDRAM, DDR4, provides greater power efficiency. 
+
+      1. 2. What kind of CPU can you buy? / How fast/performant a CPU can you buy?
+        * $300:
+          * Number of Cores: 6
+          * Clock Speed: 3.6 GHz
+          * L2 Cache:	3 MB
+          * L3 Cache:	16 MB
+        * $600:
+          * Number of Cores: 8
+          * Clock Speed: 3.8 GHz
+          * L2 Cache: 4 MB
+          * L3 Cache: 32 MB
+        * $900
+          * Number of Cores: 10
+          * Clock Speed: 3.7 GHz
+          * Cache: 19.25 MB
+        * $1200
+          * Number of Cores: 16
+          * Clock Speed: 3.5 GHz
+          * Cache: 64 MB
+
+      3. What are the trade-offs in CPU performance vs CPU cost?
+        * The higher the price is, the greater the number of cores is with caches with larger memory. The clock speed doesn't seem to be that much different across the models.
+
+
 
 
 

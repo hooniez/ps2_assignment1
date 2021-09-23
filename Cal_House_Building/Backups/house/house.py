@@ -1,6 +1,6 @@
 import random
 from floor import Floor
-from land import Property
+from property import Property
 from mcpi.vec3 import Vec3
 
 
@@ -10,7 +10,7 @@ class House: #this is a house class has an array of floors
         self.floors = [] #all the house levels
         self.floorHeight = 5
         self.roomSize = 10
-        self.roomX = 12 ##Random
+        self.roomX = 14 ##Random
         self.roomZ = 10 #Random
         self.propertyEdge = 2
 
@@ -62,38 +62,6 @@ class House: #this is a house class has an array of floors
         for floor in self.floors:
             floor.addFurnitureCal(mc)
 
-    
-    def generateHouse(self, mc):
-        floorColor = random.randint(0, 15)
-        self.createFloor(floorColor) # specify the room size, currently only squares
-        self.floors[0].addRoom(mc)
-        self.floors[0].addRoom(mc)
-        self.floors[0].addRoom(mc)
-        self.floors[0].addRoom(mc)
-        self.floors[0].addRoom(mc,'pool')
-        self.floors[0].addRoom(mc,'pool')
-        print('---------')
-
-        floorColor = random.randint(0, 15)
-        self.createFloor(floorColor) 
-        self.floors[1].addRoom(mc)
-        self.floors[1].addRoom(mc)
-
-        self.floors[1].addRoom(mc)
-
-        floorColor = random.randint(0, 15)
-        self.createFloor(floorColor)
-        self.floors[2].addRoom(mc)
-
-        self.addAllDoors(mc)
-        self.floors[0].addFrontDoor(mc)
-        self.addAllStairs(mc)
-        self.addAllWindows(mc)
-        # self.addFurniture(mc)
-        self.addAllRoofs(mc)
-        self.connectAllPools(mc)
-        self.addAllFurniture(mc)
-
 
 # Used for testing 
 if __name__ == '__main__':
@@ -104,7 +72,7 @@ if __name__ == '__main__':
     p = mc.player.getTilePos()
 
     houseLocation = p
-    prop = Property(p,48,48) #boarder is 2 on each side so total of 4
+    prop = Property(p,30,40) #boarder is 2 on each side so total of 4
     prop.drawProperty(mc)
     floorColor = random.randint(0, 15) #Uses wool block to draw House, wool block has 15 possible Colors
     myHouse = House(prop)
@@ -113,8 +81,19 @@ if __name__ == '__main__':
     myHouse.floors[0].addRoom(mc)
     myHouse.floors[0].addRoom(mc)
     myHouse.floors[0].addRoom(mc)
-    myHouse.floors[0].addRoom(mc,'pool')
-    myHouse.floors[0].addRoom(mc,'pool')
+    myHouse.floors[0].addRoom(mc)
+    myHouse.floors[0].addRoom(mc)
+    myHouse.floors[0].addRoom(mc)
+    myHouse.floors[0].addRoom(mc)
+    myHouse.floors[0].addRoom(mc)
+    myHouse.floors[0].addRoom(mc)
+    myHouse.floors[0].addRoom(mc)
+    myHouse.floors[0].addRoom(mc)
+    myHouse.floors[0].addRoom(mc)
+    myHouse.floors[0].addRoom(mc)
+    myHouse.floors[0].addRoom(mc)
+    myHouse.floors[0].addRoom(mc)
+    myHouse.floors[0].addRoom(mc)
     myHouse.floors[0].addRoom(mc,'pool')
     myHouse.floors[0].addRoom(mc,'pool')
     print('---------')

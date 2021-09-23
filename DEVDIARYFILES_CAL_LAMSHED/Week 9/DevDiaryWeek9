@@ -84,3 +84,9 @@ Creating furniture for rooms, current implementation is to put a piece wherever 
 
 6:39pm 22-09-2021:
 Finished creating first couch. Found error when staircase intesects with the couch, will need to have the length of the couch be effected by the location of the staircase
+
+~11:30pm -> 3:05pm 23-09-2021:
+Varius bug fixes and changes. Added doors to all the rooms rather than hole. Implemented a desk type of furniture.
+
+3:08pm 23-09-2021:
+Looking at how to add a gate to the pool fences

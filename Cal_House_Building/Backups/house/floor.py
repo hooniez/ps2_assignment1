@@ -108,12 +108,9 @@ class Floor: #new class for floors
     def addFrontDoor(self, mc):
         for room in self.rooms: #search through all the rooms, add a door to the first full room
             if room.full: #this room is a full room
-                if room.roomType == 'pool':
-                    break
-                else:
-                    room.walls[2] = 'singleDoor' #There is a door in the left position (2). Store it in the walls array
-                    room.drawDoor(mc,2,'singleDoor')
-                    break
+                room.walls[2] = 'singleDoor' #There is a door in the left position (2). Store it in the walls array
+                room.drawDoor(mc,2,'singleDoor')
+                break 
     
     def addStairs(self,mc):
         if(self.belowFloor == None): #If we are at the ground level
