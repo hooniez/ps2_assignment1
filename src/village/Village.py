@@ -19,8 +19,8 @@ from land import Property
 class Village():
     def __init__(self, mc):
         ''' Cells generated from num_rows and num_columns make empty plots into which foundations can be generated one per each '''
-        self.foundation_size_min = 20
-        self.foundation_size_max = 30
+        self.foundation_size_min = 30
+        self.foundation_size_max = 40
         
         # Village size
         self.width_z = self.foundation_size_max * 7
