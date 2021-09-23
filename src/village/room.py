@@ -419,6 +419,8 @@ class Room:
     def createPool(self, mc):
         pooldepth = 4
         boundrywidth = 2
+        midX = ((self.xstart)+(self.xend))//2
+        midZ = ((self.zstart)+(self.zend))//2 
         #First create the basic pool
         mc.setBlocks(
                     self.xstart+boundrywidth,
@@ -458,6 +460,19 @@ class Room:
                     self.zend-boundrywidth-1,
                     0
                     )#hollows out the fences created
+        
+        if mc.getBlock(midX,self.ystart+1,self.zend) != 0:
+            mc.setBlock(midX,self.ystart+1,self.zend-2,0)
+
+        elif mc.getBlock(self.xstart,self.ystart+1,midZ) !=0 :
+            mc.setBlock(self.xstart+2,self.ystart+1,midZ,0)
+
+        elif mc.getBlock(midX,self.ystart+1,self.zstart) != 0:
+            mc.setBlock(midX,self.ystart+1,self.zstart+2,0)
+
+        elif mc.getBlock(self.xend,self.ystart+1,midZ) != 0:
+            mc.setBlock(self.xend-2,self.ystart+1,midZ,0)
+
  
 
     def createPoolConnections(self, mc):
