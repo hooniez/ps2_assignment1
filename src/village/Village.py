@@ -295,10 +295,12 @@ class Village():
 
 
     def spawn_houses(self):
+        print(self.foundation_wrappers)
         for wrapperList in self.foundation_wrappers:
-            for wrapper in wrapperList:
-                print(wrapper.foundation)
-                # wrapper.foundation.house = House(Property(wrapper.foundation))
+            print(wrapperList)
+            # for wrapper in wrapperList:
+            #     print(wrapper.foundation)
+            #     # wrapper.foundation.house = House(Property(wrapper.foundation))
 
 
 if __name__ == '__main__':
