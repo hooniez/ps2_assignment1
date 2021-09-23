@@ -92,7 +92,7 @@ class House: #this is a house class has an array of floors
             Ztotal = 1
             self.roomZ = 10
             print('X*1 house')
-            
+
         maxHeight = 3
         total = Ztotal * Xtotal
         for m in range(0,maxHeight):
@@ -103,7 +103,7 @@ class House: #this is a house class has an array of floors
                 self.floors[m].addRoom(mc)
                 counter+=1
             if m == 0:
-                for i in range(1,total):
+                for i in range(1,total//2):
                     self.floors[m].addRoom(mc,'pool')
             total = counter
             # total = counter
@@ -119,9 +119,6 @@ class House: #this is a house class has an array of floors
             # self.createFloor(floorColor)
             # for i in range(total//2,total):
             #     self.floors[2].addRoom(mc)
-
-
-
         self.addAllDoors(mc)
         self.floors[0].addFrontDoor(mc)
         self.addAllStairs(mc)
