@@ -88,7 +88,7 @@ class Room:
 
     # Creates a light in the middle of the room (helps with dark rooms)
     def lightenBox(self, mc):
-        center_block = 209 
+        center_block = 1
         torch = 50
         
 

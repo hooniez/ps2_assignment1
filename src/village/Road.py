@@ -7,6 +7,7 @@ class Road():
         self.direction = direction
 
     def lay_road(self, mc, slot):
+
         if slot == "row":
             if abs(self.origin_point.x - self.destination_point.x) <= abs(self.origin_point.y - self.destination_point.y):
                 return
@@ -46,7 +47,7 @@ class Road():
                             self.origin_point.y + y_to_extend + 1,
                             self.origin_point.z,
                             self.origin_point.x + x_to_extend,
-                            self.origin_point.y + y_to_extend + 20,
+                            self.origin_point.y + y_to_extend + 5,
                             z,
                             0
                         )
@@ -75,7 +76,7 @@ class Road():
                             self.origin_point.y + y_to_extend + 1,
                             self.origin_point.z,
                             self.origin_point.x + x_to_extend,
-                            self.origin_point.y + y_to_extend + 20,
+                            self.origin_point.y + y_to_extend + 5,
                             z,
                             0
                         )
@@ -88,14 +89,14 @@ class Road():
                     self.destination_point.x,
                     self.destination_point.y,
                     z,
-                    block.COBBLESTONE.id
+                    block.GLOWSTONE_BLOCK.id
                 )
                 mc.setBlocks(
                     self.origin_point.x + x_to_extend,
                     self.destination_point.y + 1,
                     self.origin_point.z,
                     self.destination_point.x,
-                    self.destination_point.y + 20,
+                    self.destination_point.y + 5,
                     z,
                     0
                 )
@@ -106,11 +107,17 @@ class Road():
                     x_to_extend = 1  
                 else:
                     x_to_extend = -1
+
+                z_to_extend = 0
+                if (self.origin_point.z < self.destination_point.z) & (self.direction == 'towards_next'):
+                    z_to_extend = -(road_width)
+                if (self.origin_point.z > self.destination_point.z) & (self.direction == 'towards_previous'):
+                    z_to_extend = road_width
                         
                 mc.setBlocks(
                     self.destination_point.x + x_to_extend,
                     self.destination_point.y,
-                    self.origin_point.z,
+                    self.origin_point.z + z_to_extend,
                     self.destination_point.x - x_to_extend,
                     self.destination_point.y,
                     self.destination_point.z,
@@ -119,9 +126,9 @@ class Road():
                 mc.setBlocks(
                     self.destination_point.x + x_to_extend,
                     self.destination_point.y + 1,
-                    self.origin_point.z,
+                    self.origin_point.z + z_to_extend,
                     self.destination_point.x - x_to_extend,
-                    self.destination_point.y + 20,
+                    self.destination_point.y + 5,
                     self.destination_point.z,
                     0
                 )
@@ -141,8 +148,6 @@ class Road():
                 y_to_extend = 0
                 # while self.origin_point.y != self.destination_point.y:
                 if self.origin_point.y > self.destination_point.y:
-                    
-                    
                     while self.origin_point.y + y_to_extend > self.destination_point.y:
                         if self.direction == "towards_next":
                             z_to_extend += 1
@@ -151,8 +156,7 @@ class Road():
                         
     
                         # Descend
-                        # if self.origin_point.z < self.destination_point.z:
-                        #     self.
+
                         y_to_extend -= 1
     
                         mc.setBlocks(
@@ -170,18 +174,11 @@ class Road():
                             self.origin_point.y + y_to_extend + 1,
                             self.origin_point.z + z_to_extend,
                             x,
-                            self.origin_point.y + y_to_extend + 20,
+                            self.origin_point.y + y_to_extend + 5,
                             self.origin_point.z + z_to_extend,
                             0
                         )
                         
-                    
-                        # if self.direction == "towards_next":
-                        #     self.origin_point.x += 1
-                        #     self.destination_point.x += 1
-                        # else:
-                        #     self.origin_point.x -= 1
-                        #     self.destination_point.x -= 1
                 
                 elif self.origin_point.y < self.destination_point.y:
                     while self.origin_point.y + y_to_extend < self.destination_point.y:
@@ -206,52 +203,50 @@ class Road():
                             self.origin_point.y + y_to_extend + 1,
                             self.origin_point.z + z_to_extend,
                             x,
-                            self.origin_point.y + y_to_extend + 20,
+                            self.origin_point.y + y_to_extend + 5,
                             self.origin_point.z + z_to_extend,
                             0
                         )
                         
-    
-                        # if self.direction == "towards_next":
-                        #     self.origin_point.x += 1
-                        #     self.destination_point.x += 1
-                        # else:
-                        #     self.origin_point.x -= 1
-                        #     self.destination_point.x -= 1
                     
                     
     
                 # Straight line
                 mc.setBlocks(
-                    self.origin_point.x + 1,
+                    self.origin_point.x,
                     self.destination_point.y,
                     self.origin_point.z + z_to_extend,
                     x,
                     self.destination_point.y,
                     self.destination_point.z,
-                    block.COBBLESTONE.id
+                    block.GLOWSTONE_BLOCK.id
                 )
                 mc.setBlocks(
-                    self.origin_point.x + 1,
+                    self.origin_point.x,
                     self.destination_point.y + 1,
                     self.origin_point.z + z_to_extend,
                     x,
-                    self.destination_point.y + 20,
+                    self.destination_point.y + 5,
                     self.destination_point.z,
                     0
                 )
+
+
                 
                 # Center line
                 
     
                 if self.direction == "towards_next":
-                    z_to_extend = 1  
+                    z_to_extend = 1
+                    x_to_extend = road_width
+
                 else:
                     z_to_extend = -1
+                    x_to_extend = -(road_width)
                         
 
                 mc.setBlocks(
-                    x,
+                    x + x_to_extend,
                     self.destination_point.y,
                     self.destination_point.z + z_to_extend,
                     self.destination_point.x,
@@ -262,11 +257,11 @@ class Road():
 
                 
                 mc.setBlocks(
-                    x,
+                    x + x_to_extend,
                     self.destination_point.y + 1,
                     self.destination_point.z + z_to_extend,
                     self.destination_point.x,
-                    self.destination_point.y + 20,
+                    self.destination_point.y + 5,
                     self.destination_point.z - z_to_extend,
                     0
                 )
