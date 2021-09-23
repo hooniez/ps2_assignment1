@@ -304,13 +304,14 @@ class Room:
             doorHeight = 3
             if(doordirection == 0): #door is on bot
                 mc.setBlocks(
-                    self.xstart-doorDepth,
-                    self.ystart+1,
-                    self.zstart+roomDepth//2,
-                    self.xstart+doorDepth,
-                    self.ystart+doorHeight,
-                    self.zstart+roomDepth//2+doorWidth,
-                    0)
+                            self.xstart-doorDepth,
+                            self.ystart+1,
+                            self.zstart+roomDepth//2,
+                            self.xstart+doorDepth,
+                            self.ystart+doorHeight,
+                            self.zstart+roomDepth//2+doorWidth,
+                            0
+                            )
             if(doordirection == 1): #door is on top
                 mc.setBlocks(
                             self.xend+doorWidth,
@@ -329,8 +330,12 @@ class Room:
                             self.xstart+roomDepth//2+doorWidth,
                             self.ystart+doorHeight,
                             self.zstart+doorWidth,
-                            0
+                            0,
                             )
+
+                # can't draw door
+                # mc.setBlocks(self.xstart+roomDepth//2, self.ystart+1,self.zstart,self.xstart+roomDepth//2, self.ystart+2,self.zstart, 3, 193)
+
             if(doordirection == 3): #door is on right
                 mc.setBlocks(
                             self.xstart+roomDepth//2,
@@ -584,8 +589,12 @@ class Room:
         for index,space in enumerate(self.walls):
             if space == None: # its empty
                 #create a piece of furniture
-                furn = Furniture(startCorner,endCorner,index,self.walls).createCouch(mc)
-                self.walls[index] = 'couch'
+                if random.randint(0, 1) == 1:
+                    furn = Furniture(startCorner,endCorner,index,self.walls).createCouch(mc)
+                    self.walls[index] = 'couch'
+                else:
+                    furn = Furniture(startCorner,endCorner,index,self.walls).createDesk(mc)
+                    self.walls[index] = 'desk'
         Furniture(startCorner,endCorner,index,self.walls).drawCenterTable(mc)
 
 
