@@ -5,7 +5,7 @@ import numpy as np
 import mcpi.block as block 
 from mcpi.vec3 import Vec3
 # from Foundation_wrapper import Foundation_wrapper
-from foundation import Foundation
+from Foundation import Foundation
 from Road import Road
 from house import House
 from land import Property
@@ -26,8 +26,8 @@ class Village():
         self.foundation_size_max = 30
         
         # Village size
-        self.width_z = self.foundation_size_max * 15
-        self.width_x = self.foundation_size_max * 15
+        self.width_z = self.foundation_size_max * 5
+        self.width_x = self.foundation_size_max * 5
 
         self.buffer_x_min = self.foundation_size_min // 5
         self.buffer_x_max = self.buffer_x_min * 2
@@ -198,7 +198,7 @@ class Village():
                     if next_foundation_wrapper != None:
                         next_foundation = next_foundation_wrapper.foundation
                     
-                        y_dist = abs(current_foundation.end_vector.y - next_foundation.start_vector.y)
+                        y_dist = abs(current_foundation.end_vector.y - next_foundation.start_vector.y) + 2
         
                         if (section == 'row'):
                             flat_dist = abs(current_foundation.end_vector.x - next_foundation.start_vector.x)              
@@ -225,7 +225,7 @@ class Village():
                     if previous_foundation_wrapper != None:
                         previous_foundation = previous_foundation_wrapper.foundation 
                     
-                        y_dist = abs(current_foundation.start_vector.y - previous_foundation.end_vector.y)
+                        y_dist = abs(current_foundation.start_vector.y - previous_foundation.end_vector.y) + 2
         
                         if (section == 'row'):
                             flat_dist = abs(current_foundation.start_vector.x - previous_foundation.end_vector.x)               
