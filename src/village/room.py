@@ -156,7 +156,9 @@ class Room:
 
             prevRoom.walls[doorLocationPrev] = randomDoorType #Remember there is a door here
             self.drawDoor(mc,currentLocation, randomDoorType)
-
+        
+            self.locatePoolEntrance(mc)
+    
     # Start implementation of staircase
     def createStaircase(self,mc,belowRoom,randSpace): #belowroom holds the room below
         stairWidth = 2 #these are hard coded but could be changed to be given as inputs to the function at a later date
