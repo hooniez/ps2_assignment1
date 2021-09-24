@@ -35,7 +35,6 @@ class Foundation():
             vector_val = vec.y
             if  vector_val > highest_vector_val:
                 highest_vector_val = vector_val
-                self.highest_vector = vec
 
         # Set each height to the highest height
         for vector in self.vectors.values():
@@ -57,3 +56,8 @@ class Foundation():
             mc.setBlocks(vec.x, vec.y - 1, vec.z, vec.x, vec.y - 150, vec.z, self.building_block)
 
         self.clear_the_foundation(mc)
+        self.mark_start_end_vectors(mc)
+
+    def mark_start_end_vectors(self, mc):
+        mc.setBlock(self.start_vector.x, self.start_vector.y + 5, self.start_vector.z, block.SANDSTONE)
+        mc.setBlock(self.end_vector.x, self.end_vector.y + 5, self.end_vector.z, block.END_STONE)

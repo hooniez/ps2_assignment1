@@ -6,7 +6,7 @@ mc = Minecraft.create()
 
 pos = mc.player.getTilePos()
 
-mc.player.setPos(pos.x + 1000, 70, pos.z + 1000)
+mc.player.setPos(pos.x + 500, 100, pos.z + 500)
 
 if __name__ == '__main__':
     mc = Minecraft.create()

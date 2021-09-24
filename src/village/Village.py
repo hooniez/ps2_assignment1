@@ -22,17 +22,17 @@ from gridspace import GridSpace
 class Village():
     def __init__(self, mc):
         # Cells generated from num_rows and num_columns make empty plots into which foundations can be generated one per each
-        self.foundation_size_min = 24
-        self.foundation_size_max = 46
+        self.foundation_size_min = 20
+        self.foundation_size_max = 30
         
         # Village size
-        self.width_z = self.foundation_size_max * 4
-        self.width_x = self.foundation_size_max * 4
+        self.width_z = self.foundation_size_max * 15
+        self.width_x = self.foundation_size_max * 15
 
         self.buffer_x_min = self.foundation_size_min // 5
         self.buffer_x_max = self.buffer_x_min * 2
         self.buffer_z_min = 0
-        self.buffer_z_max = self.foundation_size_max
+        self.buffer_z_max = self.foundation_size_max 
 
         self.foundation_wrappers = []
         self.foundation_width_spaces_between = []
@@ -91,7 +91,7 @@ class Village():
                     remaining_length -= random_space
                     self.foundation_length_spaces_between[random_space_slot] += random_space
 
-    def visualise_grid(self, current_x, current_z, foundation_wrapper):
+    def visualise_grid(self, mc, current_x, current_z, foundation_wrapper):
         # foundation_conatiner
         self.lay_blocks_and_clear_the_surface(
             Vec3(
@@ -155,9 +155,10 @@ class Village():
                 foundation = Foundation(mc, width_x, width_z, x, y, z)
                 foundation_wrapper.foundation = foundation
 
-                # self.visualise_grid(current_x, current_z, foundation_wrapper)
+                # self.visualise_grid(mc, current_x, current_z, foundation_wrapper)
 
                 foundation.lay_foundation(mc)
+                
                 
                 if idx_f != len(row) - 1:
                     current_x += (foundation_wrapper.width + self.foundation_width_spaces_between[idx_r][idx_f] + 1)
@@ -166,6 +167,8 @@ class Village():
     def road_generator(self, mc, section):
         print(f"length {self.foundation_length_spaces_between}")
         print(f"length {self.foundation_width_spaces_between}")
+        print(self.foundation_wrappers)
+
 
 
         if section == 'column':
@@ -176,59 +179,71 @@ class Village():
                     max_foundations = len(row)
             for row in self.foundation_wrappers:
                 while len(row) < max_foundations:
-                    row.append(None)
+                    rand_ind = random.randint(0, len(row))
+                    row.insert(rand_ind, None)
 
             np_foundation_wrappers = np.array(self.foundation_wrappers, dtype='object')
             self.foundation_wrappers = np_foundation_wrappers.T.tolist()
 
         for foundation_wrapper in self.foundation_wrappers:
             for idx, current_foundation_wrapper in enumerate(foundation_wrapper):
+                if current_foundation_wrapper == None:
+                    continue
                 current_foundation = current_foundation_wrapper.foundation
 
+
+
                 if idx != len(foundation_wrapper) - 1:
-                    
-                    y_dist = abs(current_foundation_wrapper.foundation.end_vector.y - foundation_wrapper[idx + 1].foundation.end_vector.y)
-
-                    if (section == 'row'):
-                        flat_dist = abs(current_foundation_wrapper.foundation.end_vector.x - foundation_wrapper[idx + 1].foundation.end_vector.x) - 3
-                    else:
-                        flat_dist = abs(current_foundation_wrapper.foundation.end_vector.z - foundation_wrapper[idx + 1].foundation.end_vector.z) - 3
-
-                    if flat_dist < y_dist or current_foundation is None:
-                        continue
-                    
                     next_foundation_wrapper = foundation_wrapper[idx+ 1]
-                    next_foundation = next_foundation_wrapper.foundation
-                    road_mid_point_between_current_and_next = Vec3(
-                        (current_foundation.end_vector.x + next_foundation.start_vector.x) // 2,
-                        (current_foundation.end_vector.y + next_foundation.start_vector.y) // 2,
-                        (current_foundation.end_vector.z + next_foundation.start_vector.z) // 2
-                    )
-
-                    origin_vector = current_foundation.end_vector
-                    destination_vector = road_mid_point_between_current_and_next
-                    direction = "towards_next"
+                    if next_foundation_wrapper != None:
+                        next_foundation = next_foundation_wrapper.foundation
                     
-                    road = Road(mc, origin_vector, destination_vector, direction, self.road_width)
-                    road.lay_road(mc, section)
+                        y_dist = abs(current_foundation.end_vector.y - next_foundation.start_vector.y)
+        
+                        if (section == 'row'):
+                            flat_dist = abs(current_foundation.end_vector.x - next_foundation.start_vector.x)              
+                        else:
+                            flat_dist = abs(current_foundation.end_vector.z - next_foundation.start_vector.z)
+                        if flat_dist > y_dist:
+
+                            road_mid_point_between_current_and_next = Vec3(
+                                (current_foundation.end_vector.x + next_foundation.start_vector.x) // 2,
+                                (current_foundation.end_vector.y + next_foundation.start_vector.y) // 2,
+                                (current_foundation.end_vector.z + next_foundation.start_vector.z) // 2
+                            )
+        
+                            origin_vector = current_foundation.end_vector
+                            destination_vector = road_mid_point_between_current_and_next
+                            direction = "towards_next"
+                            
+                            road = Road(mc, origin_vector, destination_vector, direction, self.road_width)
+                            road.lay_road(mc, section)
 
 
                 if idx != 0:
                     previous_foundation_wrapper = foundation_wrapper[idx - 1]
-                    previous_foundation = previous_foundation_wrapper.foundation 
+                    if previous_foundation_wrapper != None:
+                        previous_foundation = previous_foundation_wrapper.foundation 
                     
-                    road_mid_point_between_current_and_previous = Vec3(
-                        (current_foundation.start_vector.x + previous_foundation.end_vector.x) // 2,
-                        (current_foundation.start_vector.y + previous_foundation.end_vector.y) // 2,
-                        (current_foundation.start_vector.z + previous_foundation.end_vector.z) // 2
-                    )   
-
-                    origin_vector = current_foundation.start_vector
-                    destination_vector = road_mid_point_between_current_and_previous
-                    direction = "towards_previous"
-
-                    road = Road(mc, origin_vector, destination_vector, direction, self.road_width)
-                    road.lay_road(mc, section)
+                        y_dist = abs(current_foundation.start_vector.y - previous_foundation.end_vector.y)
+        
+                        if (section == 'row'):
+                            flat_dist = abs(current_foundation.start_vector.x - previous_foundation.end_vector.x)               
+                        else:
+                            flat_dist = abs(current_foundation.start_vector.z - previous_foundation.end_vector.z)
+                        if flat_dist > y_dist:
+                            road_mid_point_between_current_and_previous = Vec3(
+                                (current_foundation.start_vector.x + previous_foundation.end_vector.x) // 2,
+                                (current_foundation.start_vector.y + previous_foundation.end_vector.y) // 2,
+                                (current_foundation.start_vector.z + previous_foundation.end_vector.z) // 2
+                            )   
+        
+                            origin_vector = current_foundation.start_vector
+                            destination_vector = road_mid_point_between_current_and_previous
+                            direction = "towards_previous"
+        
+                            road = Road(mc, origin_vector, destination_vector, direction, self.road_width)
+                            road.lay_road(mc, section)
 
 
                 
@@ -260,6 +275,8 @@ class Village():
                         wrapper.foundation.house = House(Property(wrapper.foundation), "southEast") #x[-1]z[-1]
                         wrapper.foundation.house.generateHouse(mc)
 
+            
+
 
 if __name__ == '__main__':
     mc = Minecraft.create()
@@ -267,4 +284,5 @@ if __name__ == '__main__':
     village.foundation_generator(mc)
     village.road_generator(mc, 'row')
     village.road_generator(mc, 'column')
-    village.spawn_houses(mc)
+
+    # village.spawn_houses(mc)
