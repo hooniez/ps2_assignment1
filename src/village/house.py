@@ -66,7 +66,6 @@ class House: #this is a house class has an array of floors
         if len(self.floors) > 0:
             self.floors[0].fillGardens(mc)
 
-    
     def generateHouse(self, mc):
         Ztotal = 1
         Xtotal = 1
@@ -82,7 +81,6 @@ class House: #this is a house class has an array of floors
         else:
             Xtotal = 1
             self.roomX = 10
-            print('1*Z house')
         if (self.prop.depth-self.propertyEdge*2)//4 >= 10:
             Ztotal = 4
             self.roomZ = (self.prop.depth-self.propertyEdge*2)//4
@@ -95,7 +93,6 @@ class House: #this is a house class has an array of floors
         else:
             Ztotal = 1
             self.roomZ = 10
-            print('X*1 house')
         maxHeight = 3
         total = Ztotal * Xtotal
         for m in range(0,maxHeight):

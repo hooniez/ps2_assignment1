@@ -427,11 +427,63 @@ class Room:
 
                 mc.setBlock(self.xstart+roomWidth//2+1, self.ystart+1, self.zend-2, 0)
                 mc.setBlock(self.xstart+roomWidth//2, self.ystart+1, self.zend-2, 0)
-        
+        if doortype == 'frontDoor':
+            print('build front door')
+            windowCol = random.randint(1,15)
+            doorWidth = 1
+            doorHeight = 3
+            if(doordirection == 0): #door is on bot
+                mc.setBlock(self.xstart,self.ystart+2,self.zstart+roomDepth//2, 64,9) #64,9)
+                mc.setBlock(self.xstart,self.ystart+1,self.zstart+roomDepth//2, 64,1) #64,1)
+                mc.setBlock(self.xstart,self.ystart+2,self.zstart+roomDepth//2+1, 64,12)
+                mc.setBlock(self.xstart,self.ystart+1,self.zstart+roomDepth//2+1, 64,4)
+
+                #draw front door windows
+                mc.setBlock(self.xstart+2,self.ystart+2,self.zstart+roomDepth//2+3, 95)
+                mc.setBlock(self.xstart+2,self.ystart+2,self.zstart+roomDepth//2-2, 95)
+                mc.setBlock(self.xstart+2,self.ystart+3,self.zstart+roomDepth//2+3, 95)
+                mc.setBlock(self.xstart+2,self.ystart+3,self.zstart+roomDepth//2-2, 95)
+
+            if(doordirection == 1): #door is on top
+                mc.setBlock(self.xend,self.ystart+2,self.zstart+roomDepth//2, 64,9) #64,9)
+                mc.setBlock(self.xend,self.ystart+1,self.zstart+roomDepth//2, 64,1) #64,1)
+                mc.setBlock(self.xend,self.ystart+2,self.zstart+roomDepth//2+1, 64,12)
+                mc.setBlock(self.xend,self.ystart+1,self.zstart+roomDepth//2+1, 64,4)
+                
+                #draw window
+                mc.setBlock(self.xend,self.ystart+2,self.zstart+roomDepth//2+3, 95) #64,9)
+                mc.setBlock(self.xend,self.ystart+2,self.zstart+roomDepth//2-2, 95) #64,1)
+                mc.setBlock(self.xend,self.ystart+3,self.zstart+roomDepth//2+3, 95) #64,9)
+                mc.setBlock(self.xend,self.ystart+3,self.zstart+roomDepth//2-2, 95) #64,1)
+
+            if(doordirection == 2): #door is on left
+                mc.setBlock(self.xstart+roomWidth//2, self.ystart+2, self.zstart, 64, 8)
+                mc.setBlock(self.xstart+roomWidth//2, self.ystart+1, self.zstart, 64, 0)
+                mc.setBlock(self.xstart+roomWidth//2+1, self.ystart+2, self.zstart, 64, 15)
+                mc.setBlock(self.xstart+roomWidth//2+1, self.ystart+1, self.zstart, 64, 7)
+
+                #draw window
+                mc.setBlock(self.xstart+roomWidth//2+3, self.ystart+2, self.zstart, 95)
+                mc.setBlock(self.xstart+roomWidth//2-2, self.ystart+2, self.zstart, 95)
+                mc.setBlock(self.xstart+roomWidth//2+3, self.ystart+3, self.zstart, 95)
+                mc.setBlock(self.xstart+roomWidth//2-2, self.ystart+3, self.zstart, 95)
+
+            if(doordirection == 3): #door is on right
+                mc.setBlock(self.xstart+roomWidth//2, self.ystart+2, self.zend, 64, 8)
+                mc.setBlock(self.xstart+roomWidth//2, self.ystart+1, self.zend, 64, 0)
+                mc.setBlock(self.xstart+roomWidth//2+1, self.ystart+2, self.zend, 64, 15)
+                mc.setBlock(self.xstart+roomWidth//2+1, self.ystart+1, self.zend, 64, 7)
+
+                #draw window
+                mc.setBlock(self.xstart+roomWidth//2+3, self.ystart+2, self.zend,  95)
+                mc.setBlock(self.xstart+roomWidth//2-2, self.ystart+2, self.zend, 95)
+                mc.setBlock(self.xstart+roomWidth//2+3, self.ystart+3, self.zend, 95)
+                mc.setBlock(self.xstart+roomWidth//2-2, self.ystart+3, self.zend, 95)
+
     def createRoof(self,mc, adjustmentsArray,overlapArray):
         roomWidth = abs(self.xstart-self.xend)
         roomDepth = abs(self.zstart-self.zend)
-        for i in range(0,roomDepth//2,1):
+        for i in range(0,min(roomDepth,roomWidth)//2,1):
             mc.setBlocks(
                         self.xstart+i+adjustmentsArray[0]-overlapArray[0],
                         self.yend,
@@ -487,6 +539,7 @@ class Room:
                     self.zend-boundrywidth-1,
                     0
                     )#hollows out the fences created
+<<<<<<< HEAD
         
     #     if mc.getBlock(midX,self.ystart+1,self.zend) != 0:
     #         mc.setBlock(midX,self.ystart+1,self.zend-2,0)
@@ -524,6 +577,8 @@ class Room:
                 #     mc.setBlock(self.xend-2,self.ystart+1,midZ,1)
                 # else:
                 #     mc.postToChat("failed")
+=======
+>>>>>>> d3faf4f21b82d4259c6b24f64302e27c4bf441a7
 
     def createPoolConnections(self, mc):
         pooldepth = 4
