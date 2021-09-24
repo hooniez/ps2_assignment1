@@ -438,9 +438,9 @@ class Room:
 
                 #draw front door windows
                 mc.setBlock(self.xstart+2,self.ystart+2,self.zstart+roomDepth//2+3, 95,windowCol)
-                mc,setBlock(self.xstart+2,self.ystart+2,self.zstart+roomDepth//2-2, 95,windowCol)
+                mc.setBlock(self.xstart+2,self.ystart+2,self.zstart+roomDepth//2-2, 95,windowCol)
                 mc.setBlock(self.xstart+2,self.ystart+3,self.zstart+roomDepth//2+3, 95,windowCol)
-                mc,setBlock(self.xstart+2,self.ystart+3,self.zstart+roomDepth//2-2, 95,windowCol)
+                mc.setBlock(self.xstart+2,self.ystart+3,self.zstart+roomDepth//2-2, 95,windowCol)
 
             if(doordirection == 1): #door is on top
                 mc.setBlock(self.xend,self.ystart+2,self.zstart+roomDepth//2, 64,9) #64,9)
