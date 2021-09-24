@@ -9,8 +9,7 @@ class House: #this is a house class has an array of floors
         self.prop = prop #the property
         self.floors = [] #all the house levels
         self.floorHeight = 5
-        self.roomSize = 10
-        self.roomX = 12 ##Random
+        self.roomX = 10 ##Random
         self.roomZ = 10 #Random
         self.propertyEdge = 2
         self.frontDoorPriority = frontDoorPriority
