@@ -436,9 +436,6 @@ class Room:
                 mc.setBlock(self.xstart,self.ystart+2,self.zstart+roomDepth//2+1, 64,12)
                 mc.setBlock(self.xstart,self.ystart+1,self.zstart+roomDepth//2+1, 64,4)
 
-                # mc.setBlock(self.xstart+2,self.ystart+1,self.zstart+roomDepth//2+1, 0)
-                # mc.setBlock(self.xstart+2,self.ystart+1,self.zstart+roomDepth//2, 0)
-
                 #draw front door windows
                 mc.setBlock(self.xstart+2,self.ystart+2,self.zstart+roomDepth//2+3, 95,windowCol)
                 mc,setBlock(self.xstart+2,self.ystart+2,self.zstart+roomDepth//2-2, 95,windowCol)
@@ -451,9 +448,6 @@ class Room:
                 mc.setBlock(self.xend,self.ystart+2,self.zstart+roomDepth//2+1, 64,12)
                 mc.setBlock(self.xend,self.ystart+1,self.zstart+roomDepth//2+1, 64,4)
                 
-                # mc.setBlock(self.xend-2,self.ystart+1,self.zstart+roomDepth//2+1, 0)
-                # mc.setBlock(self.xend-2,self.ystart+1,self.zstart+roomDepth//2, 0)
-
                 #draw window
                 mc.setBlock(self.xend,self.ystart+2,self.zstart+roomDepth//2+3, 95,windowCol) #64,9)
                 mc.setBlock(self.xend,self.ystart+2,self.zstart+roomDepth//2-2, 95,windowCol) #64,1)
@@ -465,10 +459,6 @@ class Room:
                 mc.setBlock(self.xstart+roomWidth//2, self.ystart+1, self.zstart, 64, 0)
                 mc.setBlock(self.xstart+roomWidth//2+1, self.ystart+2, self.zstart, 64, 15)
                 mc.setBlock(self.xstart+roomWidth//2+1, self.ystart+1, self.zstart, 64, 7)
-
-                # mc.setBlock(self.xstart+roomWidth//2+1, self.ystart+1, self.zstart+2, 0)
-                # mc.setBlock(self.xstart+roomWidth//2, self.ystart+1, self.zstart+2, 0)
-
 
                 #draw window
                 mc.setBlock(self.xstart+roomWidth//2+3, self.ystart+2, self.zstart, 95,windowCol)
@@ -482,11 +472,8 @@ class Room:
                 mc.setBlock(self.xstart+roomWidth//2+1, self.ystart+2, self.zend, 64, 15)
                 mc.setBlock(self.xstart+roomWidth//2+1, self.ystart+1, self.zend, 64, 7)
 
-                # mc.setBlock(self.xstart+roomWidth//2+1, self.ystart+3, self.zend-2, 0)
-                # mc.setBlock(self.xstart+roomWidth//2, self.ystart+3, self.zend-2, 0)
-
                 #draw window
-                mc.setBlock(self.xstart+roomWidth//2+3, self.ystart+2, self.zend  95,windowCol)
+                mc.setBlock(self.xstart+roomWidth//2+3, self.ystart+2, self.zend,  95,windowCol)
                 mc.setBlock(self.xstart+roomWidth//2-2, self.ystart+2, self.zend, 95,windowCol)
                 mc.setBlock(self.xstart+roomWidth//2+3, self.ystart+3, self.zend, 95,windowCol)
                 mc.setBlock(self.xstart+roomWidth//2-2, self.ystart+3, self.zend, 95,windowCol)
