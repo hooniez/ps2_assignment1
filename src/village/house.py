@@ -5,13 +5,14 @@ from mcpi.vec3 import Vec3
 
 
 class House: #this is a house class has an array of floors
-    def __init__(self,prop):
+    def __init__(self,prop, frontDoorPriority=8):
         self.prop = prop #the property
         self.floors = [] #all the house levels
         self.floorHeight = 5
         self.roomX = 10 ##Random
         self.roomZ = 10 #Random
         self.propertyEdge = 2
+        self.frontDoorPriority = frontDoorPriority
 
     def createFloor(self, floorColor):
         if len(self.floors) == 0: #this is the first floor, so use default
