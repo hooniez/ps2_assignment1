@@ -7,11 +7,11 @@ class Floor: #new class for floors
         self.rooms = [] #list of all the room locations in the house
         self.roomOrder = [] #order that rooms are place in the house
         #to imagine grid layout as array indexs
-        ################
+        ################ +
         #   2 | 5 | 8
         # x 1 | 4 | 7
         #   0 | 3 | 6
-        #       z
+        #       z  -> +
         ################
         self.floorColor = floorColor
 
