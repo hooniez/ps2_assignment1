@@ -25,6 +25,8 @@ class Floor: #new class for floors
         roomsizewidth = roomsizeX
         roomsizedepth = roomsizeZ
         count = 0
+        xrow = []
+        zcolumn = []
         for z in range(0,self.roomsperz): #following initalised empty rooms in an array. The rooms can later be filled with different types by calling functions in room class
             for x in range(0,self.roomsperx):
                 newSpace = Room(
@@ -39,8 +41,11 @@ class Floor: #new class for floors
                                 self.floorColor #floor Color
                                 ) #coordinates in the grid
                 self.rooms.append(newSpace) #Coordinates of location in grid
-                count+=1
-                #x+(z*self.roomsperz)
+                count+=1    
+                xrow.append(newSpace)
+            zcolumn.append(z)
+        self.rooms2D = zcolumn
+
         self.setConnectedRooms(self.rooms) #new connected rooms setup
         if(self.belowFloor == None): #Base case, ground floor
             pass
@@ -102,16 +107,48 @@ class Floor: #new class for floors
             else: #its the first room, send in None
                 self.rooms[self.roomOrder[index][0]].createDoor(mc,None)
 
+
+
+######################
     def addFrontDoor(self, mc, priority):
+        # if(priority == 'south-east'):
+        #     for x in range(0,self.roomsperx):
+        #         for z in range(0,self.roomsperz):
+        #             #seach for that element()
+        #             room.self.gridCoord[0] = (gridX,gridZ)
+
+
+        #                         #south-east final array element
+        #             #north-east
+
+        #             #north-west first element in the array
+        #             #south-west 
+
+
+        #     #first element is last element in array 8
+        #     #next element is last element - self.roomsperz*i - self.roomsperx*(i+1) # 7
+        #     #next element is last element - self.roomsperz # 5
+
+        #     #next element is last element - 2 # 6
+        #     #next element is last element - (self.roomsperz - 1) # 4
+        #     #next element is last element - self.roomsperz - 3 # 2
+
+        #     #next element is last element - self.roomsperz - 2 # 3
+        #     #next element is last element - (self.roomsperx ) # 1
+
+        #     #next element is last element - (self.roomsperx * self.roomsperz-1) # 0
+
         for room in self.rooms: #search through all the rooms, add a door to the first full room
             if room.full: #this room is a full room
                 if room.roomType == 'pool' or room.roomType == 'garden':
                     break
                 else:
-                    
+                    self.gridCoord = (gridX,gridZ)
                     room.drawDoor(mc, 2,'frontDoor')
                     break
-    
+######################
+
+
     def addStairs(self,mc):
         if(self.belowFloor == None): #If we are at the ground level
             #don't build any stairs
