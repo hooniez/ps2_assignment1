@@ -98,3 +98,7 @@ Error caused by small bug, found and fix (if -> elif)
 
 10:14 23-09-2021:
 Creating a garden class to fill empty space
+Finished implementing garden class
+
+10:00:
+Implemented better what to draw the the front door, now detects the corner where the path connects and joins based on that location. Took a while to implement but final code is quiet simple so happy with the outcome
