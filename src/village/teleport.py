@@ -1,4 +1,4 @@
-from Village import Village
+from village import Village
 
 from mcpi.minecraft import Minecraft
 
@@ -17,4 +17,4 @@ mc.player.setPos(pos.x + 1000, 70, pos.z + 1000)
 #     village.road_generator(mc, 'row')
 #     village.road_generator(mc, 'column')
 
-#     village.spawn_houses(mc)
+village.spawn_houses(mc)

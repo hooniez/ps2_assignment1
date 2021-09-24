@@ -1,37 +1,40 @@
 from mcpi.minecraft import Minecraft
 import random
+import math
 import numpy as np
 import mcpi.block as block 
 from mcpi.vec3 import Vec3
-from Foundation_wrapper import Foundation_wrapper
-from Foundation import Foundation
+# from Foundation_wrapper import Foundation_wrapper
+from foundation import Foundation
 from Road import Road
 from house import House
 from land import Property
+from gridspace import GridSpace
 
-''' 
-    Let's get some terminology out of the way. 
-    Width refers to the number of blocks in x-axis
-    Length refers to the number of blocks in z-axis
-    When width is used instead of length for z value, it will be suffixed with z. (e.g. width_z)
-'''
+
+
+    # Let's get some terminology out of the way. 
+    # Width refers to the number of blocks in x-axis
+    # Length refers to the number of blocks in z-axis
+    # When width is used instead of length for z value, it will be suffixed with z. (e.g. width_z)
+
 
 class Village():
     def __init__(self, mc):
-        ''' Cells generated from num_rows and num_columns make empty plots into which foundations can be generated one per each '''
+        # Cells generated from num_rows and num_columns make empty plots into which foundations can be generated one per each
         self.foundation_size_min = 24
         self.foundation_size_max = 46
         
         # Village size
-        self.width_z = self.foundation_size_max * 10
-        self.width_x = self.foundation_size_max * 10
+        self.width_z = self.foundation_size_max * 4
+        self.width_x = self.foundation_size_max * 4
 
         self.buffer_x_min = self.foundation_size_min // 5
         self.buffer_x_max = self.buffer_x_min * 2
         self.buffer_z_min = 0
         self.buffer_z_max = self.foundation_size_max
 
-        self.foundation_wrappers = [] 
+        self.foundation_wrappers = []
         self.foundation_width_spaces_between = []
         self.foundation_length_spaces_between = []
         self.foundation_longest_lengths = [0]
@@ -42,7 +45,7 @@ class Village():
         
 
     def random_grid_calculator(self):
-        ''' Randomly assigns space to a grid for foundations and buffers '''
+        # Randomly assigns space to a grid for foundations and buffers
         row = 0
         remaining_width = self.width_x 
         remaining_length = self.width_z
@@ -54,7 +57,7 @@ class Village():
             self.foundation_width_spaces_between.append([])
             remaining_width = self.width_x 
             while remaining_width >= foundation_wrapper_max_width:
-                foundation_wrapper = Foundation_wrapper(self.buffer_x_min, self.buffer_x_max, self.buffer_z_min, self.buffer_z_max, self.foundation_size_max)
+                foundation_wrapper = GridSpace(self.buffer_x_min, self.buffer_x_max, self.buffer_z_min, self.buffer_z_max, self.foundation_size_max)
                 if foundation_wrapper.length > longest_length:
                     longest_length = foundation_wrapper.length
                 self.foundation_wrappers[row].append(foundation_wrapper)
@@ -134,7 +137,7 @@ class Village():
 
 
     def foundation_generator(self, mc):
-        ''' After calculating where to place foundations with random_grid_calculator(), set blocks in Mincraft '''
+        # After calculating where to place foundations with random_grid_calculator(), set blocks in Mincraft
         self.random_grid_calculator()
         
         current_z = self.player_pos.z + 1
@@ -163,9 +166,11 @@ class Village():
 
 
     def road_generator(self, mc, section):
-        if section == "row":
-            pass
-        elif section == 'column':
+        print(f"length {self.foundation_length_spaces_between}")
+        print(f"length {self.foundation_width_spaces_between}")
+
+
+        if section == 'column':
             # Make sure all rows have the same number of foundations
             max_foundations = len(self.foundation_wrappers[0])
             for row in self.foundation_wrappers:
@@ -182,8 +187,18 @@ class Village():
             for idx, current_foundation_wrapper in enumerate(foundation_wrapper):
                 current_foundation = current_foundation_wrapper.foundation
 
-
                 if idx != len(foundation_wrapper) - 1:
+                    
+                    y_dist = abs(current_foundation_wrapper.foundation.end_vector.y - foundation_wrapper[idx + 1].foundation.end_vector.y)
+
+                    if (section == 'row'):
+                        flat_dist = abs(current_foundation_wrapper.foundation.end_vector.x - foundation_wrapper[idx + 1].foundation.end_vector.x) - 3
+                    else:
+                        flat_dist = abs(current_foundation_wrapper.foundation.end_vector.z - foundation_wrapper[idx + 1].foundation.end_vector.z) - 3
+
+                    if flat_dist < y_dist or current_foundation is None:
+                        continue
+                    
                     next_foundation_wrapper = foundation_wrapper[idx+ 1]
                     next_foundation = next_foundation_wrapper.foundation
                     road_mid_point_between_current_and_next = Vec3(
@@ -239,6 +254,6 @@ if __name__ == '__main__':
     mc = Minecraft.create()
     village = Village(mc)
     village.foundation_generator(mc)
-    village.road_generator(mc,'row')
-    village.road_generator(mc,'column')
+    village.road_generator(mc, 'row')
+    village.road_generator(mc, 'column')
     village.spawn_houses(mc)

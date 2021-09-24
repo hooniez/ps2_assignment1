@@ -1,6 +1,6 @@
 import random
 
-class Foundation_wrapper():
+class GridSpace():
     def __init__(self, buffer_x_min, buffer_x_max, buffer_z_min, buffer_z_max, foundation_size_max):
         self.buffer_left_width = random.randint(buffer_x_min, buffer_x_max)
         self.buffer_left_length = foundation_size_max

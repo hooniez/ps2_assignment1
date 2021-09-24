@@ -26,9 +26,9 @@ class Foundation():
 
             
     def position_vectors(self):
-        ''' Find the vector with the highest y-axis and set every vector's height to it 
-            Assign start_vector, end_vector, and center_vector with values.
-        '''
+        # Find the vector with the highest y-axis and set every vector's height to it 
+        # Assign start_vector, end_vector, and center_vector with values.
+
     
         highest_vector_val = self.vectors['southeast'].y    
         for key, vec in self.vectors.items():
