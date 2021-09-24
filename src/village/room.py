@@ -429,7 +429,7 @@ class Room:
     def createRoof(self,mc, adjustmentsArray,overlapArray):
         roomWidth = abs(self.xstart-self.xend)
         roomDepth = abs(self.zstart-self.zend)
-        for i in range(0,roomDepth//2,1):
+        for i in range(0,min(roomDepth,roomWidth)//2,1):
             mc.setBlocks(
                         self.xstart+i+adjustmentsArray[0]-overlapArray[0],
                         self.yend,

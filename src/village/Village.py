@@ -238,7 +238,7 @@ class Village():
 if __name__ == '__main__':
     mc = Minecraft.create()
     village = Village(mc)
-    village.foundation_generator()
-    village.road_generator('row')
-    village.road_generator('column')
-    # village.spawn_houses(mc)
+    village.foundation_generator(mc)
+    village.road_generator(mc,'row')
+    village.road_generator(mc,'column')
+    village.spawn_houses(mc)
