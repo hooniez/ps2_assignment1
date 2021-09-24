@@ -396,8 +396,8 @@ class Room:
                 mc.setBlock(self.xstart,self.ystart+2,self.zstart+roomDepth//2+1, 64,12)
                 mc.setBlock(self.xstart,self.ystart+1,self.zstart+roomDepth//2+1, 64,4)
 
-                # mc.setBlock(self.xstart+2,self.ystart+1,self.zstart+roomDepth//2+1, 0)
-                # mc.setBlock(self.xstart+2,self.ystart+1,self.zstart+roomDepth//2, 0)
+                mc.setBlock(self.xstart+2,self.ystart+1,self.zstart+roomDepth//2+1, 0)
+                mc.setBlock(self.xstart+2,self.ystart+1,self.zstart+roomDepth//2, 0)
 
             if(doordirection == 1): #door is on top
                 mc.setBlock(self.xend,self.ystart+2,self.zstart+roomDepth//2, 64,9) #64,9)
@@ -405,8 +405,8 @@ class Room:
                 mc.setBlock(self.xend,self.ystart+2,self.zstart+roomDepth//2+1, 64,12)
                 mc.setBlock(self.xend,self.ystart+1,self.zstart+roomDepth//2+1, 64,4)
                 
-                # mc.setBlock(self.xend-2,self.ystart+1,self.zstart+roomDepth//2+1, 0)
-                # mc.setBlock(self.xend-2,self.ystart+1,self.zstart+roomDepth//2, 0)
+                mc.setBlock(self.xend-2,self.ystart+1,self.zstart+roomDepth//2+1, 0)
+                mc.setBlock(self.xend-2,self.ystart+1,self.zstart+roomDepth//2, 0)
 
             if(doordirection == 2): #door is on left
                 mc.setBlock(self.xstart+roomWidth//2, self.ystart+2, self.zstart, 64, 8)
@@ -414,8 +414,8 @@ class Room:
                 mc.setBlock(self.xstart+roomWidth//2+1, self.ystart+2, self.zstart, 64, 15)
                 mc.setBlock(self.xstart+roomWidth//2+1, self.ystart+1, self.zstart, 64, 7)
 
-                # mc.setBlock(self.xstart+roomWidth//2+1, self.ystart+1, self.zstart+2, 0)
-                # mc.setBlock(self.xstart+roomWidth//2, self.ystart+1, self.zstart+2, 0)
+                mc.setBlock(self.xstart+roomWidth//2+1, self.ystart+1, self.zstart+2, 0)
+                mc.setBlock(self.xstart+roomWidth//2, self.ystart+1, self.zstart+2, 0)
 
             if(doordirection == 3): #door is on right
                 mc.setBlock(self.xstart+roomWidth//2, self.ystart+2, self.zend, 64, 8)
@@ -423,8 +423,8 @@ class Room:
                 mc.setBlock(self.xstart+roomWidth//2+1, self.ystart+2, self.zend, 64, 15)
                 mc.setBlock(self.xstart+roomWidth//2+1, self.ystart+1, self.zend, 64, 7)
 
-                # mc.setBlock(self.xstart+roomWidth//2+1, self.ystart+1, self.zend-2, 0)
-                # mc.setBlock(self.xstart+roomWidth//2, self.ystart+1, self.zend-2, 0)
+                mc.setBlock(self.xstart+roomWidth//2+1, self.ystart+1, self.zend-2, 0)
+                mc.setBlock(self.xstart+roomWidth//2, self.ystart+1, self.zend-2, 0)
         if doortype == 'frontDoor':
             print('build front door')
             windowCol = random.randint(1,15)
