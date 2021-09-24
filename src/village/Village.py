@@ -244,20 +244,20 @@ class Village():
             for col_index, wrapper in enumerate(wrapper_list):
                 print(wrapper.foundation)
                 invert_x = True if col_index == len(wrapper_list) - 2 else False
-                invert_y = True if row_index == len(self.foundation_wrappers) else False
+                invert_z = True if row_index == len(self.foundation_wrappers) else False
 
                 if wrapper is not None:
-                    if invert_x and invert_y:
-                        wrapper.foundation.house = House(Property(wrapper.foundation), 0)
+                    if invert_x and invert_z:
+                        wrapper.foundation.house = House(Property(wrapper.foundation), "northWest") #x[0]z[0]
                         wrapper.foundation.house.generateHouse(mc)
                     elif invert_x:
-                        wrapper.foundation.house = House(Property(wrapper.foundation), 6)
+                        wrapper.foundation.house = House(Property(wrapper.foundation), "southWest") #x[0]z[-1]
                         wrapper.foundation.house.generateHouse(mc)
-                    elif invert_y:
-                        wrapper.foundation.house = House(Property(wrapper.foundation), 2)
+                    elif invert_z:
+                        wrapper.foundation.house = House(Property(wrapper.foundation), "northEast") #x[-1]z[0]
                         wrapper.foundation.house.generateHouse(mc)
                     else:
-                        wrapper.foundation.house = House(Property(wrapper.foundation), 8)
+                        wrapper.foundation.house = House(Property(wrapper.foundation), "southEast") #x[-1]z[-1]
                         wrapper.foundation.house.generateHouse(mc)
 
 
