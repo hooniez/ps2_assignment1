@@ -156,6 +156,8 @@ class Room:
 
             prevRoom.walls[doorLocationPrev] = randomDoorType #Remember there is a door here
             self.drawDoor(mc,currentLocation, randomDoorType)
+        
+            self.locatePoolEntrance(mc)
     
     # Start implementation of staircase
     def createStaircase(self,mc,belowRoom,randSpace): #belowroom holds the room below
@@ -498,23 +500,30 @@ class Room:
     #     elif mc.getBlock(self.xend,self.ystart+1,midZ) != 0:
     #         mc.setBlock(self.xend-2,self.ystart+1,midZ,0)
 
-    # def locatePoolEntrance(self,mc):
-    #     midX = ((self.xstart)+(self.xend))//2
-    #     midZ = ((self.zstart)+(self.zend))//2 
-        # for i in self.walls:
-        #     if i == 'singleDoor' or i == 'fullWidthDoor':    
-        #         if self.walls.index(i) == 0:
-        #             mc.setBlock(midX,self.ystart+1,self.zend-2,1)
-        #         elif self.walls.index(i)==3:
-        #             mc.setBlock(self.xstart+2,self.ystart+1,midZ,1) 
-        #         elif self.walls.index(i) == 2:
-        #             mc.setBlock(midX,self.ystart+1,self.zstart+2,1)
-        #         elif self.walls.index(i) ==1:
-        #             mc.setBlock(self.xend-2,self.ystart+1,midZ,1)
-        #         else:
-        #             mc.postToChat("failed")
-        #     else:
-        #         print(self.walls)
+    def locatePoolEntrance(self,mc):
+        if self.roomType == 'pool':
+            midX = ((self.xstart)+(self.xend))//2
+            midZ = ((self.zstart)+(self.zend))//2 
+            for i,door in enumerate(self.walls):
+                if self.walls[i] == 'singleDoor':
+                    if i == 0:
+                        mc.setBlock(midX,self.ystart+1,self.zend-2,0) 
+                    elif i ==1:
+                        mc.setBlock(self.xend-2,self.ystart+1,midZ,0)      
+                    elif i ==2:
+                        mc.setBlock(midX,self.ystart+1,self.zstart+2,0)
+                    elif i==3:
+                        mc.setBlock(self.xstart+2,self.ystart+1,midZ,0)
+            print(self.walls)
+
+                # elif self.walls[i]== 'single':
+                #     mc.setBlock(self.xstart+2,self.ystart+1,midZ,1) 
+                # elif self.walls[i] == 2:
+                #         mc.setBlock(midX,self.ystart+1,self.zstart+2,1)
+                # elif self.walls.index(i) ==1:
+                #     mc.setBlock(self.xend-2,self.ystart+1,midZ,1)
+                # else:
+                #     mc.postToChat("failed")
 
     def createPoolConnections(self, mc):
         pooldepth = 4
