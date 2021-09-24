@@ -156,7 +156,7 @@ class Room:
 
             prevRoom.walls[doorLocationPrev] = randomDoorType #Remember there is a door here
             self.drawDoor(mc,currentLocation, randomDoorType)
-    
+
     # Start implementation of staircase
     def createStaircase(self,mc,belowRoom,randSpace): #belowroom holds the room below
         stairWidth = 2 #these are hard coded but could be changed to be given as inputs to the function at a later date
@@ -537,6 +537,9 @@ class Room:
                     self.zend-boundrywidth-1,
                     0
                     )#hollows out the fences created
+
+    
+
 
     def createPoolConnections(self, mc):
         pooldepth = 4
