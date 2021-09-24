@@ -244,7 +244,7 @@ class Village():
             for col_index, wrapper in enumerate(wrapper_list):
                 print(wrapper.foundation)
                 invert_x = True if col_index == len(wrapper_list) - 2 else False
-                invert_z = True if row_index == len(self.foundation_wrappers) else False
+                invert_z = True if row_index == len(self.foundation_wrappers)-1 else False #added -1 here, fixed issues
 
                 if wrapper is not None:
                     if invert_x and invert_z:

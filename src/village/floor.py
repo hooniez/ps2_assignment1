@@ -107,7 +107,18 @@ class Floor: #new class for floors
 ######################
     def addFrontDoor(self, mc, priority):
         print('got a priority of',priority)
+        #             #south-east final array element
+        
+        #             #north-east #highest x value
+
+        #             #north-west first element in the array
+
+        #             #south-west #highest z value
+        markers = False #set True for location markers
+
         maxmin = 0
+        minimum = (self.roomsperx-1)*(self.roomsperz-1)
+
         maxRoom = None
         direction = None
         for room in self.rooms:
@@ -116,8 +127,8 @@ class Floor: #new class for floors
                     mc.setBlocks(room.xstart,room.ystart,room.zstart,room.xstart+4,room.ystart+40,room.zstart+4,125,4)
 
             if(room.full == True):
-                print('house is slots self.rooms = ', len(self.rooms))
-                print('found a room full room priority was,',priority)
+                # print('house is slots self.rooms = ', len(self.rooms))
+                # print('found a room full room priority was,',priority)
                 if(priority == 'southEast'):
                     direction = 1
                     if room.roomType == 'pool' or room.roomType == 'garden':
@@ -149,8 +160,8 @@ class Floor: #new class for floors
                         x = room.gridCoord[0]
                         y = room.gridCoord[1]
                         total = x+y
-                        if(x<maxmin):
-                            maxmin = total
+                        if(x<=minimum): #speical case use minimum
+                            minimum = total
                             maxRoom = room
 
                 if(priority == 'southWest'):
@@ -167,9 +178,8 @@ class Floor: #new class for floors
         if(direction == None or maxRoom == None):
             print('error drawing the front door direction was,',direction,'maxRoom was,',maxRoom)
         else:
-            print('------------')
-
-            print('maxRoom is at',maxRoom.gridCoord)
+            # print('maxRoom is at',maxRoom.gridCoord)
+            # print('built in direction,',direction)
             if(markers == True): #Marks location of maxRoom
                 mc.setBlocks(maxRoom.xstart,maxRoom.ystart,maxRoom.zstart,maxRoom.xstart+2,maxRoom.ystart+30,maxRoom.zstart+2,87)
             maxRoom.drawDoor(mc,direction,'frontDoor')

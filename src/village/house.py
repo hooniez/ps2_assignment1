@@ -103,7 +103,7 @@ class House: #this is a house class has an array of floors
                 self.floors[m].addRoom(mc)
                 counter+=1
             if m == 0:
-                for i in range(1,1+total//4): #total-counter
+                for i in range(1,1+total//4): #total pools to add minimum 1
                     self.floors[m].addRoom(mc,'pool')
             total = counter
         self.addAllDoors(mc)
