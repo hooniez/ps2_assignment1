@@ -155,8 +155,6 @@ class Village():
                 foundation = Foundation(mc, width_x, width_z, x, y, z)
                 foundation_wrapper.foundation = foundation
 
-                
-
                 # self.visualise_grid(current_x, current_z, foundation_wrapper)
 
                 foundation.lay_foundation(mc)
@@ -242,12 +240,25 @@ class Village():
 
 
     def spawn_houses(self, mc):
-        for wrapperList in self.foundation_wrappers:
-            for wrapper in wrapperList:
+        for row_index, wrapper_list in enumerate(self.foundation_wrappers):
+            for col_index, wrapper in enumerate(wrapper_list):
                 print(wrapper.foundation)
+                invert_x = True if col_index == len(wrapper_list) - 2 else False
+                invert_y = True if row_index == len(self.foundation_wrappers) else False
+
                 if wrapper is not None:
-                    wrapper.foundation.house = House(Property(wrapper.foundation))
-                    wrapper.foundation.house.generateHouse(mc)
+                    if invert_x and invert_y:
+                        wrapper.foundation.house = House(Property(wrapper.foundation), 0)
+                        wrapper.foundation.house.generateHouse(mc)
+                    elif invert_x:
+                        wrapper.foundation.house = House(Property(wrapper.foundation), 6)
+                        wrapper.foundation.house.generateHouse(mc)
+                    elif invert_y:
+                        wrapper.foundation.house = House(Property(wrapper.foundation), 2)
+                        wrapper.foundation.house.generateHouse(mc)
+                    else:
+                        wrapper.foundation.house = House(Property(wrapper.foundation), 8)
+                        wrapper.foundation.house.generateHouse(mc)
 
 
 if __name__ == '__main__':
