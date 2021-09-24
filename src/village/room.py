@@ -437,10 +437,10 @@ class Room:
                 mc.setBlock(self.xstart,self.ystart+1,self.zstart+roomDepth//2+1, 64,4)
 
                 #draw front door windows
-                mc.setBlock(self.xstart+2,self.ystart+2,self.zstart+roomDepth//2+3, 95,windowCol)
-                mc.setBlock(self.xstart+2,self.ystart+2,self.zstart+roomDepth//2-2, 95,windowCol)
-                mc.setBlock(self.xstart+2,self.ystart+3,self.zstart+roomDepth//2+3, 95,windowCol)
-                mc.setBlock(self.xstart+2,self.ystart+3,self.zstart+roomDepth//2-2, 95,windowCol)
+                mc.setBlock(self.xstart+2,self.ystart+2,self.zstart+roomDepth//2+3, 95)
+                mc.setBlock(self.xstart+2,self.ystart+2,self.zstart+roomDepth//2-2, 95)
+                mc.setBlock(self.xstart+2,self.ystart+3,self.zstart+roomDepth//2+3, 95)
+                mc.setBlock(self.xstart+2,self.ystart+3,self.zstart+roomDepth//2-2, 95)
 
             if(doordirection == 1): #door is on top
                 mc.setBlock(self.xend,self.ystart+2,self.zstart+roomDepth//2, 64,9) #64,9)
@@ -449,10 +449,10 @@ class Room:
                 mc.setBlock(self.xend,self.ystart+1,self.zstart+roomDepth//2+1, 64,4)
                 
                 #draw window
-                mc.setBlock(self.xend,self.ystart+2,self.zstart+roomDepth//2+3, 95,windowCol) #64,9)
-                mc.setBlock(self.xend,self.ystart+2,self.zstart+roomDepth//2-2, 95,windowCol) #64,1)
-                mc.setBlock(self.xend,self.ystart+3,self.zstart+roomDepth//2+3, 95,windowCol) #64,9)
-                mc.setBlock(self.xend,self.ystart+3,self.zstart+roomDepth//2-2, 95,windowCol) #64,1)
+                mc.setBlock(self.xend,self.ystart+2,self.zstart+roomDepth//2+3, 95) #64,9)
+                mc.setBlock(self.xend,self.ystart+2,self.zstart+roomDepth//2-2, 95) #64,1)
+                mc.setBlock(self.xend,self.ystart+3,self.zstart+roomDepth//2+3, 95) #64,9)
+                mc.setBlock(self.xend,self.ystart+3,self.zstart+roomDepth//2-2, 95) #64,1)
 
             if(doordirection == 2): #door is on left
                 mc.setBlock(self.xstart+roomWidth//2, self.ystart+2, self.zstart, 64, 8)
@@ -461,10 +461,10 @@ class Room:
                 mc.setBlock(self.xstart+roomWidth//2+1, self.ystart+1, self.zstart, 64, 7)
 
                 #draw window
-                mc.setBlock(self.xstart+roomWidth//2+3, self.ystart+2, self.zstart, 95,windowCol)
-                mc.setBlock(self.xstart+roomWidth//2-2, self.ystart+2, self.zstart, 95,windowCol)
-                mc.setBlock(self.xstart+roomWidth//2+3, self.ystart+3, self.zstart, 95,windowCol)
-                mc.setBlock(self.xstart+roomWidth//2-2, self.ystart+3, self.zstart, 95,windowCol)
+                mc.setBlock(self.xstart+roomWidth//2+3, self.ystart+2, self.zstart, 95)
+                mc.setBlock(self.xstart+roomWidth//2-2, self.ystart+2, self.zstart, 95)
+                mc.setBlock(self.xstart+roomWidth//2+3, self.ystart+3, self.zstart, 95)
+                mc.setBlock(self.xstart+roomWidth//2-2, self.ystart+3, self.zstart, 95)
 
             if(doordirection == 3): #door is on right
                 mc.setBlock(self.xstart+roomWidth//2, self.ystart+2, self.zend, 64, 8)
@@ -473,10 +473,10 @@ class Room:
                 mc.setBlock(self.xstart+roomWidth//2+1, self.ystart+1, self.zend, 64, 7)
 
                 #draw window
-                mc.setBlock(self.xstart+roomWidth//2+3, self.ystart+2, self.zend,  95,windowCol)
-                mc.setBlock(self.xstart+roomWidth//2-2, self.ystart+2, self.zend, 95,windowCol)
-                mc.setBlock(self.xstart+roomWidth//2+3, self.ystart+3, self.zend, 95,windowCol)
-                mc.setBlock(self.xstart+roomWidth//2-2, self.ystart+3, self.zend, 95,windowCol)
+                mc.setBlock(self.xstart+roomWidth//2+3, self.ystart+2, self.zend,  95)
+                mc.setBlock(self.xstart+roomWidth//2-2, self.ystart+2, self.zend, 95)
+                mc.setBlock(self.xstart+roomWidth//2+3, self.ystart+3, self.zend, 95)
+                mc.setBlock(self.xstart+roomWidth//2-2, self.ystart+3, self.zend, 95)
 
     def createRoof(self,mc, adjustmentsArray,overlapArray):
         roomWidth = abs(self.xstart-self.xend)
