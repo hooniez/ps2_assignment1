@@ -46,7 +46,6 @@ class Floor: #new class for floors
             pass
         else:
             self.belowFloor.aboveFloor = self
-        print(f'At level {self.floorLevel} Rooms array has {len(self.rooms)}')
     def addRoom(self,mc,roomtype='basic'):
         empty = True
         builtRooms = []
@@ -110,7 +109,7 @@ class Floor: #new class for floors
                     break
                 else:
                     room.walls[2] = 'singleDoor' #There is a door in the left position (2). Store it in the walls array
-                    room.drawDoor(mc,2,'singleDoor')
+                    room.drawDoor(mc,2,'frontDoor')
                     break
     
     def addStairs(self,mc):
