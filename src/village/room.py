@@ -337,6 +337,9 @@ class Room:
     
     
     def drawDoor(self,mc,doordirection,doortype):
+        if(doortype =='frontDoor'):
+            #special case add to walls array
+            self.walls[doordirection] = 'frontDoor'
         roomWidth = abs(self.xstart-self.xend)
         roomDepth = abs(self.zstart-self.zend)
         roomHeight = abs(self.ystart-self.yend)
@@ -417,7 +420,6 @@ class Room:
                 mc.setBlock(self.xstart+roomWidth//2+1, self.ystart+2, self.zend, 64, 15)
                 mc.setBlock(self.xstart+roomWidth//2+1, self.ystart+1, self.zend, 64, 7)
 
-
         if doortype == 'frontDoor':
             print('build front door')
             windowCol = random.randint(1,15)
@@ -430,10 +432,10 @@ class Room:
                 mc.setBlock(self.xstart,self.ystart+1,self.zstart+roomDepth//2+1, 64,4)
 
                 #draw front door windows
-                mc.setBlock(self.xstart+2,self.ystart+2,self.zstart+roomDepth//2+3, 95)
-                mc.setBlock(self.xstart+2,self.ystart+2,self.zstart+roomDepth//2-2, 95)
-                mc.setBlock(self.xstart+2,self.ystart+3,self.zstart+roomDepth//2+3, 95)
-                mc.setBlock(self.xstart+2,self.ystart+3,self.zstart+roomDepth//2-2, 95)
+                mc.setBlock(self.xstart,self.ystart+2,self.zstart+roomDepth//2+3, 95)
+                mc.setBlock(self.xstart,self.ystart+2,self.zstart+roomDepth//2-2, 95)
+                mc.setBlock(self.xstart,self.ystart+3,self.zstart+roomDepth//2+3, 95)
+                mc.setBlock(self.xstart,self.ystart+3,self.zstart+roomDepth//2-2, 95)
 
             if(doordirection == 1): #door is on top
                 mc.setBlock(self.xend,self.ystart+2,self.zstart+roomDepth//2, 64,9) #64,9)
@@ -548,7 +550,7 @@ class Room:
             midX = ((self.xstart)+(self.xend))//2
             midZ = ((self.zstart)+(self.zend))//2 
             for i,door in enumerate(self.walls):
-                if self.walls[i] == 'singleDoor':
+                if self.walls[i] == 'singleDoor' or self.walls[i] == 'frontDoor':
                     if i == 0:
                         mc.setBlock(self.xstart+2,self.ystart+1,midZ,0)
                         mc.setBlock(self.xstart+2,self.ystart+1,midZ+1,0)  
@@ -768,6 +770,8 @@ class Room:
         return avaliableSpace
 
     def createWindow(self,mc,windowLoc):
+        if(self.walls[windowLoc] == 'frontDoor'):
+            return
         wallWidth = 1
         roomWidth = abs(self.xstart-self.xend)
         roomDepth = abs(self.zstart-self.zend)

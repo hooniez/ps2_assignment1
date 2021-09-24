@@ -107,7 +107,7 @@ class House: #this is a house class has an array of floors
                     self.floors[m].addRoom(mc,'pool')
             total = counter
         self.addAllDoors(mc)
-        self.floors[0].addFrontDoor(mc)
+        self.floors[0].addFrontDoor(mc,self.frontDoorPriority)
         self.addAllStairs(mc)
         self.addAllWindows(mc)
         # self.addFurniture(mc)

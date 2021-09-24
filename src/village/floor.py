@@ -25,8 +25,6 @@ class Floor: #new class for floors
         roomsizewidth = roomsizeX
         roomsizedepth = roomsizeZ
         count = 0
-        xrow = []
-        zcolumn = []
         for z in range(0,self.roomsperz): #following initalised empty rooms in an array. The rooms can later be filled with different types by calling functions in room class
             for x in range(0,self.roomsperx):
                 newSpace = Room(
@@ -41,10 +39,7 @@ class Floor: #new class for floors
                                 self.floorColor #floor Color
                                 ) #coordinates in the grid
                 self.rooms.append(newSpace) #Coordinates of location in grid
-                count+=1    
-                xrow.append(newSpace)
-            zcolumn.append(z)
-        self.rooms2D = zcolumn
+                count+=1
 
         self.setConnectedRooms(self.rooms) #new connected rooms setup
         if(self.belowFloor == None): #Base case, ground floor
@@ -111,43 +106,74 @@ class Floor: #new class for floors
 
 ######################
     def addFrontDoor(self, mc, priority):
-        # if(priority == 'south-east'):
-        #     for x in range(0,self.roomsperx):
-        #         for z in range(0,self.roomsperz):
-        #             #seach for that element()
-        #             room.self.gridCoord[0] = (gridX,gridZ)
+        print('got a priority of',priority)
+        maxmin = 0
+        maxRoom = None
+        direction = None
+        for room in self.rooms:
+            if markers == True: #Marks location of 0,0
+                if room.gridCoord[0] == 0 and room.gridCoord[1] == 0:
+                    mc.setBlocks(room.xstart,room.ystart,room.zstart,room.xstart+4,room.ystart+40,room.zstart+4,125,4)
 
+            if(room.full == True):
+                print('house is slots self.rooms = ', len(self.rooms))
+                print('found a room full room priority was,',priority)
+                if(priority == 'southEast'):
+                    direction = 1
+                    if room.roomType == 'pool' or room.roomType == 'garden':
+                        continue
+                    else:
+                        x = room.gridCoord[0]
+                        y = room.gridCoord[1]
+                        total = x+y
+                        if(total>maxmin):
+                            maxmin = total
+                            maxRoom = room
 
-        #                         #south-east final array element
-        #             #north-east
+                if(priority == 'northEast'):
+                    direction = 2
+                    if room.roomType == 'pool' or room.roomType == 'garden':
+                        continue
+                    else:
+                        x = room.gridCoord[0]
+                        y = room.gridCoord[1]
+                        if(x>maxmin):
+                            maxmin = x
+                            maxRoom = room
 
-        #             #north-west first element in the array
-        #             #south-west 
+                if(priority == 'northWest'):
+                    direction = 0
+                    if room.roomType == 'pool' or room.roomType == 'garden':
+                        continue
+                    else:
+                        x = room.gridCoord[0]
+                        y = room.gridCoord[1]
+                        total = x+y
+                        if(x<maxmin):
+                            maxmin = total
+                            maxRoom = room
 
+                if(priority == 'southWest'):
+                    direction = 3
+                    if room.roomType == 'pool' or room.roomType == 'garden':
+                        continue
+                    else:
+                        x = room.gridCoord[0]
+                        y = room.gridCoord[1]
+                        if(y>maxmin):
+                            maxmin = y
+                            maxRoom = room
 
-        #     #first element is last element in array 8
-        #     #next element is last element - self.roomsperz*i - self.roomsperx*(i+1) # 7
-        #     #next element is last element - self.roomsperz # 5
+        if(direction == None or maxRoom == None):
+            print('error drawing the front door direction was,',direction,'maxRoom was,',maxRoom)
+        else:
+            print('------------')
 
-        #     #next element is last element - 2 # 6
-        #     #next element is last element - (self.roomsperz - 1) # 4
-        #     #next element is last element - self.roomsperz - 3 # 2
-
-        #     #next element is last element - self.roomsperz - 2 # 3
-        #     #next element is last element - (self.roomsperx ) # 1
-
-        #     #next element is last element - (self.roomsperx * self.roomsperz-1) # 0
-
-        for room in self.rooms: #search through all the rooms, add a door to the first full room
-            if room.full: #this room is a full room
-                if room.roomType == 'pool' or room.roomType == 'garden':
-                    break
-                else:
-                    self.gridCoord = (gridX,gridZ)
-                    room.drawDoor(mc, 2,'frontDoor')
-                    break
-######################
-
+            print('maxRoom is at',maxRoom.gridCoord)
+            if(markers == True): #Marks location of maxRoom
+                mc.setBlocks(maxRoom.xstart,maxRoom.ystart,maxRoom.zstart,maxRoom.xstart+2,maxRoom.ystart+30,maxRoom.zstart+2,87)
+            maxRoom.drawDoor(mc,direction,'frontDoor')
+            print('------------')
 
     def addStairs(self,mc):
         if(self.belowFloor == None): #If we are at the ground level

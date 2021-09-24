@@ -5,7 +5,7 @@ import numpy as np
 import mcpi.block as block 
 from mcpi.vec3 import Vec3
 # from Foundation_wrapper import Foundation_wrapper
-from Foundation import Foundation
+from foundation import Foundation
 from Road import Road
 from house import House
 from land import Property
