@@ -75,7 +75,7 @@ class Room:
             else:
                 #tree
                 plantType = 6
-            mc.setBlock(self.xstart+random.randint(1,gardenWidth),self.ystart+1,self.zstart+random.randint(1,gardenDepth),plantType,flowerType)
+            mc.setBlock(self.xstart+random.randint(1,gardenWidth-1),self.ystart+1,self.zstart+random.randint(1,gardenDepth-1),plantType,flowerType)
     
     def createBox(self,mc): #Creates a box of blocks used in createRoom Func
         mc.setBlocks(
@@ -399,21 +399,17 @@ class Room:
                 mc.setBlock(self.xstart,self.ystart+1,self.zstart+roomDepth//2+1, 64,4)
 
 
-
             if(doordirection == 1): #door is on top
                 mc.setBlock(self.xend,self.ystart+2,self.zstart+roomDepth//2, 64,9) #64,9)
                 mc.setBlock(self.xend,self.ystart+1,self.zstart+roomDepth//2, 64,1) #64,1)
                 mc.setBlock(self.xend,self.ystart+2,self.zstart+roomDepth//2+1, 64,12)
                 mc.setBlock(self.xend,self.ystart+1,self.zstart+roomDepth//2+1, 64,4)
                 
-
-
             if(doordirection == 2): #door is on left
                 mc.setBlock(self.xstart+roomWidth//2, self.ystart+2, self.zstart, 64, 8)
                 mc.setBlock(self.xstart+roomWidth//2, self.ystart+1, self.zstart, 64, 0)
                 mc.setBlock(self.xstart+roomWidth//2+1, self.ystart+2, self.zstart, 64, 15)
                 mc.setBlock(self.xstart+roomWidth//2+1, self.ystart+1, self.zstart, 64, 7)
-
 
             if(doordirection == 3): #door is on right
                 mc.setBlock(self.xstart+roomWidth//2, self.ystart+2, self.zend, 64, 8)

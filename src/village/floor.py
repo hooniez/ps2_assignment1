@@ -7,11 +7,11 @@ class Floor: #new class for floors
         self.rooms = [] #list of all the room locations in the house
         self.roomOrder = [] #order that rooms are place in the house
         #to imagine grid layout as array indexs
-        ################
+        ################ +
         #   2 | 5 | 8
         # x 1 | 4 | 7
         #   0 | 3 | 6
-        #       z
+        #       z  -> +
         ################
         self.floorColor = floorColor
 
@@ -102,14 +102,14 @@ class Floor: #new class for floors
             else: #its the first room, send in None
                 self.rooms[self.roomOrder[index][0]].createDoor(mc,None)
 
-    def addFrontDoor(self, mc):
+    def addFrontDoor(self, mc, priority):
         for room in self.rooms: #search through all the rooms, add a door to the first full room
             if room.full: #this room is a full room
                 if room.roomType == 'pool' or room.roomType == 'garden':
                     break
                 else:
-                    room.walls[2] = 'singleDoor' #There is a door in the left position (2). Store it in the walls array
-                    room.drawDoor(mc,2,'frontDoor')
+                    
+                    room.drawDoor(mc, 2,'frontDoor')
                     break
     
     def addStairs(self,mc):
