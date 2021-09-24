@@ -539,7 +539,6 @@ class Room:
                     self.zend-boundrywidth-1,
                     0
                     )#hollows out the fences created
-<<<<<<< HEAD
         
     #     if mc.getBlock(midX,self.ystart+1,self.zend) != 0:
     #         mc.setBlock(midX,self.ystart+1,self.zend-2,0)
@@ -577,8 +576,6 @@ class Room:
                 #     mc.setBlock(self.xend-2,self.ystart+1,midZ,1)
                 # else:
                 #     mc.postToChat("failed")
-=======
->>>>>>> d3faf4f21b82d4259c6b24f64302e27c4bf441a7
 
     def createPoolConnections(self, mc):
         pooldepth = 4
