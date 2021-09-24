@@ -1,4 +1,4 @@
-from village import Village
+from Village import Village
 
 from mcpi.minecraft import Minecraft
 
