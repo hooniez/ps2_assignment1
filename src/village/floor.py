@@ -106,7 +106,7 @@ class Floor: #new class for floors
 
 ######################
     def addFrontDoor(self, mc, priority):
-        print('got a priority of',priority)
+        # print('got a priority of',priority)
         #             #south-east final array element
         
         #             #north-east #highest x value
@@ -116,7 +116,7 @@ class Floor: #new class for floors
         #             #south-west #highest z value
         if priority == 'northEast': #Not the prettiest code, but for current build northWest door location looks better than northEast
             priority = 'northWest'
-        markers = True #set True for location markers
+        markers = False #set True for location markers
 
         maxmin = -1
         minimum = (self.roomsperx-1)*(self.roomsperz-1)
@@ -143,8 +143,8 @@ class Floor: #new class for floors
                         z = room.gridCoord[1]
                         total = x+z
                         if(total>maxmin):
-                            print('set new maxmin with array element',room.roomPos)
-                            print('arrayelement was :', room.roomPos)
+                            # print('set new maxmin with array element',room.roomPos)
+                            # print('arrayelement was :', room.roomPos)
                             maxmin = total
                             maxRoom = room
 
@@ -157,8 +157,8 @@ class Floor: #new class for floors
                         x = room.gridCoord[0]
                         z = room.gridCoord[1]
                         if(x>maxmin):
-                            print('set new maxmin with array coords',room.gridCoord)
-                            print('arrayelement was :', room.roomPos)
+                            # print('set new maxmin with array coords',room.gridCoord)
+                            # print('arrayelement was :', room.roomPos)
                             maxmin = x
                             maxRoom = room
 
@@ -171,8 +171,8 @@ class Floor: #new class for floors
                         z = room.gridCoord[1]
                         total = x+z
                         if(total<=minimum): #speical case use minimum
-                            print('set new minimum with array element',room.roomPos)
-                            print('arrayelement was :', room.roomPos)
+                            # print('set new minimum with array element',room.roomPos)
+                            # print('arrayelement was :', room.roomPos)
                             minimum = total
                             maxRoom = room
 
@@ -184,16 +184,16 @@ class Floor: #new class for floors
                         x = room.gridCoord[0]
                         z = room.gridCoord[1]
                         if(z>maxmin):
-                            print('set new maxmin with array element',room.roomPos)
-                            print('arrayelement was :', room.roomPos)
+                            # print('set new maxmin with array element',room.roomPos)
+                            # print('arrayelement was :', room.roomPos)
                             maxmin = z
                             maxRoom = room
 
         if(direction == None or maxRoom == None):
             print('error drawing the front door direction was,',direction,'maxRoom was,',maxRoom)
         else:
-            print('maxRoom is at',maxRoom.gridCoord)
-            print('built in direction,',direction)
+            # print('maxRoom is at',maxRoom.gridCoord)
+            # print('built in direction,',direction)
             if(markers == True): #Marks location of maxRoom
                 mc.setBlocks(maxRoom.xstart,maxRoom.ystart,maxRoom.zstart,maxRoom.xstart+2,maxRoom.ystart+30,maxRoom.zstart+2,87)
             maxRoom.drawDoor(mc,direction,'frontDoor')
