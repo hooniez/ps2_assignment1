@@ -114,8 +114,8 @@ class Floor: #new class for floors
         #             #north-west first element in the array
 
         #             #south-west #highest z value
-        if priority == 'northEast': #Not the prettiest code, but for current build northWest door location looks better than northEast
-            priority = 'northWest'
+        # if priority == 'northEast': #Not the prettiest code, but for current build northWest door location looks better than northEast
+        #     priority = 'northWest'
         markers = False #set True for location markers
 
         maxmin = -1
