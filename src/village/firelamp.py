@@ -1,6 +1,5 @@
 import mcpi.block as block 
 from mcpi.vec3 import Vec3
-from mcpi.minecraft import Minecraft
 
 class firelamp():
     def __init__(self, center_vector):
@@ -69,14 +68,5 @@ class firelamp():
                 block = vector_info[1][0]
                 block_tint = vector_info[1][1]
                 mc.setBlock(vector, block, block_tint)
-
-
-if __name__ == '__main__':
-    mc = Minecraft.create()
-
-    pos = mc.player.getTilePos()
-
-    f = firelamp(pos)
-    f.build(mc)
 
 
