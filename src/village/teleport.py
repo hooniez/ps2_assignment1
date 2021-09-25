@@ -1,5 +1,5 @@
 from Village import Village
-
+import mc_dictionary
 from mcpi.minecraft import Minecraft
 
 mc = Minecraft.create()
@@ -18,11 +18,15 @@ if __name__ == '__main__':
         mc.player.setPos(pos.x + 1000, 100, pos.z + 1000)
         user_input = input('Would you like to generate your vilalge here? [y/n]: ')
     else:
+        mc = Minecraft.create()
         village = Village(mc)
         village.foundation_generator(mc)
         village.road_generator(mc, 'row')
         village.road_generator(mc, 'column')
         village.spawn_houses(mc)
+    
+        # Creates all the minecraft blocks.
+        mc_dictionary.main(mc)
 
 
 

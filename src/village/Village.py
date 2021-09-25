@@ -8,6 +8,7 @@ from Foundation import Foundation
 from Road import Road
 from house import House
 from gridspace import GridSpace
+import mc_dictionary
 
 
 
@@ -294,5 +295,7 @@ if __name__ == '__main__':
     village.foundation_generator(mc)
     village.road_generator(mc, 'row')
     village.road_generator(mc, 'column')
+    village.spawn_houses(mc)
 
-    # village.spawn_houses(mc)
+    # Creates all the minecraft blocks.
+    mc_dictionary.main()
