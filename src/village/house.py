@@ -1,6 +1,5 @@
 import random
 from floor import Floor
-from land import Property
 from mcpi.vec3 import Vec3
 
 
@@ -69,27 +68,27 @@ class House: #this is a house class has an array of floors
     def generateHouse(self, mc):
         Ztotal = 1
         Xtotal = 1
-        if (self.prop.width-self.propertyEdge*2)//4 >= 10:
+        if (self.prop.width_x-self.propertyEdge*2)//4 >= 10:
             Xtotal = 4
-            self.roomX = (self.prop.width-self.propertyEdge*2)//4
-        elif (self.prop.width-self.propertyEdge*2)//3 >= 10:
+            self.roomX = (self.prop.width_x-self.propertyEdge*2)//4
+        elif (self.prop.width_x-self.propertyEdge*2)//3 >= 10:
             Xtotal = 3
-            self.roomX = (self.prop.width-self.propertyEdge*2)//3
-        elif (self.prop.width-self.propertyEdge*2)//2 >= 10:
+            self.roomX = (self.prop.width_x-self.propertyEdge*2)//3
+        elif (self.prop.width_x-self.propertyEdge*2)//2 >= 10:
             Xtotal = 2
-            self.roomX = (self.prop.width-self.propertyEdge*2)//2
+            self.roomX = (self.prop.width_x-self.propertyEdge*2)//2
         else:
             Xtotal = 1
             self.roomX = 10
-        if (self.prop.depth-self.propertyEdge*2)//4 >= 10:
+        if (self.prop.width_z-self.propertyEdge*2)//4 >= 10:
             Ztotal = 4
-            self.roomZ = (self.prop.depth-self.propertyEdge*2)//4
-        elif (self.prop.depth-self.propertyEdge*2)//3 >= 10:
+            self.roomZ = (self.prop.width_z-self.propertyEdge*2)//4
+        elif (self.prop.width_z-self.propertyEdge*2)//3 >= 10:
             Ztotal = 3
-            self.roomZ = (self.prop.depth-self.propertyEdge*2)//3
-        elif (self.prop.depth-self.propertyEdge*2)//2 >= 10:
+            self.roomZ = (self.prop.width_z-self.propertyEdge*2)//3
+        elif (self.prop.width_z-self.propertyEdge*2)//2 >= 10:
             Ztotal = 2
-            self.roomZ = (self.prop.depth-self.propertyEdge*2)//2
+            self.roomZ = (self.prop.width_z-self.propertyEdge*2)//2
         else:
             Ztotal = 1
             self.roomZ = 10
@@ -119,16 +118,17 @@ class House: #this is a house class has an array of floors
 
 # Used for testing 
 if __name__ == '__main__':
-    import mcpi.minecraft as minecraft
-    import mcpi.block as block
-    import random
-    mc = minecraft.Minecraft.create()
-    p = mc.player.getTilePos()
+    pass
+    # import mcpi.minecraft as minecraft
+    # import mcpi.block as block
+    # import random
+    # mc = minecraft.Minecraft.create()
+    # p = mc.player.getTilePos()
 
-    houseLocation = p
-    prop = Property(p,48,48) #boarder is 2 on each side so total of 4
-    prop.drawProperty(mc)
-    floorColor = random.randint(0, 15) #Uses wool block to draw House, wool block has 15 possible Colors
-    myHouse = House(prop)
+    # houseLocation = p
+    # prop = Property(p,48,48) #boarder is 2 on each side so total of 4
+    # prop.drawProperty(mc)
+    # floorColor = random.randint(0, 15) #Uses wool block to draw House, wool block has 15 possible Colors
+    # myHouse = House(prop)
 
-    myHouse.generateHouse(mc)
+    # myHouse.generateHouse(mc)

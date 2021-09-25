@@ -4,11 +4,9 @@ import math
 import numpy as np
 import mcpi.block as block 
 from mcpi.vec3 import Vec3
-# from Foundation_wrapper import Foundation_wrapper
 from Foundation import Foundation
 from Road import Road
 from house import House
-from land import Property
 from gridspace import GridSpace
 
 
@@ -26,8 +24,8 @@ class Village():
         self.foundation_size_max = 48
         
         # Village size
-        self.width_z = self.foundation_size_max * 4
-        self.width_x = self.foundation_size_max * 4
+        self.width_z = self.foundation_size_max * 6
+        self.width_x = self.foundation_size_max * 6
 
         self.buffer_x_min = self.foundation_size_min // 5
         self.buffer_x_max = self.buffer_x_min * 2
@@ -267,16 +265,16 @@ class Village():
 
                 
                     if invert_x and invert_z:
-                        wrapper.foundation.house = House(Property(wrapper.foundation), "northWest") #x[0]z[0]
+                        wrapper.foundation.house = House(wrapper.foundation, "northWest") #x[0]z[0]
                         wrapper.foundation.house.generateHouse(mc)
                     elif invert_x:
-                        wrapper.foundation.house = House(Property(wrapper.foundation), "southWest") #x[0]z[-1]
+                        wrapper.foundation.house = House(wrapper.foundation, "southWest") #x[0]z[-1]
                         wrapper.foundation.house.generateHouse(mc)
                     elif invert_z:
-                        wrapper.foundation.house = House(Property(wrapper.foundation), "northEast") #x[-1]z[0]
+                        wrapper.foundation.house = House(wrapper.foundation, "northEast") #x[-1]z[0]
                         wrapper.foundation.house.generateHouse(mc)
                     else:
-                        wrapper.foundation.house = House(Property(wrapper.foundation), "southEast") #x[-1]z[-1]
+                        wrapper.foundation.house = House(wrapper.foundation, "southEast") #x[-1]z[-1]
                         wrapper.foundation.house.generateHouse(mc)
 
             
