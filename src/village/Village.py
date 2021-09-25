@@ -8,6 +8,7 @@ from Foundation import Foundation
 from Road import Road
 from house import House
 from gridspace import GridSpace
+from firelamp import firelamp
 import mc_dictionary
 
 
@@ -251,6 +252,9 @@ class Village():
         
                             road = Road(mc, origin_vector, destination_vector, direction, self.road_width)
                             road.lay_road(mc, section)
+
+                fire_lamp = firelamp(destination_vector)
+                fire_lamp.build(mc)
 
 
                 
