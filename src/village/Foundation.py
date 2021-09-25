@@ -18,7 +18,7 @@ class Foundation():
         self.end_vector = None
         self.center_vector = None
         self.highest_vector = None
-        self.building_block = block.GLOWSTONE_BLOCK.id
+        self.building_block = block.GRASS.id
         self.house = None
     
     def toString(self):
