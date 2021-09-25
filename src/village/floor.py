@@ -114,7 +114,7 @@ class Floor: #new class for floors
         #             #north-west first element in the array
 
         #             #south-west #highest z value
-        markers = False #set True for location markers
+        markers = True #set True for location markers
 
         maxmin = 0
         minimum = (self.roomsperx-1)*(self.roomsperz-1)
@@ -137,7 +137,7 @@ class Floor: #new class for floors
                         x = room.gridCoord[0]
                         y = room.gridCoord[1]
                         total = x+y
-                        if(total>maxmin):
+                        if(total>=maxmin):
                             maxmin = total
                             maxRoom = room
 
@@ -148,7 +148,7 @@ class Floor: #new class for floors
                     else:
                         x = room.gridCoord[0]
                         y = room.gridCoord[1]
-                        if(x>maxmin):
+                        if(x>=maxmin):
                             maxmin = x
                             maxRoom = room
 
@@ -171,7 +171,7 @@ class Floor: #new class for floors
                     else:
                         x = room.gridCoord[0]
                         y = room.gridCoord[1]
-                        if(y>maxmin):
+                        if(y>=maxmin):
                             maxmin = y
                             maxRoom = room
 
