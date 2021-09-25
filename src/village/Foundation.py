@@ -57,7 +57,8 @@ class Foundation():
 
         self.clear_the_foundation(mc)
         self.mark_start_end_vectors(mc)
-
-    def mark_start_end_vectors(self, mc):
-        mc.setBlock(self.start_vector.x, self.start_vector.y + 5, self.start_vector.z, block.SANDSTONE)
-        mc.setBlock(self.end_vector.x, self.end_vector.y + 5, self.end_vector.z, block.END_STONE)
+    
+    # for  testing only
+    # def mark_start_end_vectors(self, mc):
+    #     mc.setBlock(self.start_vector.x, self.start_vector.y + 5, self.start_vector.z, block.SANDSTONE)
+    #     mc.setBlock(self.end_vector.x, self.end_vector.y + 5, self.end_vector.z, block.END_STONE)
