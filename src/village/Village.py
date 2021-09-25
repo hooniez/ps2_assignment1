@@ -4,11 +4,9 @@ import math
 import numpy as np
 import mcpi.block as block 
 from mcpi.vec3 import Vec3
-# from Foundation_wrapper import Foundation_wrapper
 from Foundation import Foundation
 from Road import Road
 from house import House
-from land import Property
 from gridspace import GridSpace
 
 
@@ -26,8 +24,8 @@ class Village():
         self.foundation_size_max = 48
         
         # Village size
-        self.width_z = self.foundation_size_max * 4
-        self.width_x = self.foundation_size_max * 4
+        self.width_z = self.foundation_size_max * 6
+        self.width_x = self.foundation_size_max * 6
 
         self.buffer_x_min = self.foundation_size_min // 5
         self.buffer_x_max = self.buffer_x_min * 2

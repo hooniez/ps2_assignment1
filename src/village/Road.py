@@ -6,6 +6,7 @@ class Road():
         self.destination_vector = destination_vector
         self.direction = direction
         self.width = width
+        self.buildingBlock = block.STONE_BRICK.id
 
     def lay_road(self, mc, section):
         if section == "row":
@@ -31,7 +32,7 @@ class Road():
                         self.origin_vector.x + x_to_extend,
                         self.origin_vector.y + y_to_extend,
                         z,
-                        block.GLOWSTONE_BLOCK.id
+                        self.buildingBlock
                     )
 
                     mc.setBlocks(
@@ -61,7 +62,7 @@ class Road():
                         self.origin_vector.x + x_to_extend,
                         self.origin_vector.y + y_to_extend,
                         z,
-                        block.GLOWSTONE_BLOCK.id
+                        self.buildingBlock
                     )
                     mc.setBlocks(
                         self.origin_vector.x + x_to_extend,
@@ -81,7 +82,7 @@ class Road():
                 self.destination_vector.x,
                 self.destination_vector.y,
                 z,
-                block.GLOWSTONE_BLOCK.id
+                self.buildingBlock
             )
             mc.setBlocks(
                 self.origin_vector.x + x_to_extend,
@@ -120,7 +121,7 @@ class Road():
                 self.destination_vector.x - x_to_extend,
                 self.destination_vector.y,
                 self.destination_vector.z + z_to_extend,
-                block.DIAMOND_BLOCK
+                self.buildingBlock
             )
             mc.setBlocks(
                 self.destination_vector.x + x_to_extend,
@@ -156,7 +157,7 @@ class Road():
                         x,
                         self.origin_vector.y + y_to_extend,
                         self.origin_vector.z + z_to_extend,
-                        block.GLOWSTONE_BLOCK.id
+                        self.buildingBlock
                     )
                     mc.setBlocks(
                         self.origin_vector.x,
@@ -184,7 +185,7 @@ class Road():
                         x,
                         self.origin_vector.y + y_to_extend,
                         self.origin_vector.z + z_to_extend,
-                        block.GLOWSTONE_BLOCK.id
+                        self.buildingBlock
                     )
                     mc.setBlocks(
                         self.origin_vector.x,
@@ -204,7 +205,7 @@ class Road():
                 x,
                 self.destination_vector.y,
                 self.destination_vector.z,
-                block.GLOWSTONE_BLOCK.id
+                self.buildingBlock
             )
             mc.setBlocks(
                 self.origin_vector.x,
@@ -241,7 +242,7 @@ class Road():
                 self.destination_vector.x + x_to_extend,
                 self.destination_vector.y,
                 self.destination_vector.z - z_to_extend,
-                block.DIAMOND_BLOCK
+                self.buildingBlock
             )
             mc.setBlocks(
                 self.origin_vector.x + x_to_pull,
