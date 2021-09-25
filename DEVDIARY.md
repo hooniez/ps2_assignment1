@@ -21,6 +21,7 @@ Please, report your key activities in each week this assignment is running.
     - [X] Read chapter 1 & 2 on textbook
     - [X] Setup VS Code, and Minecraft on windows 
     - [X] Implemented Hello Minecraft!
+    - My dev diary can be found [here](max_foord_dev_diary\DEVDIARY_MaxFoord.md)
 * Cal Lamshed
     - [X] Read chapter 1 & 2 on textbook
     - [X] Setup VS Code, and Minecraft on my Windows
