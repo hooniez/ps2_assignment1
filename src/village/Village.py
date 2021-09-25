@@ -22,12 +22,12 @@ from gridspace import GridSpace
 class Village():
     def __init__(self, mc):
         # Cells generated from num_rows and num_columns make empty plots into which foundations can be generated one per each
-        self.foundation_size_min = 20
-        self.foundation_size_max = 35
+        self.foundation_size_min = 26
+        self.foundation_size_max = 48
         
         # Village size
-        self.width_z = self.foundation_size_max * 10
-        self.width_x = self.foundation_size_max * 10
+        self.width_z = self.foundation_size_max * 4
+        self.width_x = self.foundation_size_max * 4
 
         self.buffer_x_min = self.foundation_size_min // 5
         self.buffer_x_max = self.buffer_x_min * 2
