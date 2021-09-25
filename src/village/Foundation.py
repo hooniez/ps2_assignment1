@@ -56,7 +56,7 @@ class Foundation():
             mc.setBlocks(vec.x, vec.y - 1, vec.z, vec.x, vec.y - 150, vec.z, self.building_block)
 
         self.clear_the_foundation(mc)
-        self.mark_start_end_vectors(mc)
+        # self.mark_start_end_vectors(mc)
     
     # for  testing only
     # def mark_start_end_vectors(self, mc):
