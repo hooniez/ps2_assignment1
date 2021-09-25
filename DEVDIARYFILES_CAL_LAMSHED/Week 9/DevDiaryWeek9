@@ -105,3 +105,6 @@ Worked with zain to help fix the issues in pool detecting where the door is. Fee
 
 10:00 24-09-2021:
 Implemented better what to draw the the front door, now detects the corner where the path connects and joins based on that location. Took a while to implement but final code is quiet simple so happy with the outcome
+
+4:00 25-09-2021:
+Fixed an issue with location of front doors
