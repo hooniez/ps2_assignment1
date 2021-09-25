@@ -4,8 +4,8 @@ the initial solution to the foundation generator was taking approx 1 min to gene
 	the loop would run until all coordinates were generated, meaning that there was no guarunteed maximum run time (outside of all points being checked)
 
 there were 2 differing ideas one how to solve the problem so the decision was taken to develop both so that if one didn't work we had a back up
-	solution1 - set the foundations to a  grid
-	solution2 - generate a random sample  of x values with a minimum dist between them,  then match them to random z values to give the village a more random  feel
+* solution1 - set the foundations to a  grid
+* solution2 - generate a random sample  of x values with a minimum dist between them,  then match them to random z values to give the village a more random  feel
 
 
 I was developing solution 2:
