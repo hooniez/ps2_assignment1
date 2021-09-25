@@ -265,16 +265,16 @@ class Village():
 
                 
                     if invert_x and invert_z:
-                        wrapper.foundation.house = House(Property(wrapper.foundation), "southEast") #x[-1]z[-1]
+                        wrapper.foundation.house = House(wrapper.foundation, "southEast") #x[-1]z[-1]
                         wrapper.foundation.house.generateHouse(mc)
                     elif invert_x:
-                        wrapper.foundation.house = House(Property(wrapper.foundation), "southWest") #x[-1]z[0]
+                        wrapper.foundation.house = House(wrapper.foundation, "southWest") #x[-1]z[0]
                         wrapper.foundation.house.generateHouse(mc)
                     elif invert_z:
-                        wrapper.foundation.house = House(Property(wrapper.foundation), "northEast") #x[0]z[-1] "nortEast" northwest was working
+                        wrapper.foundation.house = House(wrapper.foundation, "northEast") #x[0]z[-1] "nortEast" northwest was working
                         wrapper.foundation.house.generateHouse(mc)
                     else:
-                        wrapper.foundation.house = House(Property(wrapper.foundation), "northWest") #x[0]z[0] northWest
+                        wrapper.foundation.house = House(wrapper.foundation, "northWest") #x[0]z[0] northWest
                         wrapper.foundation.house.generateHouse(mc)
 
             
