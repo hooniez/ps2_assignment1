@@ -20,12 +20,19 @@ from gridspace import GridSpace
 class Village():
     def __init__(self, mc):
         # Cells generated from num_rows and num_columns make empty plots into which foundations can be generated one per each
+        self.player_pos = mc.player.getTilePos()
+
         self.foundation_size_min = 26
         self.foundation_size_max = 48
         
         # Village size
         self.width_z = self.foundation_size_max * 6
         self.width_x = self.foundation_size_max * 6
+        self.start_x = self.player_pos.x + 1
+        self.start_z = self.player_pos.z + 1
+        self.end_x = self.start_x + self.width_x
+        self.end_z = self.start_z + self.width_z
+
 
         self.buffer_x_min = self.foundation_size_min // 5
         self.buffer_x_max = self.buffer_x_min * 2
@@ -37,9 +44,7 @@ class Village():
         self.foundation_length_spaces_between = []
         self.foundation_longest_lengths = [0]
 
-        self.player_pos = mc.player.getTilePos()
-
-        self.road_width = 3
+        self.road_width = 2
         
 
     def random_grid_calculator(self):
@@ -89,19 +94,19 @@ class Village():
                     remaining_length -= random_space
                     self.foundation_length_spaces_between[random_space_slot] += random_space
 
-    def visualise_grid(self, mc, current_x, current_z, foundation_wrapper):
+    def visualise_grid(self, mc, start_x, start_z, foundation_wrapper):
         # foundation_conatiner
         self.lay_blocks_and_clear_the_surface(
             mc,
             Vec3(
-                current_x + foundation_wrapper.buffer_right_width, 
-                mc.getHeight(current_x + foundation_wrapper.buffer_right_width, current_z + foundation_wrapper.buffer_bottom_length),
-                current_z + foundation_wrapper.buffer_bottom_length
+                self.start_x + foundation_wrapper.buffer_right_width, 
+                mc.getHeight(self.start_x + foundation_wrapper.buffer_right_width, self.start_z + foundation_wrapper.buffer_bottom_length),
+                self.start_z + foundation_wrapper.buffer_bottom_length
             ),
             Vec3(
-                current_x + foundation_wrapper.buffer_right_width + foundation_wrapper.foundation_container_width,
-                mc.getHeight(current_x + foundation_wrapper.buffer_right_width + foundation_wrapper.foundation_container_width, current_z + foundation_wrapper.buffer_bottom_length + foundation_wrapper.foundation_container_length),
-                current_z + foundation_wrapper.buffer_bottom_length + foundation_wrapper.foundation_container_length
+                self.start_x + foundation_wrapper.buffer_right_width + foundation_wrapper.foundation_container_width,
+                mc.getHeight(self.start_x + foundation_wrapper.buffer_right_width + foundation_wrapper.foundation_container_width, self.start_z + foundation_wrapper.buffer_bottom_length + foundation_wrapper.foundation_container_length),
+                self.start_z + foundation_wrapper.buffer_bottom_length + foundation_wrapper.foundation_container_length
             ),
             block.BRICK_BLOCK.id
         )
@@ -110,14 +115,14 @@ class Village():
         self.lay_blocks_and_clear_the_surface(
             mc,
             Vec3(
-                current_x, 
-                mc.getHeight(current_x, current_z + foundation_wrapper.buffer_bottom_length),
-                current_z + foundation_wrapper.buffer_bottom_length
+                self.start_x, 
+                mc.getHeight(self.start_x, self.start_z + foundation_wrapper.buffer_bottom_length),
+                self.start_z + foundation_wrapper.buffer_bottom_length
             ), 
             Vec3(
-                current_x + foundation_wrapper.buffer_right_width,
-                mc.getHeight(current_x + foundation_wrapper.buffer_right_width, current_z + foundation_wrapper.buffer_bottom_length + foundation_wrapper.foundation_container_length),
-                current_z + foundation_wrapper.buffer_bottom_length + foundation_wrapper.foundation_container_length),
+                self.start_x + foundation_wrapper.buffer_right_width,
+                mc.getHeight(self.start_x + foundation_wrapper.buffer_right_width, self.start_z + foundation_wrapper.buffer_bottom_length + foundation_wrapper.foundation_container_length),
+                self.start_z + foundation_wrapper.buffer_bottom_length + foundation_wrapper.foundation_container_length),
                 block.WOOL.id
             )
 
@@ -125,29 +130,29 @@ class Village():
         self.lay_blocks_and_clear_the_surface(
             mc,
             Vec3(
-                current_x + foundation_wrapper.buffer_right_width + foundation_wrapper.foundation_container_width,
-                mc.getHeight(current_x + foundation_wrapper.buffer_right_width + foundation_wrapper.foundation_container_width, current_z + foundation_wrapper.buffer_bottom_length),
-                current_z + foundation_wrapper.buffer_bottom_length
+                self.start_x + foundation_wrapper.buffer_right_width + foundation_wrapper.foundation_container_width,
+                mc.getHeight(self.start_x + foundation_wrapper.buffer_right_width + foundation_wrapper.foundation_container_width, self.start_z + foundation_wrapper.buffer_bottom_length),
+                self.start_z + foundation_wrapper.buffer_bottom_length
             ),
-         Vec3(current_x + foundation_wrapper.buffer_right_width + foundation_wrapper.foundation_container_width + foundation_wrapper.buffer_left_width, mc.getHeight(current_x + foundation_wrapper.buffer_right_width + foundation_wrapper.foundation_container_width + foundation_wrapper.buffer_left_width, current_z + foundation_wrapper.buffer_bottom_length + foundation_wrapper.foundation_container_length), current_z + foundation_wrapper.buffer_bottom_length + foundation_wrapper.foundation_container_length), block.WOOL.id)
+         Vec3(self.start_x + foundation_wrapper.buffer_right_width + foundation_wrapper.foundation_container_width + foundation_wrapper.buffer_left_width, mc.getHeight(self.start_x + foundation_wrapper.buffer_right_width + foundation_wrapper.foundation_container_width + foundation_wrapper.buffer_left_width, self.start_z + foundation_wrapper.buffer_bottom_length + foundation_wrapper.foundation_container_length), self.start_z + foundation_wrapper.buffer_bottom_length + foundation_wrapper.foundation_container_length), block.WOOL.id)
         #buffer_bootm                
-        self.lay_blocks_and_clear_the_surface(mc, Vec3(current_x, mc.getHeight(current_x, current_z), current_z), Vec3(current_x + foundation_wrapper.buffer_bottom_width, mc.getHeight(current_x + foundation_wrapper.buffer_bottom_width, current_z + foundation_wrapper.buffer_bottom_length), current_z + foundation_wrapper.buffer_bottom_length), block.DIAMOND_BLOCK)
+        self.lay_blocks_and_clear_the_surface(mc, Vec3(self.start_x, mc.getHeight(self.start_x, self.start_z), self.start_z), Vec3(self.start_x + foundation_wrapper.buffer_bottom_width, mc.getHeight(self.start_x + foundation_wrapper.buffer_bottom_width, self.start_z + foundation_wrapper.buffer_bottom_length), self.start_z + foundation_wrapper.buffer_bottom_length), block.DIAMOND_BLOCK)
         #buffer_top
-        self.lay_blocks_and_clear_the_surface(mc, Vec3(current_x, mc.getHeight(current_x, current_z + foundation_wrapper.buffer_bottom_length + foundation_wrapper.foundation_container_length), current_z + foundation_wrapper.buffer_bottom_length + foundation_wrapper.foundation_container_length),
-         Vec3(current_x + foundation_wrapper.width, mc.getHeight(current_x + foundation_wrapper.width, current_z + foundation_wrapper.length), current_z + foundation_wrapper.length), block.LAPIS_LAZULI_BLOCK)
+        self.lay_blocks_and_clear_the_surface(mc, Vec3(self.start_x, mc.getHeight(self.start_x, self.start_z + foundation_wrapper.buffer_bottom_length + foundation_wrapper.foundation_container_length), self.start_z + foundation_wrapper.buffer_bottom_length + foundation_wrapper.foundation_container_length),
+         Vec3(self.start_x + foundation_wrapper.width, mc.getHeight(self.start_x + foundation_wrapper.width, self.start_z + foundation_wrapper.length), self.start_z + foundation_wrapper.length), block.LAPIS_LAZULI_BLOCK)
 
 
     def foundation_generator(self, mc):
         # After calculating where to place foundations with random_grid_calculator(), set blocks in Mincraft
         self.random_grid_calculator()
         
-        current_z = self.player_pos.z + 1
+        self.start_z = self.player_pos.z + 1
         for idx_r, row in enumerate(self.foundation_wrappers):
-            current_x = self.player_pos.x + 1
-            current_z += self.foundation_longest_lengths[idx_r] + 1
+            self.start_x = self.player_pos.x + 1
+            self.start_z += self.foundation_longest_lengths[idx_r] + 1
             for idx_f, foundation_wrapper in enumerate(row):
-                x = current_x + foundation_wrapper.buffer_right_width + 1
-                z = current_z + foundation_wrapper.buffer_bottom_length + 1
+                x = self.start_x + foundation_wrapper.buffer_right_width + 1
+                z = self.start_z + foundation_wrapper.buffer_bottom_length + 1
                 y = mc.getHeight(x,z)
 
                 width_x = random.randrange(self.foundation_size_min, self.foundation_size_max, 2)
@@ -156,13 +161,13 @@ class Village():
                 foundation = Foundation(mc, width_x, width_z, x, y, z)
                 foundation_wrapper.foundation = foundation
 
-                # self.visualise_grid(mc, current_x, current_z, foundation_wrapper)
+                # self.visualise_grid(mc, self.start_x, self.start_z, foundation_wrapper)
 
                 foundation.lay_foundation(mc)
                 
                 
                 if idx_f != len(row) - 1:
-                    current_x += (foundation_wrapper.width + self.foundation_width_spaces_between[idx_r][idx_f] + 1)
+                    self.start_x += (foundation_wrapper.width + self.foundation_width_spaces_between[idx_r][idx_f] + 1)
 
 
     def road_generator(self, mc, section):
@@ -253,6 +258,9 @@ class Village():
     def lay_blocks_and_clear_the_surface(self, mc, start_vector, end_vector, building_block):
         mc.setBlocks(start_vector, end_vector, building_block)
         mc.setBlocks(start_vector.x, start_vector.y + 1, start_vector.z, end_vector.x, end_vector.y + 100 , end_vector.z, 0)
+
+    def aquafy(self, mc):
+        mc.setBlocks()
 
 
     def spawn_houses(self, mc):
