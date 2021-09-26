@@ -337,7 +337,11 @@ class Room:
     
     
     def drawDoor(self,mc,doordirection,doortype):
+        makeFrontDoor = True
         if(doortype =='frontDoor'):
+            if self.walls[doordirection] == 'door':
+                #dont draw door
+                makeFrontDoor = False
             #special case add to walls array
             self.walls[doordirection] = 'frontDoor'
         roomWidth = abs(self.xstart-self.xend)
@@ -426,10 +430,11 @@ class Room:
             doorWidth = 1
             doorHeight = 3
             if(doordirection == 0): #door is on bot
-                mc.setBlock(self.xstart,self.ystart+2,self.zstart+roomDepth//2, 64,9) #64,9)
-                mc.setBlock(self.xstart,self.ystart+1,self.zstart+roomDepth//2, 64,1) #64,1)
-                mc.setBlock(self.xstart,self.ystart+2,self.zstart+roomDepth//2+1, 64,12)
-                mc.setBlock(self.xstart,self.ystart+1,self.zstart+roomDepth//2+1, 64,4)
+                if(makeFrontDoor == True):
+                    mc.setBlock(self.xstart,self.ystart+2,self.zstart+roomDepth//2, 64,9) #64,9)
+                    mc.setBlock(self.xstart,self.ystart+1,self.zstart+roomDepth//2, 64,1) #64,1)
+                    mc.setBlock(self.xstart,self.ystart+2,self.zstart+roomDepth//2+1, 64,12)
+                    mc.setBlock(self.xstart,self.ystart+1,self.zstart+roomDepth//2+1, 64,4)
 
                 #draw front door windows
                 mc.setBlock(self.xstart,self.ystart+2,self.zstart+roomDepth//2+3, 95)
@@ -438,10 +443,11 @@ class Room:
                 mc.setBlock(self.xstart,self.ystart+3,self.zstart+roomDepth//2-2, 95)
 
             if(doordirection == 1): #door is on top
-                mc.setBlock(self.xend,self.ystart+2,self.zstart+roomDepth//2, 64,9) #64,9)
-                mc.setBlock(self.xend,self.ystart+1,self.zstart+roomDepth//2, 64,1) #64,1)
-                mc.setBlock(self.xend,self.ystart+2,self.zstart+roomDepth//2+1, 64,12)
-                mc.setBlock(self.xend,self.ystart+1,self.zstart+roomDepth//2+1, 64,4)
+                if(makeFrontDoor == True):
+                    mc.setBlock(self.xend,self.ystart+2,self.zstart+roomDepth//2, 64,9) #64,9)
+                    mc.setBlock(self.xend,self.ystart+1,self.zstart+roomDepth//2, 64,1) #64,1)
+                    mc.setBlock(self.xend,self.ystart+2,self.zstart+roomDepth//2+1, 64,12)
+                    mc.setBlock(self.xend,self.ystart+1,self.zstart+roomDepth//2+1, 64,4)
                 
                 #draw window
                 mc.setBlock(self.xend,self.ystart+2,self.zstart+roomDepth//2+3, 95) #64,9)
@@ -450,10 +456,11 @@ class Room:
                 mc.setBlock(self.xend,self.ystart+3,self.zstart+roomDepth//2-2, 95) #64,1)
 
             if(doordirection == 2): #door is on left
-                mc.setBlock(self.xstart+roomWidth//2, self.ystart+2, self.zstart, 64, 8)
-                mc.setBlock(self.xstart+roomWidth//2, self.ystart+1, self.zstart, 64, 0)
-                mc.setBlock(self.xstart+roomWidth//2+1, self.ystart+2, self.zstart, 64, 15)
-                mc.setBlock(self.xstart+roomWidth//2+1, self.ystart+1, self.zstart, 64, 7)
+                if(makeFrontDoor == True):
+                    mc.setBlock(self.xstart+roomWidth//2, self.ystart+2, self.zstart, 64, 8)
+                    mc.setBlock(self.xstart+roomWidth//2, self.ystart+1, self.zstart, 64, 0)
+                    mc.setBlock(self.xstart+roomWidth//2+1, self.ystart+2, self.zstart, 64, 15)
+                    mc.setBlock(self.xstart+roomWidth//2+1, self.ystart+1, self.zstart, 64, 7)
 
                 #draw window
                 mc.setBlock(self.xstart+roomWidth//2+3, self.ystart+2, self.zstart, 95)
@@ -462,10 +469,11 @@ class Room:
                 mc.setBlock(self.xstart+roomWidth//2-2, self.ystart+3, self.zstart, 95)
 
             if(doordirection == 3): #door is on right
-                mc.setBlock(self.xstart+roomWidth//2, self.ystart+2, self.zend, 64, 8)
-                mc.setBlock(self.xstart+roomWidth//2, self.ystart+1, self.zend, 64, 0)
-                mc.setBlock(self.xstart+roomWidth//2+1, self.ystart+2, self.zend, 64, 15)
-                mc.setBlock(self.xstart+roomWidth//2+1, self.ystart+1, self.zend, 64, 7)
+                if(makeFrontDoor == True):
+                    mc.setBlock(self.xstart+roomWidth//2, self.ystart+2, self.zend, 64, 8)
+                    mc.setBlock(self.xstart+roomWidth//2, self.ystart+1, self.zend, 64, 0)
+                    mc.setBlock(self.xstart+roomWidth//2+1, self.ystart+2, self.zend, 64, 15)
+                    mc.setBlock(self.xstart+roomWidth//2+1, self.ystart+1, self.zend, 64, 7)
 
                 #draw window
                 mc.setBlock(self.xstart+roomWidth//2+3, self.ystart+2, self.zend,  95)
