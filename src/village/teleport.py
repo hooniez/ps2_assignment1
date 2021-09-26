@@ -23,7 +23,7 @@ if __name__ == '__main__':
         village = Village(mc)
         village.foundation_generator(mc)
         village.road_generator(mc, 'row')
-        village.road_generator(mc, 'column')yt
+        village.road_generator(mc, 'column')
         village.spawn_houses(mc)
     
 
