@@ -17,16 +17,15 @@ if __name__ == '__main__':
         pos = mc.player.getTilePos()
         mc.player.setPos(pos.x + 1000, 100, pos.z + 1000)
         user_input = input('Would you like to generate your vilalge here? [y/n]: ')
+        break
     else:
         mc = Minecraft.create()
         village = Village(mc)
         village.foundation_generator(mc)
         village.road_generator(mc, 'row')
-        village.road_generator(mc, 'column')
+        village.road_generator(mc, 'column')yt
         village.spawn_houses(mc)
     
-        # Creates all the minecraft blocks.
-        mc_dictionary.main(mc)
 
 
 

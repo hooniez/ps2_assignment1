@@ -301,5 +301,3 @@ if __name__ == '__main__':
     village.road_generator(mc, 'column')
     village.spawn_houses(mc)
 
-    # Creates all the minecraft blocks.
-    mc_dictionary.main()
