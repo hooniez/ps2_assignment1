@@ -339,9 +339,10 @@ class Room:
     def drawDoor(self,mc,doordirection,doortype):
         makeFrontDoor = True
         if(doortype =='frontDoor'):
-            if self.walls[doordirection] == 'door':
-                #dont draw door
-                makeFrontDoor = False
+            if self.walls[doordirection] == 'singleDoor':
+                    print('door was door')
+                    #dont draw door
+                    makeFrontDoor = False
             #special case add to walls array
             self.walls[doordirection] = 'frontDoor'
         roomWidth = abs(self.xstart-self.xend)
