@@ -1,8 +1,3 @@
-[![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-f059dc9a6f8d3a56e377f745f24479a46679e63a5d9fe6f495e02850cd0d8118.svg)](https://classroom.github.com/online_ide?assignment_repo_id=448918&assignment_repo_type=GroupAssignmentRepo)
-# Minecraft Village
-This is the README file for Assignment 1 in Programming Studio 2 (COSC2804).
-Please, make sure to add your 5 minutes demo video in the root folder of this reposiory naming it as your team name on Microsoft Teams.
+# ps2_assignment1
 
-For example, you may have (for Team 01): **Team-01-PS2(COSC2804).mp4**
-
-You are expected to personalise [your Dev Diary here](DEVDIARY.md)
+The purpose of this assignment is to develop a procedural generation script for a village in the "block world" using the Minecraft Pi Edition Python API (MCPI). The task is open-ended, allowing for creative design and layout of the village while adhering to specific constraints outlined in the assignment specification. The assignment focuses on improving skills in computer architecture, communication, self-directed learning, ethics and professional standards. The assignment starts by setting up the Raspberry Pi following configuration instructions, then building a block world starting with a basic house with four walls, a roof and a door, followed by building a basic village with roads connecting the houses, then an intermediate village with a fenced-off pool adjacent to each house and randomization, and finally an advanced village with additional features such as rooms, furniture, multiple stories, and stairs. The village should be buildable anywhere in the game world and its spawn location determined by the player's position at runtime.
